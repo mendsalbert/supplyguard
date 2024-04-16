@@ -6,19 +6,18 @@ export const MEGAMENU_TEMPLATES: NavItemType[] = [
     id: ncNanoId(),
     href: "/#",
     name: "Home Page",
-    children: [
-      { id: ncNanoId(), href: "/", name: "Home  1" },
-      { id: ncNanoId(), href: "/home-2", name: "Home  2", isNew: true },
-      { id: ncNanoId(), href: "/", name: "Header  1" },
-      { id: ncNanoId(), href: "/home-2", name: "Header  2", isNew: true },
-      { id: ncNanoId(), href: "/", name: "Coming Soon" },
-    ],
+    children: [{ id: ncNanoId(), href: "/", name: "Home" }],
   },
   {
     id: ncNanoId(),
     href: "/#",
     name: "Shop Pages",
     children: [
+      { id: ncNanoId(), href: "/collection", name: "Category Page" },
+      { id: ncNanoId(), href: "/collection-2", name: "Track my order" },
+      { id: ncNanoId(), href: "/cart", name: "Cart Page" },
+      { id: ncNanoId(), href: "/checkout", name: "Checkout Page" },
+      { id: ncNanoId(), href: "/checkout", name: "======" },
       { id: ncNanoId(), href: "/collection", name: "Category Page 1" },
       { id: ncNanoId(), href: "/collection-2", name: "Category Page 2" },
       { id: ncNanoId(), href: "/product-detail", name: "Product Page 1" },
@@ -30,8 +29,13 @@ export const MEGAMENU_TEMPLATES: NavItemType[] = [
   {
     id: ncNanoId(),
     href: "/#",
-    name: "Other Pages",
+    name: "For Supliers",
     children: [
+      { id: ncNanoId(), href: "/checkout", name: "Dashboard" },
+      { id: ncNanoId(), href: "/account", name: "Accout Page" },
+      { id: ncNanoId(), href: "/subscription", name: "Subscription" },
+      { id: ncNanoId(), href: "/subscription", name: "====" },
+
       { id: ncNanoId(), href: "/checkout", name: "Checkout Page" },
       { id: ncNanoId(), href: "/search", name: "Search Page" },
       { id: ncNanoId(), href: "/cart", name: "Cart Page" },
@@ -43,8 +47,16 @@ export const MEGAMENU_TEMPLATES: NavItemType[] = [
   {
     id: ncNanoId(),
     href: "/#",
-    name: "Blog Page",
+    name: "Other Pages",
     children: [
+      { id: ncNanoId(), href: "/about", name: "About Page" },
+      { id: ncNanoId(), href: "/contact", name: "Contact Page" },
+      { id: ncNanoId(), href: "/blog", name: "Demo/Video" },
+      { id: ncNanoId(), href: "/blog-single", name: "Technology" },
+      { id: ncNanoId(), href: "/login", name: "How It Works:" },
+      { id: ncNanoId(), href: "/signup", name: "Support" },
+      { id: ncNanoId(), href: "/forgot-pass", name: "======" },
+
       { id: ncNanoId(), href: "/blog", name: "Blog Page" },
       { id: ncNanoId(), href: "/blog-single", name: "Blog Single" },
       { id: ncNanoId(), href: "/about", name: "About Page" },
@@ -181,36 +193,36 @@ export const NAVIGATION_DEMO_2: NavItemType[] = [
   {
     id: ncNanoId(),
     href: "/collection",
-    name: "Men",
+    name: "Suppliers",
   },
   {
     id: ncNanoId(),
     href: "/collection-2",
-    name: "Women",
+    name: "Products",
   },
-  {
-    id: ncNanoId(),
-    href: "/collection",
-    name: "Beauty",
-  },
+  // {
+  //   id: ncNanoId(),
+  //   href: "/collection",
+  //   name: "Beauty",
+  // },
 
   {
     id: ncNanoId(),
     href: "/collection-2",
-    name: "Sport",
+    name: "Track Order",
   },
   {
     id: ncNanoId(),
     href: "/collection",
-    name: "Templates",
+    name: "More",
     type: "megaMenu",
     children: MEGAMENU_TEMPLATES,
   },
-  {
-    id: ncNanoId(),
-    href: "/search",
-    name: "Explore",
-    type: "dropdown",
-    children: OTHER_PAGE_CHILD,
-  },
+  // {
+  //   id: ncNanoId(),
+  //   href: "/search",
+  //   name: "Explore",
+  //   type: "dropdown",
+  //   children: OTHER_PAGE_CHILD,
+  // },
 ];

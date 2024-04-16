@@ -61,10 +61,11 @@ const DiscoverMoreSlider = () => {
       <Heading
         className="mb-12 lg:mb-14 text-neutral-900 dark:text-neutral-50 nc-p-r-container "
         desc=""
-        rightDescText="Good things are waiting for you"
+        rightDescText=""
         hasNextPrev
       >
-        Discover more (Brands Here)
+        Discover the ease of ordering with SupplyGuard. Real-time tracking for
+        your peace of mind.
       </Heading>
       <div className="" data-glide-el="track">
         <ul className="glide__slides">

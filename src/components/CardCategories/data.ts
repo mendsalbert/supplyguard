@@ -1,31 +1,26 @@
-import img1 from "@/images/collections/1.png";
-import img2 from "@/images/collections/5.png";
+import img1 from "@/images/collections/package.svg";
+import img2 from "@/images/collections/map-2.svg";
 import img3 from "@/images/collections/4.png";
-import img4 from "@/images/collections/3.png";
+import img4 from "@/images/collections/gift-card.svg";
 import { CardCategory3Props } from "./CardCategory3";
 
 export const CATS_DISCOVER: CardCategory3Props[] = [
   {
-    name: "Explore new arrivals",
-    desc: "Shop the latest <br /> from top brands",
+    name: "Order Supplies with Confidence",
+    // desc: "Shop the latest <br /> from top brands",
+    desc: "Essentials tracked to <br /> your door",
     featuredImage: img1,
     color: "bg-yellow-50",
   },
   {
-    name: "Digital gift cards",
-    desc: "Give the gift <br /> of choice",
+    name: "Always in the Loop",
+    desc: "Real-time, seamless tracking",
     featuredImage: img2,
     color: "bg-red-50",
   },
   {
-    name: "Sale collection",
-    desc: "Up to <br /> 80% off retail",
-    featuredImage: img3,
-    color: "bg-blue-50",
-  },
-  {
-    name: "Sale collection",
-    desc: "Up to <br /> 80% off retail",
+    name: "Deals That Move with You",
+    desc: "Save big, follow every step",
     featuredImage: img4,
     color: "bg-green-50",
   },

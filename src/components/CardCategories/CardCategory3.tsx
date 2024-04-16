@@ -32,7 +32,7 @@ const CardCategory3: FC<CardCategory3Props> = ({
             <Image
               alt=""
               src={featuredImage || ""}
-              className="absolute end-0 w-1/2 max-w-[260px] h-full object-contain drop-shadow-xl"
+              className="absolute end-0 w-1/2 max-w-[120px] h-full object-contain drop-shadow-xl"
             />
           </div>
         </div>

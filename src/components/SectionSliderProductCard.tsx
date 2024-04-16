@@ -5,7 +5,8 @@ import Heading from "@/components/Heading/Heading";
 // @ts-ignore
 import Glide from "@glidejs/glide/dist/glide.esm";
 import ProductCard from "./ProductCard";
-import { Product, PRODUCTS } from "@/data/data";
+import { Product } from "@/data/data";
+import { productImgs } from "@/contains/fakeData";
 
 export interface SectionSliderProductCardProps {
   className?: string;
@@ -16,6 +17,126 @@ export interface SectionSliderProductCardProps {
   subHeading?: string;
   data?: Product[];
 }
+
+const PRODUCTS: Product[] = [
+  {
+    id: 1,
+    name: "Rey Nylon Backpack",
+    description: "Brown cockroach wings",
+    price: 74,
+    image: productImgs[16],
+    category: "Category 1",
+    tags: ["tag1", "tag2"],
+    link: "/product-detail/",
+    variantType: "image",
+    sizes: ["XS", "S", "M", "L", "XL"],
+    allOfSizes: ["XS", "S", "M", "L", "XL", "2XL", "3XL"],
+    status: "New in",
+    rating: "4.4",
+    numberOfReviews: 98,
+  },
+  {
+    id: 2,
+    name: 'Round Buckle 1" Belt',
+    description: "Classic green",
+    price: 68,
+    image: productImgs[1],
+    category: "Category 1",
+    tags: ["tag1", "tag2"],
+    link: "/product-detail/",
+    variantType: "color",
+    status: "50% Discount",
+    rating: "4.9",
+    numberOfReviews: 98,
+  },
+  {
+    id: 3,
+    name: "Waffle Knit Beanie",
+    description: "New blue aqua",
+    price: 132,
+    image: productImgs[15],
+    category: "Category 1",
+    tags: ["tag1", "tag2"],
+    link: "/product-detail/",
+    variantType: "image",
+    sizes: ["S", "M", "L", "XL"],
+    allOfSizes: ["S", "M", "L", "XL", "2XL", "3XL"],
+    rating: "4.9",
+    numberOfReviews: 98,
+  },
+  {
+    id: 4,
+    name: "Travel Pet Carrier",
+    description: "Dark pink 2023",
+    price: 28,
+    image: productImgs[3],
+    category: "Category 1",
+    tags: ["tag1", "tag2"],
+    variantType: "color",
+    link: "/product-detail/",
+    status: "Sold Out",
+    rating: "4.9",
+    numberOfReviews: 98,
+  },
+  {
+    id: 5,
+    name: "Leather Gloves",
+    description: "Perfect mint green",
+    price: 42,
+    image: productImgs[4],
+    category: "Category 1",
+    tags: ["tag1", "tag2"],
+    variantType: "image",
+    sizes: ["XS", "S", "M", "L", "XL"],
+    allOfSizes: ["XS", "S", "M", "L", "XL", "2XL", "3XL"],
+    link: "/product-detail/",
+    rating: "4.9",
+    numberOfReviews: 98,
+  },
+  {
+    id: 6,
+    name: "Hoodie Sweatshirt",
+    description: "New design 2023",
+    price: 30,
+    image: productImgs[5],
+    category: "Category 1",
+    tags: ["tag1", "tag2"],
+    variantType: "color",
+    link: "/product-detail/",
+    rating: "4.9",
+    numberOfReviews: 98,
+  },
+  {
+    id: 7,
+    name: "Wool Cashmere Jacket",
+    description: "Matte black",
+    price: 12,
+    image: productImgs[8],
+    category: "Category 1",
+    tags: ["tag1", "tag2"],
+    variantType: "image",
+    link: "/product-detail/",
+    status: "New in",
+    rating: "4.9",
+    numberOfReviews: 98,
+  },
+  {
+    id: 8,
+    name: "Ella Leather Tote",
+    description: "Cream pink",
+    price: 145,
+    image: productImgs[7],
+    category: "Category 1",
+    tags: ["tag1", "tag2"],
+    variantType: "image",
+    sizes: ["XS", "S", "M", "L", "XL"],
+    allOfSizes: ["XS", "S", "M", "L", "XL", "2XL", "3XL"],
+    link: "/product-detail/",
+    status: "limited edition",
+    rating: "4.9",
+    numberOfReviews: 98,
+  },
+];
 
 const SectionSliderProductCard: FC<SectionSliderProductCardProps> = ({
   className = "",

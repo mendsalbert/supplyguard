@@ -88,7 +88,7 @@ export const DEMO_MORE_EXPLORE_DATA_2: ExploreType[] = [
 export const DEMO_MORE_EXPLORE_DATA: ExploreType[] = [
   {
     id: 1,
-    name: "Backpack",
+    name: "Agricultural Products",
     desc: "Manufacturar",
     image: explore1Png,
     svgBg: explore1Svg,
@@ -97,7 +97,7 @@ export const DEMO_MORE_EXPLORE_DATA: ExploreType[] = [
   },
   {
     id: 2,
-    name: "Shoes",
+    name: "Electronics",
     desc: "Manufacturar",
     image: explore2Png,
     svgBg: explore2Svg,
@@ -106,7 +106,7 @@ export const DEMO_MORE_EXPLORE_DATA: ExploreType[] = [
   },
   {
     id: 3,
-    name: "Recycled Blanket",
+    name: "Clothing and Apparel",
     desc: "Manufacturar",
     image: explore3Png,
     svgBg: explore3Svg,
@@ -115,7 +115,7 @@ export const DEMO_MORE_EXPLORE_DATA: ExploreType[] = [
   },
   {
     id: 4,
-    name: "Cycling Shorts",
+    name: "Pharmaceuticals",
     desc: "Manufacturar",
     image: explore9Png,
     svgBg: explore9Svg,
@@ -124,7 +124,7 @@ export const DEMO_MORE_EXPLORE_DATA: ExploreType[] = [
   },
   {
     id: 5,
-    name: "Cycling Jersey",
+    name: "Automotive Parts",
     desc: "Manufacturar",
     image: explore5Png,
     svgBg: explore5Svg,
@@ -133,7 +133,7 @@ export const DEMO_MORE_EXPLORE_DATA: ExploreType[] = [
   },
   {
     id: 6,
-    name: "Car Coat",
+    name: "Industrial Equipment",
     desc: "Manufacturar",
     image: explore6Png,
     svgBg: explore6Svg,

@@ -41,6 +41,7 @@ export interface Product {
   status?: "New in" | "limited edition" | "Sold Out" | "50% Discount";
   rating?: string;
   numberOfReviews?: number;
+  supplier?: string;
 }
 
 const DEMO_VARIANTS: ProductVariant[] = [
@@ -111,10 +112,10 @@ const DEMO_VARIANT_COLORS: ProductVariant[] = [
 export const PRODUCTS: Product[] = [
   {
     id: 1,
-    name: "Rey Nylon Backpackkkk",
-    description: "Brown cockroach wings",
-    price: 74,
-    image: productImgs[16],
+    name: "Satori Eco Yoga Mat",
+    description: "Eco-friendly Material",
+    price: 45,
+    image: productImgs[19],
     category: "Category 1",
     tags: ["tag1", "tag2"],
     link: "/product-detail/",
@@ -125,13 +126,14 @@ export const PRODUCTS: Product[] = [
     status: "New in",
     rating: "4.4",
     numberOfReviews: 98,
+    supplier: "Unilever",
   },
   {
     id: 2,
     name: 'Round Buckle 1" Belt',
     description: "Classic green",
     price: 68,
-    image: productImgs[1],
+    image: productImgs[5],
     category: "Category 1",
     tags: ["tag1", "tag2"],
     link: "/product-detail/",
@@ -146,7 +148,7 @@ export const PRODUCTS: Product[] = [
     name: "Waffle Knit Beanie",
     description: "New blue aqua",
     price: 132,
-    image: productImgs[15],
+    image: productImgs[5],
     category: "Category 1",
     tags: ["tag1", "tag2"],
     link: "/product-detail/",
@@ -162,7 +164,7 @@ export const PRODUCTS: Product[] = [
     name: "Travel Pet Carrier",
     description: "Dark pink 2023",
     price: 28,
-    image: productImgs[3],
+    image: productImgs[5],
     category: "Category 1",
     tags: ["tag1", "tag2"],
     variants: DEMO_VARIANT_COLORS,

@@ -23,9 +23,13 @@ import Link from "next/link";
 
 export interface ProductQuickView2Props {
   className?: string;
+  data: any;
 }
 
-const ProductQuickView2: FC<ProductQuickView2Props> = ({ className = "" }) => {
+const ProductQuickView2: FC<ProductQuickView2Props> = ({
+  className = "",
+  data,
+}) => {
   const { sizes, variants, status, allOfSizes } = PRODUCTS[0];
   const LIST_IMAGES_DEMO = [detail1JPG, detail2JPG, detail3JPG];
 
@@ -55,14 +59,7 @@ const ProductQuickView2: FC<ProductQuickView2Props> = ({ className = "" }) => {
 
     return (
       <div>
-        <label htmlFor="">
-          <span className="text-sm font-medium">
-            Color:
-            <span className="ml-1 font-semibold">
-              {variants[variantActive].name}
-            </span>
-          </span>
-        </label>
+        <label htmlFor=""></label>
         <div className="flex mt-3">
           {variants.map((variant, index) => (
             <div
@@ -281,7 +278,7 @@ const ProductQuickView2: FC<ProductQuickView2Props> = ({ className = "" }) => {
               <Image
                 fill
                 sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                src={LIST_IMAGES_DEMO[0]}
+                src={data?.image}
                 className="w-full rounded-xl object-cover"
                 alt="product detail 1"
               />

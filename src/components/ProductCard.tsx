@@ -3,7 +3,10 @@
 import React, { FC, useState } from "react";
 import LikeButton from "./LikeButton";
 import Prices from "./Prices";
-import { ArrowsPointingOutIcon } from "@heroicons/react/24/outline";
+import {
+  ArrowsPointingOutIcon,
+  BuildingStorefrontIcon,
+} from "@heroicons/react/24/outline";
 import { Product, PRODUCTS } from "@/data/data";
 import { StarIcon } from "@heroicons/react/24/solid";
 import ButtonPrimary from "@/shared/Button/ButtonPrimary";
@@ -41,6 +44,7 @@ const ProductCard: FC<ProductCardProps> = ({
     rating,
     id,
     numberOfReviews,
+    supplier,
   } = data;
 
   const [variantActive, setVariantActive] = useState(0);
@@ -80,13 +84,13 @@ const ProductCard: FC<ProductCardProps> = ({
     return (
       <div className="flex ">
         <div className="h-24 w-20 flex-shrink-0 overflow-hidden rounded-xl bg-slate-100">
-          {/* <Image
+          <Image
             width={80}
             height={96}
             src={image}
             alt={name}
             className="absolute object-cover object-center"
-          /> */}
+          />
         </div>
 
         <div className="ms-4 flex flex-1 flex-col">
@@ -208,11 +212,11 @@ const ProductCard: FC<ProductCardProps> = ({
         <div className="relative flex-shrink-0 bg-slate-50 dark:bg-slate-300 rounded-3xl overflow-hidden z-1 group">
           <Link href={"/product-detail"} className="block">
             <NcImage
-              containerClassName="flex aspect-w-11 aspect-h-12 w-full h-0"
+              containerClassName="flex aspect-w-4 aspect-h-4 w-full h-0"
               src={image}
               className="object-cover w-full h-full drop-shadow-xl"
               fill
-              // sizes="(max-width: 640px) 100vw, (max-width: 1200px) 50vw, 40vw"
+              sizes="(max-width: 640px) 100vw, (max-width: 1200px) 50vw, 40vw"
               alt="product"
             />
           </Link>
@@ -234,9 +238,9 @@ const ProductCard: FC<ProductCardProps> = ({
           <div className="flex justify-between items-end ">
             <Prices price={price} />
             <div className="flex items-center mb-0.5">
-              <StarIcon className="w-5 h-5 pb-[1px] text-amber-400" />
+              <BuildingStorefrontIcon className="w-5 h-5 pb-[1px] text-slate-500" />
               <span className="text-sm ms-1 text-slate-500 dark:text-slate-400">
-                {rating || ""} ({numberOfReviews || 0} reviews)
+                {supplier}
               </span>
             </div>
           </div>
@@ -245,6 +249,7 @@ const ProductCard: FC<ProductCardProps> = ({
 
       {/* QUICKVIEW */}
       <ModalQuickView
+        data={data}
         show={showModalQuickView}
         onCloseModalQuickView={() => setShowModalQuickView(false)}
       />

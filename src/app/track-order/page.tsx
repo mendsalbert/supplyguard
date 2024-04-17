@@ -30,7 +30,8 @@ const CheckoutPage = () => {
 
     return (
       <div key={index} className="relative flex py-7 first:pt-0 last:pb-0">
-        <div className="relative h-36 w-24 sm:w-28 flex-shrink-0 overflow-hidden rounded-xl bg-slate-100">
+        {/* <div className="relative h-36 w-24 sm:w-28 flex-shrink-0 overflow-hidden rounded-xl bg-slate-100"> */}
+        <div className="relative h-48 w-52  flex-shrink-0 overflow-hidden rounded-xl bg-slate-100">
           <Image
             src={image}
             fill
@@ -86,7 +87,7 @@ const CheckoutPage = () => {
               href="##"
               className="relative z-10 flex items-center mt-3 font-medium text-primary-6000 hover:text-primary-500 text-sm "
             >
-              <span>Remove</span>
+              <Link href="/track-order-single">View Track</Link>
             </a>
           </div>
         </div>

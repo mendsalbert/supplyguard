@@ -6,7 +6,7 @@ import Heading from "@/components/Heading/Heading";
 import Glide from "@glidejs/glide/dist/glide.esm";
 import CardCategory2 from "@/components/CardCategories/CardCategory2";
 import department1Png from "@/images/products/1.png";
-import department2Png from "@/images/collections/department2.png";
+import department2Png from "@/images/products/2.png";
 import department3Png from "@/images/collections/department3.png";
 import department4Png from "@/images/collections/department4.png";
 import { StaticImageData } from "next/image";

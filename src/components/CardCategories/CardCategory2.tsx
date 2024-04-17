@@ -34,7 +34,7 @@ const CardCategory2: FC<CardCategory2Props> = ({
             alt=""
             containerClassName="w-full h-full flex justify-center"
             src={featuredImage}
-            className="object-cover rounded-2xl"
+            className="object-cover rounded-2xl w-44 h-44"
             sizes="400px"
           />
         </div>

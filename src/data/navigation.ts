@@ -190,14 +190,14 @@ const OTHER_PAGE_CHILD: NavItemType[] = [
 ];
 
 export const NAVIGATION_DEMO_2: NavItemType[] = [
+  // {
+  //   id: ncNanoId(),
+  //   href: "/collection",
+  //   name: "Suppliers",
+  // },
   {
     id: ncNanoId(),
     href: "/collection",
-    name: "Suppliers",
-  },
-  {
-    id: ncNanoId(),
-    href: "/collection-2",
     name: "Products",
   },
   // {

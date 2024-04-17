@@ -14,25 +14,37 @@ import MySwitch from "@/components/MySwitch";
 // DEMO DATA
 const DATA_categories = [
   {
-    name: "New Arrivals",
+    name: "Agricultural Products",
   },
   {
-    name: "Sale",
+    name: "Electronics",
   },
   {
-    name: "Backpacks",
+    name: "Clothing and Apparel",
   },
   {
-    name: "Travel Bags",
+    name: "Pharmaceuticals",
   },
   {
-    name: "Laptop Sleeves",
+    name: "Automotive Parts",
   },
   {
-    name: "Organization",
+    name: "Industrial Equipment",
   },
   {
-    name: "Accessories",
+    name: "Books and Educational Materials",
+  },
+  {
+    name: "Furniture and Home Decor",
+  },
+  {
+    name: "Luxury Goods",
+  },
+  {
+    name: "Sports Equipment",
+  },
+  {
+    name: "Art and Collectibles",
   },
 ];
 

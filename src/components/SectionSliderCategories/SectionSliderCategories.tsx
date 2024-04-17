@@ -7,8 +7,8 @@ import Glide from "@glidejs/glide/dist/glide.esm";
 import CardCategory2 from "@/components/CardCategories/CardCategory2";
 import department1Png from "@/images/products/1.png";
 import department2Png from "@/images/products/2.png";
-import department3Png from "@/images/collections/department3.png";
-import department4Png from "@/images/collections/department4.png";
+import department3Png from "@/images/products/3.png";
+import department4Png from "@/images/products/4.png";
 import { StaticImageData } from "next/image";
 import Link from "next/link";
 
@@ -126,7 +126,7 @@ const SectionSliderCategories: FC<SectionSliderCategoriesProps> = ({
                   <div className="absolute inset-y-6 inset-x-10 flex flex-col sm:items-center justify-center">
                     <div className="flex relative text-slate-900">
                       <span className="text-lg font-semibold ">
-                        More collections
+                        More Suppliers
                       </span>
                       <svg
                         className="absolute left-full w-5 h-5 ml-2 rotate-45 group-hover:scale-110 transition-transform"

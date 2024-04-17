@@ -80,13 +80,13 @@ const ProductCard: FC<ProductCardProps> = ({
     return (
       <div className="flex ">
         <div className="h-24 w-20 flex-shrink-0 overflow-hidden rounded-xl bg-slate-100">
-          <Image
+          {/* <Image
             width={80}
             height={96}
             src={image}
             alt={name}
             className="absolute object-cover object-center"
-          />
+          /> */}
         </div>
 
         <div className="ms-4 flex flex-1 flex-col">
@@ -273,7 +273,7 @@ const ProductCard: FC<ProductCardProps> = ({
               src={image}
               className="object-cover w-full h-full drop-shadow-xl"
               fill
-              sizes="(max-width: 640px) 100vw, (max-width: 1200px) 50vw, 40vw"
+              // sizes="(max-width: 640px) 100vw, (max-width: 1200px) 50vw, 40vw"
               alt="product"
             />
           </Link>

@@ -18,14 +18,15 @@ import product6 from "@/images/products/6.png";
 import product7 from "@/images/products/7.png";
 import product8 from "@/images/products/8.png";
 import product9 from "@/images/products/9.png";
+
 import product10 from "@/images/products/10.png";
 import product11 from "@/images/products/11.png";
 import product12 from "@/images/products/12.png";
 import product13 from "@/images/products/13.png";
 import product14 from "@/images/products/14.png";
 import product15 from "@/images/products/15.png";
-import product16 from "@/images/products/16.png";
-import product17 from "@/images/products/17.png";
+import product16 from "@/images/products/1.png";
+import product17 from "@/images/products/1.png";
 import product18 from "@/images/products/18.png";
 import product19 from "@/images/products/19.png";
 import product20 from "@/images/products/20.png";

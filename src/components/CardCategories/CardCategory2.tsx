@@ -27,7 +27,7 @@ const CardCategory2: FC<CardCategory2Props> = ({
       data-nc-id="CardCategory2"
     >
       <div
-        className={`flex-1 relative w-full h-0 rounded-2xl overflow-hidden group ${ratioClass} ${bgClass}`}
+        className={`flex-1 relative w-full h-0 rounded-2xl overflow-hidden group ${ratioClass}`}
       >
         <div className="pt-14">
           <NcImage

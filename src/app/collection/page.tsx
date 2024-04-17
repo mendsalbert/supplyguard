@@ -6,6 +6,7 @@ import SectionPromo1 from "@/components/SectionPromo1";
 import ProductCard from "@/components/ProductCard";
 import { PRODUCTS } from "@/data/data";
 import TabFilters from "@/components/TabFilters";
+import SectionSliderCategories from "@/components/SectionSliderCategories/SectionSliderCategories";
 
 const PageCollection = ({}) => {
   return (
@@ -15,7 +16,7 @@ const PageCollection = ({}) => {
           {/* HEADING */}
           <div className="max-w-screen-sm">
             <h2 className="block text-2xl sm:text-3xl lg:text-4xl font-semibold">
-              Man collection
+              Meet our top leading suppliers{" "}
             </h2>
             <span className="block mt-4 text-neutral-500 dark:text-neutral-400 text-sm sm:text-base">
               We not only help you design exceptional products, but also make it
@@ -25,32 +26,24 @@ const PageCollection = ({}) => {
 
           <hr className="border-slate-200 dark:border-slate-700" />
           <main>
+            <SectionSliderCategories />
             {/* TABS FILTER */}
-            <TabFilters />
+            {/* <TabFilters /> */}
 
             {/* LOOP ITEMS */}
-            <div className="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-x-8 gap-y-10 mt-8 lg:mt-10">
+            {/* <div className="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-x-8 gap-y-10 mt-8 lg:mt-10">
               {PRODUCTS.map((item, index) => (
                 <ProductCard data={item} key={index} />
               ))}
-            </div>
+            </div> */}
 
             {/* PAGINATION */}
-            <div className="flex flex-col mt-12 lg:mt-16 space-y-5 sm:space-y-0 sm:space-x-3 sm:flex-row sm:justify-between sm:items-center">
+            {/* <div className="flex flex-col mt-12 lg:mt-16 space-y-5 sm:space-y-0 sm:space-x-3 sm:flex-row sm:justify-between sm:items-center">
               <Pagination />
               <ButtonPrimary loading>Show me more</ButtonPrimary>
-            </div>
+            </div> */}
           </main>
         </div>
-
-        {/* === SECTION 5 === */}
-        <hr className="border-slate-200 dark:border-slate-700" />
-
-        <SectionSliderCollections />
-        <hr className="border-slate-200 dark:border-slate-700" />
-
-        {/* SUBCRIBES */}
-        <SectionPromo1 />
       </div>
     </div>
   );

@@ -51,7 +51,7 @@ const Heading: React.FC<HeadingProps> = ({
           className={`${isCenter ? "justify-center" : ""} ${fontClass}`}
           {...args}
         >
-          {children || `Section Heading`}
+          {children || ``}
           {rightDescText && (
             <>
               <span className="">{`. `}</span>

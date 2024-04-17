@@ -52,47 +52,6 @@ const ProductQuickView2: FC<ProductQuickView2Props> = ({
     );
   };
 
-  const renderStatus = () => {
-    if (!status) {
-      return null;
-    }
-    const CLASSES =
-      "absolute top-3 left-3 px-2.5 py-1.5 text-xs bg-white dark:bg-slate-900 nc-shadow-lg rounded-full flex items-center justify-center text-slate-700 text-slate-900 dark:text-slate-300";
-    if (status === "New in") {
-      return (
-        <div className={CLASSES}>
-          <SparklesIcon className="w-3.5 h-3.5" />
-          <span className="ml-1 leading-none">{status}</span>
-        </div>
-      );
-    }
-    if (status === "50% Discount") {
-      return (
-        <div className={CLASSES}>
-          <IconDiscount className="w-3.5 h-3.5" />
-          <span className="ml-1 leading-none">{status}</span>
-        </div>
-      );
-    }
-    if (status === "Sold Out") {
-      return (
-        <div className={CLASSES}>
-          <NoSymbolIcon className="w-3.5 h-3.5" />
-          <span className="ml-1 leading-none">{status}</span>
-        </div>
-      );
-    }
-    if (status === "limited edition") {
-      return (
-        <div className={CLASSES}>
-          <ClockIcon className="w-3.5 h-3.5" />
-          <span className="ml-1 leading-none">{status}</span>
-        </div>
-      );
-    }
-    return null;
-  };
-
   const renderSectionContent = () => {
     return (
       <div className="space-y-8">
@@ -120,8 +79,8 @@ const ProductQuickView2: FC<ProductQuickView2Props> = ({
                 <div className="ml-1.5 flex">
                   <span>4.9</span>
                   <span className="block mx-2">·</span>
-                  <span className="text-slate-600 dark:text-slate-400 underline">
-                    142 reviews
+                  <span className="text-slate-600 dark:text-slate-400 ">
+                    {data?.supplier}
                   </span>
                 </div>
               </a>
@@ -187,8 +146,6 @@ const ProductQuickView2: FC<ProductQuickView2Props> = ({
               />
             </div>
 
-            {/* STATUS */}
-            {renderStatus()}
             {/* META FAVORITES */}
             <LikeButton className="absolute right-3 top-3 " />
           </div>

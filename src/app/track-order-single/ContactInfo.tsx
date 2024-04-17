@@ -14,7 +14,7 @@ interface Props {
 const ContactInfo: FC<Props> = ({ isActive, onCloseActive, onOpenActive }) => {
   const renderAccount = () => {
     return (
-      <div className="border border-slate-200 dark:border-slate-700 rounded-xl overflow-hidden z-0">
+      <div className="border bg-white border-slate-200 dark:border-slate-700 rounded-xl overflow-hidden z-0">
         <div className="flex flex-col sm:flex-row items-start p-6 ">
           <span className="hidden sm:block">
             <svg
@@ -54,7 +54,7 @@ const ContactInfo: FC<Props> = ({ isActive, onCloseActive, onOpenActive }) => {
                 viewBox="0 0 24 24"
                 strokeWidth="2.5"
                 stroke="currentColor"
-                className="w-5 h-5 ml-3 text-slate-900 dark:text-slate-100 "
+                className="w-5 h-5 ml-3 text-green-500 ring-2 ring-offset-1 ring-green-500 ring- rounded-full dark:text-slate-100 "
               >
                 <path
                   strokeLinecap="round"
@@ -72,7 +72,7 @@ const ContactInfo: FC<Props> = ({ isActive, onCloseActive, onOpenActive }) => {
             className="py-2 px-4 bg-slate-50 hover:bg-slate-100 dark:bg-slate-800 dark:hover:bg-slate-700 mt-5 sm:mt-0 sm:ml-auto text-sm font-medium rounded-lg"
             onClick={() => onOpenActive()}
           >
-            Change
+            Details
           </button>
         </div>
         <div

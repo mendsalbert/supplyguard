@@ -209,7 +209,7 @@ export const NAVIGATION_DEMO_2: NavItemType[] = [
   {
     id: ncNanoId(),
     href: "/track-order",
-    name: "Track Order",
+    name: "Track Orders",
   },
   {
     id: ncNanoId(),

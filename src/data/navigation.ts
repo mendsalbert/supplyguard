@@ -200,11 +200,11 @@ export const NAVIGATION_DEMO_2: NavItemType[] = [
     href: "/collection",
     name: "Products",
   },
-  // {
-  //   id: ncNanoId(),
-  //   href: "/collection",
-  //   name: "Beauty",
-  // },
+  {
+    id: ncNanoId(),
+    href: "/collection",
+    name: "Art & Collectibles",
+  },
 
   {
     id: ncNanoId(),

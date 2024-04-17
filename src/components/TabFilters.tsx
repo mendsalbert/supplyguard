@@ -1146,9 +1146,9 @@ const TabFilters = () => {
       <div className="hidden lg:flex flex-1 space-x-4">
         {renderTabsPriceRage()}
         {renderTabsCategories()}
-        {renderTabsColor()}
-        {renderTabsSize()}
-        {renderTabIsOnsale()}
+        {/* {renderTabsColor()} */}
+        {/* {renderTabsSize()} */}
+        {/* {renderTabIsOnsale()} */}
         <div className="!ml-auto">{renderTabsSortOrder()}</div>
       </div>
 

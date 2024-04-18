@@ -115,13 +115,24 @@ const ProductQuickView2: FC<ProductQuickView2Props> = ({
               onChange={setQualitySelected}
             />
           </div>
-          <ButtonPrimary
-            className="flex-1 flex-shrink-0"
-            onClick={notifyAddTocart}
-          >
-            <BagIcon className="hidden sm:inline-block w-5 h-5 mb-0.5" />
-            <span className="ml-3">Add to cart</span>
-          </ButtonPrimary>
+
+          {art ? (
+            <ButtonPrimary
+              className="flex-1 flex-shrink-0"
+              onClick={notifyAddTocart}
+            >
+              {/* <BagIcon className="hidden sm:inline-block w-5 h-5 mb-0.5" /> */}
+              <span className="ml-3">Own this Art</span>
+            </ButtonPrimary>
+          ) : (
+            <ButtonPrimary
+              className="flex-1 flex-shrink-0"
+              onClick={notifyAddTocart}
+            >
+              <BagIcon className="hidden sm:inline-block w-5 h-5 mb-0.5" />
+              <span className="ml-3">Add to cart</span>
+            </ButtonPrimary>
+          )}
         </div>
 
         {/*  */}

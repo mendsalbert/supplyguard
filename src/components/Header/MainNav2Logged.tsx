@@ -99,11 +99,11 @@ const MainNav2Logged: FC<MainNav2LoggedProps> = () => {
               {renderMagnifyingGlassIcon()}
             </button>
           )}
-          {/* <AvatarDropdown />
-          <CartDropdown /> */}
+          <AvatarDropdown />
+          <CartDropdown />
           <div
             onClick={() => {}}
-            className=" rounded-full py-2 px-7 border border-slate-300 dark:border-slate-700 "
+            className="hover:cursor-pointer rounded-full py-2 px-7 border border-slate-300 dark:border-slate-700 "
           >
             connect{" "}
           </div>

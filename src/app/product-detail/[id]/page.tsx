@@ -27,8 +27,6 @@ import NotifyAddTocart from "@/components/NotifyAddTocart";
 import Image from "next/image";
 import AccordionInfo from "@/components/AccordionInfo";
 
-const LIST_IMAGES_DEMO = [detail1JPG, detail2JPG, detail3JPG];
-
 const ProductDetailPage = ({ params }: { params: { id: number } }) => {
   const {
     sizes,

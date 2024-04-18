@@ -20,7 +20,7 @@ const AccountPage = () => {
             {/* AVATAR */}
             <div className="relative rounded-full overflow-hidden flex">
               <Image
-                src={avatarImgs[2]}
+                src={avatarImgs[7]}
                 alt="avatar"
                 width={128}
                 height={128}
@@ -54,7 +54,7 @@ const AccountPage = () => {
           <div className="flex-grow mt-10 md:mt-0 md:pl-16 max-w-3xl space-y-6">
             <div>
               <Label>Full name</Label>
-              <Input className="mt-1.5" defaultValue="Enrico Cole" />
+              <Input className="mt-1.5" defaultValue="John Doe" />
             </div>
 
             {/* ---- */}

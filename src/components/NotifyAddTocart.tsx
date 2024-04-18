@@ -10,6 +10,7 @@ interface Props {
   variantActive: number;
   sizeSelected: string;
   qualitySelected: number;
+  data?: any;
 }
 
 const NotifyAddTocart: FC<Props> = ({
@@ -18,8 +19,9 @@ const NotifyAddTocart: FC<Props> = ({
   variantActive,
   qualitySelected,
   sizeSelected,
+  data,
 }) => {
-  const { name, price, variants } = PRODUCTS[0];
+  const { name, price, supplier } = data;
 
   const renderProductCartOnNotify = () => {
     return (
@@ -40,14 +42,14 @@ const NotifyAddTocart: FC<Props> = ({
               <div>
                 <h3 className="text-base font-medium ">{name}</h3>
                 <p className="mt-1 text-sm text-slate-500 dark:text-slate-400">
-                  <span>
-                    {variants ? variants[variantActive].name : `Natural`}
-                  </span>
-                  <span className="mx-2 border-l border-slate-200 dark:border-slate-700 h-4"></span>
-                  <span>{sizeSelected || "XL"}</span>
+                  <span>{supplier}</span>
                 </p>
               </div>
-              <Prices price={price} className="mt-0.5" />
+              <Prices
+                price={price}
+                qualitySelected={qualitySelected}
+                className="mt-0.5"
+              />
             </div>
           </div>
           <div className="flex flex-1 items-end justify-between text-sm">

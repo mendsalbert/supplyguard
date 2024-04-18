@@ -26,9 +26,9 @@ const Prices: FC<PricesProps> = ({
             {String(price)} ETH
           </span>
         ) : (
-          <div className="text-green-500 flex flex-row space-x-1 w-full">
+          <div className="text-green-500 flex items-center flex-row space-x-1 w-full">
             <span className="text-green-500 !leading-none">
-              ${Number(price)}
+              ${Number(price) * qualitySelected || Number(price)}
             </span>
             <ArrowsRightLeftIcon className="h-4 w-4" />
             <span className="text-green-500 !leading-none">

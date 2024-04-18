@@ -45,7 +45,8 @@ const ProductQuickView2: FC<ProductQuickView2Props> = ({
     toast.custom(
       (t) => (
         <NotifyAddTocart
-          productImage={LIST_IMAGES_DEMO[0]}
+          data={data}
+          productImage={data?.image}
           qualitySelected={qualitySelected}
           show={t.visible}
           sizeSelected={sizeSelected}

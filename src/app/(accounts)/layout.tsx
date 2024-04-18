@@ -27,15 +27,44 @@ const pages: {
     link: "/account-order",
   },
   {
-    name: "Change password",
-    link: "/account-password",
+    name: "Owned Art",
+    link: "/account-arts",
   },
-  {
-    name: "Change Billing",
-    link: "/account-billing",
-  },
+  // {
+  //   name: "Change Billing",
+  //   link: "/account-billing",
+  // },
 ];
 
+const Adminpages: {
+  name: string;
+  link: Route;
+}[] = [
+  {
+    name: "Dashboard",
+    link: "/account",
+  },
+  {
+    name: "Account info",
+    link: "/account",
+  },
+  {
+    name: "Products",
+    link: "/account-savelists",
+  },
+  {
+    name: " Manage Products",
+    link: "/account-order",
+  },
+  {
+    name: "Owned Art",
+    link: "/account-arts",
+  },
+  // {
+  //   name: "Change Billing",
+  //   link: "/account-billing",
+  // },
+];
 const CommonLayout: FC<CommonLayoutProps> = ({ children }) => {
   const pathname = usePathname();
 
@@ -55,7 +84,7 @@ const CommonLayout: FC<CommonLayoutProps> = ({ children }) => {
           <hr className="mt-10 border-slate-200 dark:border-slate-700"></hr>
 
           <div className="flex space-x-8 md:space-x-14 overflow-x-auto hiddenScrollbar">
-            {pages.map((item, index) => {
+            {Adminpages.map((item, index) => {
               return (
                 <Link
                   key={index}

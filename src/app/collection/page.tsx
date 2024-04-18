@@ -1,4 +1,5 @@
-import React, { FC } from "react";
+"use client";
+import React, { FC, useState } from "react";
 import Pagination from "@/shared/Pagination/Pagination";
 import ButtonPrimary from "@/shared/Button/ButtonPrimary";
 import SectionSliderCollections from "@/components/SectionSliderLargeProduct";
@@ -197,6 +198,18 @@ const PageCollection = ({}) => {
     },
   ];
 
+  const [priceRange, setPriceRange] = useState(null);
+  const [filteredProducts, setFilteredProducts] = useState(PRODUCTS);
+
+  // Callback function to update the price range
+  const handlePriceRangeUpdate = (newRange: any) => {
+    setPriceRange(newRange);
+    const updatedProducts = PRODUCTS.filter((product) => {
+      return product.price >= newRange[0] && product.price <= newRange[1];
+    });
+    setFilteredProducts(updatedProducts);
+  };
+
   return (
     <div className={`nc-PageCollection`}>
       <div className="container py-16 lg:pb-28 lg:pt-20 space-y-16 sm:space-y-20 lg:space-y-28">
@@ -215,11 +228,11 @@ const PageCollection = ({}) => {
           <hr className="border-slate-200 dark:border-slate-700" />
           <main>
             {/* TABS FILTER */}
-            <TabFilters />
+            <TabFilters onPriceRangeUpdate={handlePriceRangeUpdate} />
 
             {/* LOOP ITEMS */}
             <div className="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-x-8 gap-y-10 mt-8 lg:mt-10">
-              {PRODUCTS.map((item, index) => (
+              {filteredProducts.map((item, index) => (
                 <ProductCard data={item} key={index} />
               ))}
             </div>

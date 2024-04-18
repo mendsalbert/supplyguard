@@ -78,7 +78,7 @@ const DATA_sortOrderRadios = [
 
 const PRICE_RANGE = [1, 500];
 //
-const TabFilters = () => {
+const TabFilters = ({ onPriceRangeUpdate }: any) => {
   const [isOpenMoreFilter, setisOpenMoreFilter] = useState(false);
   //
   const [isOnSale, setIsIsOnSale] = useState(false);
@@ -87,6 +87,10 @@ const TabFilters = () => {
   const [colorsState, setColorsState] = useState<string[]>([]);
   const [sizesState, setSizesState] = useState<string[]>([]);
   const [sortOrderStates, setSortOrderStates] = useState<string>("");
+
+  const submitPriceRange = () => {
+    onPriceRangeUpdate(rangePrices);
+  };
 
   //
   const closeModalMoreFilter = () => setisOpenMoreFilter(false);
@@ -754,7 +758,11 @@ const TabFilters = () => {
                       Clear
                     </ButtonThird>
                     <ButtonPrimary
-                      onClick={close}
+                      // onClick={close}
+                      onClick={() => {
+                        submitPriceRange();
+                        close();
+                      }}
                       sizeClass="px-4 py-2 sm:px-5"
                     >
                       Apply

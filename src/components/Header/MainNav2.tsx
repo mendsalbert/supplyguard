@@ -10,6 +10,7 @@ import DropdownCategories from "./DropdownCategories";
 import CartDropdown from "./CartDropdown";
 import { XMarkIcon } from "@heroicons/react/24/outline";
 import { useRouter } from "next/navigation";
+import ButtonPrimary from "@/shared/Button/ButtonPrimary";
 
 export interface MainNav2Props {
   className?: string;
@@ -111,6 +112,9 @@ const MainNav2: FC<MainNav2Props> = ({ className = "" }) => {
             )}
             <AvatarDropdown />
             <CartDropdown />
+          </div>
+          <div className="flex-1 flex items-center justify-end ">
+            <ButtonPrimary>Log In</ButtonPrimary>
           </div>
         </div>
       </div>

@@ -9,6 +9,8 @@ import CartDropdown from "./CartDropdown";
 import { XMarkIcon } from "@heroicons/react/24/outline";
 import { useRouter } from "next/navigation";
 import LangDropdown from "./LangDropdown";
+import ButtonPrimary from "@/shared/Button/ButtonPrimary";
+import ButtonSecondary from "@/shared/Button/ButtonSecondary";
 
 export interface MainNav2LoggedProps {}
 
@@ -97,8 +99,14 @@ const MainNav2Logged: FC<MainNav2LoggedProps> = () => {
               {renderMagnifyingGlassIcon()}
             </button>
           )}
-          <AvatarDropdown />
-          <CartDropdown />
+          {/* <AvatarDropdown />
+          <CartDropdown /> */}
+          <div
+            onClick={() => {}}
+            className=" rounded-full py-2 px-7 border border-slate-300 dark:border-slate-700 "
+          >
+            connect{" "}
+          </div>
         </div>
       </div>
     );

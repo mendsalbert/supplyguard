@@ -84,7 +84,7 @@ const CommonLayout: FC<CommonLayoutProps> = ({ children }) => {
           <hr className="mt-10 border-slate-200 dark:border-slate-700"></hr>
 
           <div className="flex space-x-8 md:space-x-14 overflow-x-auto hiddenScrollbar">
-            {Adminpages.map((item, index) => {
+            {pages.map((item, index) => {
               return (
                 <Link
                   key={index}

@@ -2,8 +2,7 @@
 import React, { FC, useState } from "react";
 import Pagination from "@/shared/Pagination/Pagination";
 import ButtonPrimary from "@/shared/Button/ButtonPrimary";
-import SectionSliderCollections from "@/components/SectionSliderLargeProduct";
-import SectionPromo1 from "@/components/SectionPromo1";
+
 import ProductCard from "@/components/ProductCard";
 import { Product } from "@/data/data";
 import TabFilters from "@/components/TabFilters";
@@ -80,6 +79,7 @@ const PageCollection = ({}) => {
       rating: "4.4",
       numberOfReviews: 98,
       supplier: "Unilever",
+      isLiked: true,
     },
     {
       id: 2,
@@ -96,6 +96,7 @@ const PageCollection = ({}) => {
       rating: "4.9",
       numberOfReviews: 98,
       supplier: "Trailbl...",
+      isLiked: true,
     },
     {
       id: 3,
@@ -113,6 +114,7 @@ const PageCollection = ({}) => {
       rating: "4.9",
       numberOfReviews: 98,
       supplier: "SoundS...",
+      isLiked: false,
     },
     {
       id: 4,
@@ -129,6 +131,7 @@ const PageCollection = ({}) => {
       rating: "4.9",
       numberOfReviews: 98,
       supplier: "FleetFoot...",
+      isLiked: true,
     },
     {
       id: 5,
@@ -146,6 +149,7 @@ const PageCollection = ({}) => {
       rating: "4.9",
       numberOfReviews: 98,
       supplier: "FleetFoot...",
+      isLiked: true,
     },
     {
       id: 6,
@@ -161,6 +165,7 @@ const PageCollection = ({}) => {
       rating: "4.9",
       numberOfReviews: 98,
       supplier: "FleetFoot...",
+      isLiked: false,
     },
     {
       id: 7,
@@ -177,6 +182,7 @@ const PageCollection = ({}) => {
       rating: "4.9",
       numberOfReviews: 98,
       supplier: "FleetFoot...",
+      isLiked: false,
     },
     {
       id: 8,
@@ -195,6 +201,7 @@ const PageCollection = ({}) => {
       rating: "4.9",
       numberOfReviews: 98,
       supplier: "FleetFoot...",
+      isLiked: true,
     },
   ];
 

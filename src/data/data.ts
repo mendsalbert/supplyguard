@@ -42,6 +42,7 @@ export interface Product {
   rating?: string;
   numberOfReviews?: number;
   supplier?: string;
+  isLiked?: boolean;
 }
 
 const DEMO_VARIANTS: ProductVariant[] = [

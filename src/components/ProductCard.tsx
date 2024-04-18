@@ -32,7 +32,6 @@ export interface ProductCardProps {
 const ProductCard: FC<ProductCardProps> = ({
   className = "",
   data = PRODUCTS[0],
-  isLiked,
   art,
 }) => {
   const {
@@ -48,6 +47,7 @@ const ProductCard: FC<ProductCardProps> = ({
     id,
     numberOfReviews,
     supplier,
+    isLiked,
   } = data;
 
   const [variantActive, setVariantActive] = useState(0);

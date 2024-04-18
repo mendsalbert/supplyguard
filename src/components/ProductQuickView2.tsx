@@ -113,25 +113,30 @@ const ProductQuickView2: FC<ProductQuickView2Props> = ({
         </p>
         {/*  ---------- 4  QTY AND ADD TO CART BUTTON */}
         <div className="flex space-x-3.5">
-          <div className="flex items-center justify-center bg-slate-100/70 dark:bg-slate-800/70 px-2 py-3 sm:p-3.5 rounded-full">
-            <NcInputNumber
-              defaultValue={qualitySelected}
-              onChange={setQualitySelected}
-            />
-          </div>
+          {art ? (
+            ""
+          ) : (
+            <div className="flex items-center justify-center bg-slate-100/70 dark:bg-slate-800/70 px-2 py-3 sm:p-3.5 rounded-full">
+              <NcInputNumber
+                defaultValue={qualitySelected}
+                onChange={setQualitySelected}
+              />
+            </div>
+          )}
 
           {art ? (
             <ButtonPrimary
               className="flex-1 flex-shrink-0"
               onClick={notifyAddTocart}
             >
-              {/* <BagIcon className="hidden sm:inline-block w-5 h-5 mb-0.5" /> */}
+              <SparklesIcon className="hidden sm:inline-block w-5 h-5 mb-0.5" />
               <span className="ml-3">Own this Art</span>
             </ButtonPrimary>
           ) : (
             <ButtonPrimary
               className="flex-1 flex-shrink-0"
               onClick={notifyAddTocart}
+              // fire a function to store this inside the db
             >
               <BagIcon className="hidden sm:inline-block w-5 h-5 mb-0.5" />
               <span className="ml-3">Add to cart</span>

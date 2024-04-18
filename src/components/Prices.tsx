@@ -16,6 +16,8 @@ const Prices: FC<PricesProps> = ({
   art,
   qualitySelected,
 }) => {
+  console.log(qualitySelected);
+
   return (
     <div className={`${className}`}>
       <div
@@ -26,15 +28,10 @@ const Prices: FC<PricesProps> = ({
             {String(price)} ETH
           </span>
         ) : (
-          <div className="text-green-500 flex items-center flex-row space-x-1 w-full">
-            <span className="text-green-500 !leading-none">
-              ${Number(price) * qualitySelected || Number(price)}
-            </span>
-            <ArrowsRightLeftIcon className="h-4 w-4" />
-            <span className="text-green-500 !leading-none">
-              {String(price)}ETH
-            </span>
-          </div>
+          // <div className="text-green-500 flex items-center flex-row space-x-1 w-full">
+          <span className="text-green-500 !leading-none">
+            ${Number(price) * qualitySelected || Number(price)}
+          </span>
         )}
       </div>
     </div>

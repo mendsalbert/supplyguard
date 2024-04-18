@@ -30,11 +30,17 @@ import AccordionInfo from "@/components/AccordionInfo";
 const LIST_IMAGES_DEMO = [detail1JPG, detail2JPG, detail3JPG];
 
 const ProductDetailPage = ({ params }: { params: { id: number } }) => {
-  const { sizes, variants, status, allOfSizes, image, supplier } =
-    PRODUCTS[params?.id];
-
-  //same name as name of your file, can be [slug].js; [specialId].js - any name you want
-  console.log("slugs", PRODUCTS[params.id]);
+  const {
+    sizes,
+    variants,
+    status,
+    allOfSizes,
+    image,
+    supplier,
+    name,
+    price,
+    id,
+  } = PRODUCTS[params?.id - 1];
 
   const [variantActive, setVariantActive] = useState(0);
   const [sizeSelected, setSizeSelected] = useState(sizes ? sizes[0] : "");
@@ -58,61 +64,19 @@ const ProductDetailPage = ({ params }: { params: { id: number } }) => {
     );
   };
 
-  const renderStatus = () => {
-    if (!status) {
-      return null;
-    }
-    const CLASSES =
-      "absolute top-3 left-3 px-2.5 py-1.5 text-xs bg-white dark:bg-slate-900 nc-shadow-lg rounded-full flex items-center justify-center text-slate-700 text-slate-900 dark:text-slate-300";
-    if (status === "New in") {
-      return (
-        <div className={CLASSES}>
-          <SparklesIcon className="w-3.5 h-3.5" />
-          <span className="ml-1 leading-none">{status}</span>
-        </div>
-      );
-    }
-    if (status === "50% Discount") {
-      return (
-        <div className={CLASSES}>
-          <IconDiscount className="w-3.5 h-3.5" />
-          <span className="ml-1 leading-none">{status}</span>
-        </div>
-      );
-    }
-    if (status === "Sold Out") {
-      return (
-        <div className={CLASSES}>
-          <NoSymbolIcon className="w-3.5 h-3.5" />
-          <span className="ml-1 leading-none">{status}</span>
-        </div>
-      );
-    }
-    if (status === "limited edition") {
-      return (
-        <div className={CLASSES}>
-          <ClockIcon className="w-3.5 h-3.5" />
-          <span className="ml-1 leading-none">{status}</span>
-        </div>
-      );
-    }
-    return null;
-  };
-
   const renderSectionContent = () => {
     return (
       <div className="space-y-7 2xl:space-y-8">
         {/* ---------- 1 HEADING ----------  */}
         <div>
-          <h2 className="text-2xl sm:text-3xl font-semibold">
-            Heavy Weight Shoes
-          </h2>
+          <h2 className="text-2xl sm:text-3xl font-semibold">{name}</h2>
 
           <div className="flex items-center mt-5 space-x-4 sm:space-x-5">
             {/* <div className="flex text-xl font-semibold">$112.00</div> */}
             <Prices
               contentClass="py-1 px-2 md:py-1.5 md:px-3 text-lg font-semibold"
-              price={112}
+              qualitySelected={qualitySelected}
+              price={price}
             />
 
             <div className="h-7 border-l border-slate-300 dark:border-slate-700"></div>
@@ -126,16 +90,11 @@ const ProductDetailPage = ({ params }: { params: { id: number } }) => {
                 <div className="ml-1.5 flex">
                   <span>4.9</span>
                   <span className="block mx-2">·</span>
-                  <span className="text-slate-600 dark:text-slate-400 underline">
-                    142 reviews
+                  <span className="text-slate-600 dark:text-slate-400 ">
+                    {supplier}
                   </span>
                 </div>
               </a>
-              <span className="hidden sm:block mx-2.5">·</span>
-              <div className="hidden sm:flex items-center text-sm">
-                <SparklesIcon className="w-3.5 h-3.5" />
-                <span className="ml-1 leading-none">{status}</span>
-              </div>
             </div>
           </div>
         </div>
@@ -162,10 +121,6 @@ const ProductDetailPage = ({ params }: { params: { id: number } }) => {
             <span className="ml-3">Add to cart</span>
           </ButtonPrimary>
         </div>
-
-        {/*  */}
-        <hr className=" 2xl:!my-10 border-slate-200 dark:border-slate-700"></hr>
-        {/*  */}
 
         {/* ---------- 5 ----------  */}
         <AccordionInfo />
@@ -217,8 +172,7 @@ const ProductDetailPage = ({ params }: { params: { id: number } }) => {
                   alt="product detail 1"
                 />
               </div>
-              {renderStatus()}
-              {/* META FAVORITES */}
+
               <LikeButton className="absolute right-3 top-3 " />
             </div>
           </div>
@@ -237,13 +191,11 @@ const ProductDetailPage = ({ params }: { params: { id: number } }) => {
 
           {renderDetailSection()}
 
-          <hr className="border-slate-200 dark:border-slate-700" />
-
-          <hr className="border-slate-200 dark:border-slate-700" />
-
           {/* OTHER SECTION */}
           <SectionSliderProductCard
             heading={`Other Products from ${supplier}`}
+            supplier={supplier}
+            id={id}
             subHeading=""
             headingFontClassName="text-2xl font-semibold"
             headingClassName="mb-10 text-neutral-900 dark:text-neutral-50"

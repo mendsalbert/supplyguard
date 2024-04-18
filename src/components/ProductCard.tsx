@@ -102,19 +102,14 @@ const ProductCard: FC<ProductCardProps> = ({
               <div>
                 <h3 className="text-base font-medium ">{name}</h3>
                 <p className="mt-1 text-sm text-slate-500 dark:text-slate-400">
-                  <span>
-                    {variants ? variants[variantActive].name : `Natural`}
-                  </span>
+                  <span>{data?.supplier}</span>
                   <span className="mx-2 border-s border-slate-200 dark:border-slate-700 h-4"></span>
-                  <span>{size || "XL"}</span>
                 </p>
               </div>
               <Prices price={price} art={art} className="mt-0.5" />
             </div>
           </div>
           <div className="flex flex-1 items-end justify-between text-sm">
-            <p className="text-gray-500 dark:text-slate-400">Qty 1</p>
-
             <div className="flex">
               <button
                 type="button"

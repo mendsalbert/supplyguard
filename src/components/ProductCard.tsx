@@ -207,10 +207,13 @@ const ProductCard: FC<ProductCardProps> = ({
       <div
         className={`nc-ProductCard relative flex flex-col bg-transparent ${className}`}
       >
-        <Link href={"/product-detail"} className="absolute inset-0"></Link>
+        <Link
+          href={`/product-detail/${data?.id}`}
+          className="absolute inset-0"
+        ></Link>
 
         <div className="relative flex-shrink-0 bg-slate-50 dark:bg-slate-300 rounded-3xl overflow-hidden z-1 group">
-          <Link href={"/product-detail"} className="block">
+          <Link href={`/product-detail/${data?.id}`} className="block">
             <NcImage
               containerClassName="flex aspect-w-4 aspect-h-4 w-full h-0"
               src={image}

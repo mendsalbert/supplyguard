@@ -14,14 +14,14 @@ export const MEGAMENU_TEMPLATES: NavItemType[] = [
     name: "Shop Pages",
     children: [
       { id: ncNanoId(), href: "/collection", name: "Category Page" },
-      { id: ncNanoId(), href: "/collection-2", name: "Track my order" },
+      { id: ncNanoId(), href: "/arts", name: "Track my order" },
       { id: ncNanoId(), href: "/cart", name: "Cart Page" },
       { id: ncNanoId(), href: "/checkout", name: "Checkout Page" },
       { id: ncNanoId(), href: "/checkout", name: "======" },
       { id: ncNanoId(), href: "/collection", name: "Category Page 1" },
       { id: ncNanoId(), href: "/collection-2", name: "Category Page 2" },
-      { id: ncNanoId(), href: "/product-detail", name: "Product Page 1" },
-      { id: ncNanoId(), href: "/product-detail-2", name: "Product Page 2" },
+      { id: ncNanoId(), href: "/product-detail/2", name: "Product Page 1" },
+      { id: ncNanoId(), href: "/product-detail/2", name: "Product Page 2" },
       { id: ncNanoId(), href: "/cart", name: "Cart Page" },
       { id: ncNanoId(), href: "/checkout", name: "Checkout Page" },
     ],
@@ -99,13 +99,13 @@ const OTHER_PAGE_CHILD: NavItemType[] = [
   },
   {
     id: ncNanoId(),
-    href: "/product-detail",
+    href: "/product-detail/1",
     name: "Product Pages",
     type: "dropdown",
     children: [
       {
         id: ncNanoId(),
-        href: "/product-detail",
+        href: "/product-detail/1",
         name: "Product detail 1",
       },
       {
@@ -202,7 +202,7 @@ export const NAVIGATION_DEMO_2: NavItemType[] = [
   },
   {
     id: ncNanoId(),
-    href: "/collection",
+    href: "/arts",
     name: "Art & Collectibles",
   },
 

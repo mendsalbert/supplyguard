@@ -10,27 +10,7 @@ const DEMO_DATA = [
     content:
       "Fashion is a form of self-expression and autonomy at a particular period and place and in a specific context, of clothing, footwear, lifestyle, accessories, makeup, hairstyle, and body posture.",
   },
-  {
-    name: "Fabric + Care",
-    content: `<ul class="list-disc list-inside leading-7">
-    <li>Made from a sheer Belgian power micromesh.</li>
-    <li>
-    74% Polyamide (Nylon) 26% Elastane (Spandex)
-    </li>
-    <li>
-    Adjustable hook & eye closure and straps
-    </li>
-    <li>
-    Hand wash in cold water, dry flat
-    </li>
-  </ul>`,
-  },
 
-  {
-    name: "How it Fits",
-    content:
-      "Use this as a guide. Preference is a huge factor — if you're near the top of a size range and/or prefer more coverage, you may want to size up.",
-  },
   {
     name: "FAQ",
     content: `

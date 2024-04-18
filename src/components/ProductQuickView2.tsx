@@ -58,7 +58,7 @@ const ProductQuickView2: FC<ProductQuickView2Props> = ({
         {/* ---------- 1 HEADING ----------  */}
         <div>
           <h2 className="text-2xl 2xl:text-3xl font-semibold">
-            <Link href="/product-detail">Heavy Weight Shoes</Link>
+            <Link href={`/product-detail/${data?.id}`}>{data?.name}</Link>
           </h2>
 
           <div className="flex items-center mt-5 space-x-4 sm:space-x-5">
@@ -94,7 +94,11 @@ const ProductQuickView2: FC<ProductQuickView2Props> = ({
         </div>
 
         {/* ---------- 3 VARIANTS AND SIZE LIST ----------  */}
-
+        <p>
+          Lorem ipsum dolor sit amet consectetur adipisicing elit. Reiciendis
+          nisi impedit hic consequatur obcaecati sed enim quasi! Impedit quod
+          voluptates dolores consequuntur?
+        </p>
         {/*  ---------- 4  QTY AND ADD TO CART BUTTON */}
         <div className="flex space-x-3.5">
           <div className="flex items-center justify-center bg-slate-100/70 dark:bg-slate-800/70 px-2 py-3 sm:p-3.5 rounded-full">
@@ -119,7 +123,7 @@ const ProductQuickView2: FC<ProductQuickView2Props> = ({
         <div className="text-center">
           <Link
             className="text-primary-6000 hover:text-primary-500 font-medium"
-            href="/product-detail"
+            href={`/product-detail/${data?.id}`}
           >
             View full details
           </Link>

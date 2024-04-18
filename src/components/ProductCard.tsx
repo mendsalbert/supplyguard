@@ -211,12 +211,17 @@ const ProductCard: FC<ProductCardProps> = ({
         className={`nc-ProductCard relative flex flex-col bg-transparent ${className}`}
       >
         <Link
-          href={`/product-detail/${data?.id}`}
+          href={art ? `/art-detail/${data?.id}` : "/product-detail/${data?.id}"}
           className="absolute inset-0"
         ></Link>
 
         <div className="relative flex-shrink-0 bg-slate-50 dark:bg-slate-300 rounded-3xl overflow-hidden z-1 group">
-          <Link href={`/product-detail/${data?.id}`} className="block">
+          <Link
+            href={
+              art ? `/art-detail/${data?.id}` : "/product-detail/${data?.id}"
+            }
+            className="block"
+          >
             <NcImage
               containerClassName="flex aspect-w-4 aspect-h-4 w-full h-0"
               src={image}
@@ -267,6 +272,7 @@ const ProductCard: FC<ProductCardProps> = ({
         data={data}
         show={showModalQuickView}
         onCloseModalQuickView={() => setShowModalQuickView(false)}
+        art={art}
       />
     </>
   );

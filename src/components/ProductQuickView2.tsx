@@ -24,11 +24,13 @@ import Link from "next/link";
 export interface ProductQuickView2Props {
   className?: string;
   data: any;
+  art: boolean;
 }
 
 const ProductQuickView2: FC<ProductQuickView2Props> = ({
   className = "",
   data,
+  art,
 }) => {
   const { sizes, variants, status, allOfSizes } = PRODUCTS[0];
   const LIST_IMAGES_DEMO = [detail1JPG, detail2JPG, detail3JPG];
@@ -58,7 +60,13 @@ const ProductQuickView2: FC<ProductQuickView2Props> = ({
         {/* ---------- 1 HEADING ----------  */}
         <div>
           <h2 className="text-2xl 2xl:text-3xl font-semibold">
-            <Link href={`/product-detail/${data?.id}`}>{data?.name}</Link>
+            <Link
+              href={
+                art ? `/art-detail/${data?.id}` : `/product-detail/${data?.id}`
+              }
+            >
+              {data?.name}
+            </Link>
           </h2>
 
           <div className="flex items-center mt-5 space-x-4 sm:space-x-5">
@@ -123,7 +131,9 @@ const ProductQuickView2: FC<ProductQuickView2Props> = ({
         <div className="text-center">
           <Link
             className="text-primary-6000 hover:text-primary-500 font-medium"
-            href={`/product-detail/${data?.id}`}
+            href={
+              art ? `/art-detail/${data?.id}` : `/product-detail/${data?.id}`
+            }
           >
             View full details
           </Link>

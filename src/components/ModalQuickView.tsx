@@ -10,12 +10,14 @@ export interface ModalQuickViewProps {
   show: boolean;
   onCloseModalQuickView: () => void;
   data: any;
+  art: boolean;
 }
 
 const ModalQuickView: FC<ModalQuickViewProps> = ({
   show,
   onCloseModalQuickView,
   data,
+  art,
 }) => {
   const pathname = usePathname();
 
@@ -63,7 +65,7 @@ const ModalQuickView: FC<ModalQuickViewProps> = ({
 
                 <div className="flex-1 overflow-y-auto rounded-xl hiddenScrollbar">
                   {!pathname.includes("/home-2") ? (
-                    <ProductQuickView2 data={data} />
+                    <ProductQuickView2 data={data} art={art} />
                   ) : (
                     ""
                   )}

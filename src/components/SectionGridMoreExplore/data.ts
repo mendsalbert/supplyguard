@@ -25,7 +25,7 @@ export interface ExploreType {
   desc: string;
   image: string | StaticImageData;
   svgBg: string;
-  color?: string;
+  color?: any;
   count?: number;
 }
 

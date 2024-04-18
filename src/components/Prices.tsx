@@ -1,3 +1,4 @@
+import { ArrowsRightLeftIcon } from "@heroicons/react/24/solid";
 import React, { FC } from "react";
 
 export interface PricesProps {
@@ -5,6 +6,7 @@ export interface PricesProps {
   price?: number;
   contentClass?: string;
   art?: boolean;
+  qualitySelected?: any;
 }
 
 const Prices: FC<PricesProps> = ({
@@ -12,6 +14,7 @@ const Prices: FC<PricesProps> = ({
   price = 33,
   contentClass = "py-1 px-2 md:py-1.5 md:px-2.5 text-sm font-medium",
   art,
+  qualitySelected,
 }) => {
   return (
     <div className={`${className}`}>
@@ -23,7 +26,15 @@ const Prices: FC<PricesProps> = ({
             {String(price)} ETH
           </span>
         ) : (
-          <span className="text-green-500 !leading-none">${String(price)}</span>
+          <div className="text-green-500 flex flex-row space-x-1 w-full">
+            <span className="text-green-500 !leading-none">
+              ${Number(price)}
+            </span>
+            <ArrowsRightLeftIcon className="h-4 w-4" />
+            <span className="text-green-500 !leading-none">
+              {String(price)}ETH
+            </span>
+          </div>
         )}
       </div>
     </div>

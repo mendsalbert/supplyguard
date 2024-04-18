@@ -95,7 +95,7 @@ const PageCollection = ({}) => {
       status: "50% Discount",
       rating: "4.9",
       numberOfReviews: 98,
-      supplier: "Trailblazer Gear Co",
+      supplier: "Trailbl...",
     },
     {
       id: 3,
@@ -112,7 +112,7 @@ const PageCollection = ({}) => {
       allOfSizes: ["S", "M", "L", "XL", "2XL", "3XL"],
       rating: "4.9",
       numberOfReviews: 98,
-      supplier: "SoundSphere Electronics",
+      supplier: "SoundS...",
     },
     {
       id: 4,
@@ -128,7 +128,7 @@ const PageCollection = ({}) => {
       status: "Sold Out",
       rating: "4.9",
       numberOfReviews: 98,
-      supplier: "FleetFoot Sportswear",
+      supplier: "FleetFoot...",
     },
     {
       id: 5,
@@ -145,7 +145,7 @@ const PageCollection = ({}) => {
       link: "/product-detail/",
       rating: "4.9",
       numberOfReviews: 98,
-      supplier: "FleetFoot Sportswear",
+      supplier: "FleetFoot...",
     },
     {
       id: 6,
@@ -160,7 +160,7 @@ const PageCollection = ({}) => {
       link: "/product-detail/",
       rating: "4.9",
       numberOfReviews: 98,
-      supplier: "FleetFoot Sportswear",
+      supplier: "FleetFoot...",
     },
     {
       id: 7,
@@ -176,7 +176,7 @@ const PageCollection = ({}) => {
       status: "New in",
       rating: "4.9",
       numberOfReviews: 98,
-      supplier: "FleetFoot Sportswear",
+      supplier: "FleetFoot...",
     },
     {
       id: 8,
@@ -194,11 +194,12 @@ const PageCollection = ({}) => {
       status: "limited edition",
       rating: "4.9",
       numberOfReviews: 98,
-      supplier: "FleetFoot Sportswear",
+      supplier: "FleetFoot...",
     },
   ];
 
   const [priceRange, setPriceRange] = useState(null);
+  const [selectedCategory, setSelectedCategory] = useState(null);
   const [filteredProducts, setFilteredProducts] = useState(PRODUCTS);
 
   // Callback function to update the price range
@@ -210,6 +211,23 @@ const PageCollection = ({}) => {
     setFilteredProducts(updatedProducts);
   };
 
+  const handleCategoryUpdate = (selectedCategory: any) => {
+    setSelectedCategory(selectedCategory);
+    console.log("selectedCategory", selectedCategory);
+    if (
+      selectedCategory.includes("All Categories") ||
+      selectedCategory.length === 0
+    ) {
+      setFilteredProducts(PRODUCTS);
+    } else {
+      // Filter products based on the selected categories
+      const filteredProducts = PRODUCTS.filter((product) =>
+        selectedCategory.includes(product.category)
+      );
+      // Update the products state with the filtered products
+      setFilteredProducts(filteredProducts);
+    }
+  };
   return (
     <div className={`nc-PageCollection`}>
       <div className="container py-16 lg:pb-28 lg:pt-20 space-y-16 sm:space-y-20 lg:space-y-28">
@@ -228,7 +246,10 @@ const PageCollection = ({}) => {
           <hr className="border-slate-200 dark:border-slate-700" />
           <main>
             {/* TABS FILTER */}
-            <TabFilters onPriceRangeUpdate={handlePriceRangeUpdate} />
+            <TabFilters
+              onPriceRangeUpdate={handlePriceRangeUpdate}
+              onCategoryUpdate={handleCategoryUpdate}
+            />
 
             {/* LOOP ITEMS */}
             <div className="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-x-8 gap-y-10 mt-8 lg:mt-10">

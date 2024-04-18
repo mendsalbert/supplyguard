@@ -10,7 +10,7 @@ export interface ModalQuickViewProps {
   show: boolean;
   onCloseModalQuickView: () => void;
   data: any;
-  art: boolean;
+  art: any;
 }
 
 const ModalQuickView: FC<ModalQuickViewProps> = ({

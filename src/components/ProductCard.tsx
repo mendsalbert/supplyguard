@@ -215,14 +215,14 @@ const ProductCard: FC<ProductCardProps> = ({
         className={`nc-ProductCard relative flex flex-col bg-transparent ${className}`}
       >
         <Link
-          href={art ? `/art-detail/${data?.id}` : "/product-detail/${data?.id}"}
+          href={art ? `/art-detail/${data?.id}` : `/product-detail/${data?.id}`}
           className="absolute inset-0"
         ></Link>
 
         <div className="relative flex-shrink-0 bg-slate-50 dark:bg-slate-300 rounded-3xl overflow-hidden z-1 group">
           <Link
             href={
-              art ? `/art-detail/${data?.id}` : "/product-detail/${data?.id}"
+              art ? `/art-detail/${data?.id}` : `/product-detail/${data?.id}`
             }
             className="block"
           >
@@ -245,7 +245,9 @@ const ProductCard: FC<ProductCardProps> = ({
             <h2 className="nc-ProductCard__title text-base font-semibold transition-colors">
               {name}
             </h2>
-            <p className={`text-sm text-slate-500 dark:text-slate-400 mt-1 `}>
+            <p
+              className={`text-sm text-slate-500 dark:text-slate-400 mt-1 mb-2`}
+            >
               {description}
             </p>
           </div>

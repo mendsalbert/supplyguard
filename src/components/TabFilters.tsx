@@ -1163,7 +1163,7 @@ const TabFilters = ({ onPriceRangeUpdate, onCategoryUpdate }: any) => {
         {/* {renderTabsColor()} */}
         {/* {renderTabsSize()} */}
         {/* {renderTabIsOnsale()} */}
-        <div className="!ml-auto">{renderTabsSortOrder()}</div>
+        {/* <div className="!ml-auto">{renderTabsSortOrder()}</div> */}
       </div>
 
       {/* FOR RESPONSIVE MOBILE */}

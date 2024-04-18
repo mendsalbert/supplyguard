@@ -39,6 +39,8 @@ const ProductQuickView2: FC<ProductQuickView2Props> = ({
   const [sizeSelected, setSizeSelected] = useState(sizes ? sizes[0] : "");
   const [qualitySelected, setQualitySelected] = useState(1);
 
+  // console.log("qualitySelected", qualitySelected);
+
   const notifyAddTocart = () => {
     toast.custom(
       (t) => (
@@ -73,7 +75,8 @@ const ProductQuickView2: FC<ProductQuickView2Props> = ({
             {/* <div className="flex text-xl font-semibold">$112.00</div> */}
             <Prices
               contentClass="py-1 px-2 md:py-1.5 md:px-3 text-lg font-semibold"
-              price={112}
+              price={data?.price}
+              qualitySelected={qualitySelected}
             />
 
             <div className="h-6 border-l border-slate-300 dark:border-slate-700"></div>

@@ -100,7 +100,7 @@ const MainNav2: FC<MainNav2Props> = ({ className = "" }) => {
 
           <div className="flex-1 flex items-center justify-end ">
             {!showSearchForm && <TemplatesDropdown />}
-            {!showSearchForm && <LangDropdown />}
+            {/* {!showSearchForm && <LangDropdown />} */}
             {!showSearchForm && (
               <button
                 className="hidden lg:flex w-10 h-10 sm:w-12 sm:h-12 rounded-full text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 focus:outline-none items-center justify-center"

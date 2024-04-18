@@ -34,7 +34,7 @@ export interface Product {
   category: string;
   tags: string[];
   link: "/product-detail/";
-  variants?: ProductVariant[];
+  variants?: any;
   variantType?: "color" | "image";
   sizes?: string[];
   allOfSizes?: string[];

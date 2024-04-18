@@ -12,6 +12,7 @@ import PaymentMethod from "./PaymentMethod";
 import ShippingAddress from "./ShippingAddress";
 import Image from "next/image";
 import Link from "next/link";
+import { ClockIcon } from "@heroicons/react/24/outline";
 
 const CheckoutPage = () => {
   const [tabActive, setTabActive] = useState<
@@ -31,7 +32,7 @@ const CheckoutPage = () => {
     return (
       <div key={index} className="relative flex py-7 first:pt-0 last:pb-0">
         {/* <div className="relative h-36 w-24 sm:w-28 flex-shrink-0 overflow-hidden rounded-xl bg-slate-100"> */}
-        <div className="relative h-48 w-52  flex-shrink-0 overflow-hidden rounded-xl bg-slate-100">
+        <div className="relative h-24 w-24  flex-shrink-0 overflow-hidden rounded-xl bg-slate-100">
           <Image
             src={image}
             fill
@@ -39,7 +40,7 @@ const CheckoutPage = () => {
             className="h-full w-full object-contain object-center"
             sizes="150px"
           />
-          <Link href="/product-detail" className="absolute inset-0"></Link>
+          <Link href="/product-detail/2" className="absolute inset-0"></Link>
         </div>
 
         <div className="ml-3 sm:ml-6 flex flex-1 flex-col">
@@ -47,29 +48,13 @@ const CheckoutPage = () => {
             <div className="flex justify-between ">
               <div className="flex-[1.5] ">
                 <h3 className="text-base font-semibold">
-                  <Link href="/product-detail">{name}</Link>
+                  <Link href="/product-detail/2">{name}</Link>
                 </h3>
-                <p>hfdsfa</p>
-                <p>hfdsfa</p>
-                <div className="mt-3 flex justify-between w-full sm:hidden relative">
-                  <select
-                    name="qty"
-                    id="qty"
-                    className="form-select text-sm rounded-md py-1 border-slate-200 dark:border-slate-700 relative z-10 dark:bg-slate-800 "
-                  >
-                    <option value="1">1</option>
-                    <option value="2">2</option>
-                    <option value="3">3</option>
-                    <option value="4">4</option>
-                    <option value="5">5</option>
-                    <option value="6">6</option>
-                    <option value="7">7</option>
-                  </select>
-                  <Prices
-                    contentClass="py-1 px-2 md:py-1.5 md:px-2.5 text-sm font-medium h-full"
-                    price={price}
-                  />
-                </div>
+                <p className="text-sm">QTY: 42</p>
+                <p className="text-sm flex flex-row items-center space-x-2">
+                  <ClockIcon className="w-4 h-4 mr-1 " />
+                  21/03/23 3:54PM
+                </p>
               </div>
 
               <div className="hidden flex-1 sm:flex justify-end">
@@ -78,9 +63,15 @@ const CheckoutPage = () => {
             </div>
           </div>
 
-          <div className="flex mt-auto pt-4 items-end justify-between text-sm">
-            <div className="hidden sm:block text-center relative">
-              <NcInputNumber className="relative z-10" />
+          <div className="flex mt-auto pt-0 items-end justify-between text-sm">
+            <div className=" ">
+              <Image
+                src={image}
+                fill
+                alt={name}
+                className="h-16 w-16 hidden object-contain"
+                // sizes="150px"
+              />
             </div>
 
             <a

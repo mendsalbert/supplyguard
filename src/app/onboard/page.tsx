@@ -8,7 +8,7 @@ import Image from "next/image";
 import Link from "next/link";
 import SectionGridMoreExplore from "@/components/SectionGridMoreExplore/SectionGridMoreExplore";
 import OnBoardCardCategory from "@/components/CardCategories/OnBoardCardCategory";
-import explore1Svg from "@/images/collections/explore1.svg";
+import explore1Svg from "@/images/collections/explore8.svg";
 import explore1Png from "@/images/collections/explore1.png";
 import Heading from "@/components/Heading/Heading";
 

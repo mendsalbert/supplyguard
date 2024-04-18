@@ -34,7 +34,7 @@ const OnBoardCardCategory: FC<CardCategory4Props> = ({
         </div>
 
         <div className="absolute inset-5 sm:inset-8 flex flex-col justify-between">
-          <div className="flex justify-between items-center">
+          <div className="flex justify-center items-center">
             <NcImage
               alt=""
               src={featuredImage}
@@ -42,12 +42,9 @@ const OnBoardCardCategory: FC<CardCategory4Props> = ({
               width={80}
               height={80}
             />
-            <span className="text-xs text-slate-700 dark:text-neutral-300 font-medium">
-              {count} products
-            </span>
           </div>
 
-          <div className="">
+          <div className="text-center">
             <span
               className={`block mb-2 text-sm text-slate-500 dark:text-slate-400`}
             >

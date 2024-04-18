@@ -61,8 +61,8 @@ const PageCollection2 = ({}) => {
   const PRODUCTS: Product[] = [
     {
       id: 1,
-      name: "Satori Eco Yoga Mat",
-      description: "Eco-friendly Material",
+      name: "Vibrant Mountain Majesty",
+      description: "A vibrant portrayal of...",
       price: 45,
       image: productImgs[9],
       category: "Category 1",
@@ -75,12 +75,12 @@ const PageCollection2 = ({}) => {
       status: "New in",
       rating: "4.4",
       numberOfReviews: 98,
-      supplier: "Unilever",
+      supplier: "DALL·E 2",
     },
     {
       id: 2,
-      name: "Zenith Series Hiking Boots",
-      description: "Waterproof and Durable",
+      name: "Mystic Mountain Dawn",
+      description: "This serene landscape...",
       price: 120,
       image: productImgs[10],
       category: "Category 1",
@@ -91,12 +91,12 @@ const PageCollection2 = ({}) => {
       status: "50% Discount",
       rating: "4.9",
       numberOfReviews: 98,
-      supplier: "Trailblazer Gear Co",
+      supplier: "DALL·E 2",
     },
     {
       id: 3,
-      name: "Electra Wireless Headphones",
-      description: "Noise Cancelling, Bluetooth 5.0",
+      name: "Storm's Wrath",
+      description: "A powerful depiction...",
       price: 85,
       image: productImgs[11],
       category: "Category 1",
@@ -108,12 +108,12 @@ const PageCollection2 = ({}) => {
       allOfSizes: ["S", "M", "L", "XL", "2XL", "3XL"],
       rating: "4.9",
       numberOfReviews: 98,
-      supplier: "SoundSphere Electronics",
+      supplier: "DALL·E 2",
     },
     {
       id: 4,
-      name: " Performance Running Shoes",
-      description: "Lightweight and Breathable",
+      name: " Twilight Fantasia",
+      description: "Set at twilight...",
       price: 100,
       image: productImgs[12],
       category: "Category 1",
@@ -124,12 +124,12 @@ const PageCollection2 = ({}) => {
       status: "Sold Out",
       rating: "4.9",
       numberOfReviews: 98,
-      supplier: "FleetFoot Sportswear",
+      supplier: "DALL·E 2",
     },
     {
       id: 5,
-      name: "Leather Gloves",
-      description: "Perfect mint green",
+      name: "Neon Peaks",
+      description: "For the futuristic...",
       price: 42,
       image: productImgs[13],
       category: "Category 1",
@@ -141,7 +141,7 @@ const PageCollection2 = ({}) => {
       link: "/product-detail/",
       rating: "4.9",
       numberOfReviews: 98,
-      supplier: "FleetFoot Sportswear",
+      supplier: "DALL·E 2",
     },
     {
       id: 6,
@@ -219,22 +219,13 @@ const PageCollection2 = ({}) => {
               <div className="flex-1 ">
                 <div className="flex-1 grid sm:grid-cols-2 xl:grid-cols-3 gap-x-8 gap-y-10 ">
                   {PRODUCTS.map((item, index) => (
-                    <ProductCard data={item} key={index} />
+                    <ProductCard data={item} key={index} art={true} />
                   ))}
                 </div>
               </div>
             </div>
           </main>
         </div>
-
-        {/* === SECTION 5 === */}
-        <hr className="border-slate-200 dark:border-slate-700" />
-
-        <SectionSliderCollections />
-        <hr className="border-slate-200 dark:border-slate-700" />
-
-        {/* SUBCRIBES */}
-        <SectionPromo1 />
       </div>
     </div>
   );

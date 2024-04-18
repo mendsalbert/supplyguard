@@ -4,19 +4,27 @@ export interface PricesProps {
   className?: string;
   price?: number;
   contentClass?: string;
+  art?: boolean;
 }
 
 const Prices: FC<PricesProps> = ({
   className = "",
   price = 33,
   contentClass = "py-1 px-2 md:py-1.5 md:px-2.5 text-sm font-medium",
+  art,
 }) => {
   return (
     <div className={`${className}`}>
       <div
         className={`flex items-center border-2 border-green-500 rounded-lg ${contentClass}`}
       >
-        <span className="text-green-500 !leading-none">${String(price)}</span>
+        {art ? (
+          <span className="text-green-500 !leading-none">
+            {String(price)} ETH
+          </span>
+        ) : (
+          <span className="text-green-500 !leading-none">${String(price)}</span>
+        )}
       </div>
     </div>
   );

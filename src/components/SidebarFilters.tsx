@@ -9,30 +9,18 @@ import MySwitch from "@/components/MySwitch";
 // DEMO DATA
 const DATA_categories = [
   {
-    name: "Backpacks",
+    name: "DALL·E 2",
   },
   {
-    name: "Travel Bags",
-  },
-  {
-    name: "Laptop Sleeves",
-  },
-  {
-    name: "Organization",
-  },
-  {
-    name: "Accessories",
+    name: "midjourney",
   },
 ];
 
 const DATA_colors = [
-  { name: "White" },
-  { name: "Beige" },
-  { name: "Blue" },
-  { name: "Black" },
-  { name: "Brown" },
-  { name: "Green" },
-  { name: "Navy" },
+  { name: "Nature" },
+  { name: "Abstract" },
+  { name: "Animals" },
+  { name: "Monks" },
 ];
 
 const DATA_sizes = [
@@ -109,7 +97,7 @@ const SidebarFilters = () => {
   const renderTabsColor = () => {
     return (
       <div className="relative flex flex-col py-8 space-y-4">
-        <h3 className="font-semibold mb-2.5">Colors</h3>
+        <h3 className="font-semibold mb-2.5">Types</h3>
         {DATA_colors.map((item) => (
           <div key={item.name} className="">
             <Checkbox
@@ -239,7 +227,7 @@ const SidebarFilters = () => {
     <div className="divide-y divide-slate-200 dark:divide-slate-700">
       {renderTabsCategories()}
       {renderTabsColor()}
-      {renderTabsSize()}
+
       {renderTabsPriceRage()}
       <div className="py-8 pr-2">
         <MySwitch

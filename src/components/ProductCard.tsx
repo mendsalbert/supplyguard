@@ -6,6 +6,7 @@ import Prices from "./Prices";
 import {
   ArrowsPointingOutIcon,
   BuildingStorefrontIcon,
+  SparklesIcon,
 } from "@heroicons/react/24/outline";
 import { Product, PRODUCTS } from "@/data/data";
 import { StarIcon } from "@heroicons/react/24/solid";
@@ -25,12 +26,14 @@ export interface ProductCardProps {
   className?: string;
   data?: Product;
   isLiked?: boolean;
+  art?: boolean;
 }
 
 const ProductCard: FC<ProductCardProps> = ({
   className = "",
   data = PRODUCTS[0],
   isLiked,
+  art,
 }) => {
   const {
     name,
@@ -106,7 +109,7 @@ const ProductCard: FC<ProductCardProps> = ({
                   <span>{size || "XL"}</span>
                 </p>
               </div>
-              <Prices price={price} className="mt-0.5" />
+              <Prices price={price} art={art} className="mt-0.5" />
             </div>
           </div>
           <div className="flex flex-1 items-end justify-between text-sm">
@@ -239,13 +242,22 @@ const ProductCard: FC<ProductCardProps> = ({
           </div>
 
           <div className="flex justify-between items-end ">
-            <Prices price={price} />
-            <div className="flex items-center mb-0.5">
-              <BuildingStorefrontIcon className="w-5 h-5 pb-[1px] text-slate-500" />
-              <span className="text-sm ms-1 text-slate-500 dark:text-slate-400">
-                {supplier}
-              </span>
-            </div>
+            <Prices price={price} art={art} />
+            {art ? (
+              <div className="flex items-center mb-0.5">
+                <SparklesIcon className="w-5 h-5 pb-[1px] text-slate-500" />
+                <span className="text-sm ms-1 text-slate-500 dark:text-slate-400">
+                  {supplier}
+                </span>
+              </div>
+            ) : (
+              <div className="flex items-center mb-0.5">
+                <BuildingStorefrontIcon className="w-5 h-5 pb-[1px] text-slate-500" />
+                <span className="text-sm ms-1 text-slate-500 dark:text-slate-400">
+                  {supplier}
+                </span>
+              </div>
+            )}
           </div>
         </div>
       </div>

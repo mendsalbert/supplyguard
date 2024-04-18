@@ -10,6 +10,7 @@ import SectionGridMoreExplore from "@/components/SectionGridMoreExplore/SectionG
 import OnBoardCardCategory from "@/components/CardCategories/OnBoardCardCategory";
 import explore1Svg from "@/images/collections/explore1.svg";
 import explore1Png from "@/images/collections/explore1.png";
+import Heading from "@/components/Heading/Heading";
 
 const loginSocials = [
   {
@@ -31,10 +32,16 @@ const loginSocials = [
 
 const PageLogin = () => {
   return (
-    <div className="flex flex-row">
-      <div
-        className={`grid gap-4 md:gap-7 grid-cols-1 md:grid-cols-2 xl:grid-cols-3 bg-[#f7f7f9] p-14 w-full `}
+    <div className=" bg-[#f7f7f9] h-screen">
+      <Heading
+        className="mb-12 lg:mb-4 lg:pt-4 text-neutral-900 dark:text-neutral-50"
+        fontClass="text-3xl md:text-3xl 2xl:text-5xl font-semibold"
+        isCenter
+        desc=""
       >
+        Let's get you started
+      </Heading>{" "}
+      <div className="grid gap-4 md:gap-7 grid-cols-1 md:grid-cols-2 xl:grid-cols-2 py-4 max-w-4xl mx-auto">
         <OnBoardCardCategory
           name="FSFD"
           desc="FDS"
@@ -51,6 +58,7 @@ const PageLogin = () => {
           key={1}
           color={"bg-indigo-50"}
         />
+        {/* <ButtonPrimary>Button</ButtonPrimary> */}
       </div>
     </div>
   );

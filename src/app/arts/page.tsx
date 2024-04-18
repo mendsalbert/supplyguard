@@ -76,6 +76,7 @@ const PageCollection2 = ({}) => {
       rating: "4.4",
       numberOfReviews: 98,
       supplier: "DALL·E 2",
+      isLiked: false,
     },
     {
       id: 2,
@@ -92,6 +93,7 @@ const PageCollection2 = ({}) => {
       rating: "4.9",
       numberOfReviews: 98,
       supplier: "DALL·E 2",
+      isLiked: false,
     },
     {
       id: 3,
@@ -109,6 +111,7 @@ const PageCollection2 = ({}) => {
       rating: "4.9",
       numberOfReviews: 98,
       supplier: "DALL·E 2",
+      isLiked: true,
     },
     {
       id: 4,
@@ -125,6 +128,7 @@ const PageCollection2 = ({}) => {
       rating: "4.9",
       numberOfReviews: 98,
       supplier: "DALL·E 2",
+      isLiked: true,
     },
     {
       id: 5,
@@ -142,6 +146,7 @@ const PageCollection2 = ({}) => {
       rating: "4.9",
       numberOfReviews: 98,
       supplier: "DALL·E 2",
+      isLiked: false,
     },
   ];
   return (

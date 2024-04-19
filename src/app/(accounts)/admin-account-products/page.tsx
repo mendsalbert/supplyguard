@@ -1,4 +1,5 @@
 "use client";
+import ModalAddProduct from "@/components/ModalAddProduct";
 import ModalEdit from "@/components/ModalEdit";
 import Prices from "@/components/Prices";
 import { PRODUCTS } from "@/data/data";
@@ -128,7 +129,7 @@ const AccountOrder = () => {
   return (
     <div className="space-y-10 sm:space-y-12">
       {/* HEADING */}
-      <ModalEdit
+      <ModalAddProduct
         show={true}
         onCloseModalEdit={() => {
           closeModalEdit;

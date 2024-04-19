@@ -13,7 +13,7 @@ const AccountPage = () => {
       <div className="space-y-10 sm:space-y-12">
         {/* HEADING */}
         <h2 className="text-2xl sm:text-3xl font-semibold">
-          Account infomation
+          Business infomation
         </h2>
         <div className="flex flex-col md:flex-row">
           <div className="flex-shrink-0 flex items-start">
@@ -53,8 +53,8 @@ const AccountPage = () => {
           </div>
           <div className="flex-grow mt-10 md:mt-0 md:pl-16 max-w-3xl space-y-6">
             <div>
-              <Label>Full name</Label>
-              <Input className="mt-1.5" defaultValue="John Doe" />
+              <Label>Company Name</Label>
+              <Input className="mt-1.5" defaultValue="SupplyGuard" />
             </div>
 
             {/* ---- */}
@@ -73,21 +73,6 @@ const AccountPage = () => {
               </div>
             </div>
 
-            {/* ---- */}
-            <div className="max-w-lg">
-              <Label>Date of birth</Label>
-              <div className="mt-1.5 flex">
-                <span className="inline-flex items-center px-2.5 rounded-l-2xl border border-r-0 border-neutral-200 dark:border-neutral-700 bg-neutral-50 dark:bg-neutral-800 text-neutral-500 dark:text-neutral-400 text-sm">
-                  <i className="text-2xl las la-calendar"></i>
-                </span>
-                <Input
-                  className="!rounded-l-none"
-                  type="date"
-                  defaultValue="1990-07-22"
-                />
-              </div>
-            </div>
-            {/* ---- */}
             <div>
               <Label>Addess</Label>
               <div className="mt-1.5 flex">
@@ -103,17 +88,17 @@ const AccountPage = () => {
 
             {/* ---- */}
             <div>
-              <Label>Gender</Label>
+              <Label>Category</Label>
               <Select className="mt-1.5">
-                <option value="Male">Male</option>
-                <option value="Female">Female</option>
-                <option value="Other">Other</option>
+                <option value="Male">Category 1</option>
+                <option value="Female">Category 2</option>
+                <option value="Other">Category 3</option>
               </Select>
             </div>
 
             {/* ---- */}
             <div>
-              <Label>Phone number</Label>
+              <Label>Contact number</Label>
               <div className="mt-1.5 flex">
                 <span className="inline-flex items-center px-2.5 rounded-l-2xl border border-r-0 border-neutral-200 dark:border-neutral-700 bg-neutral-50 dark:bg-neutral-800 text-neutral-500 dark:text-neutral-400 text-sm">
                   <i className="text-2xl las la-phone-volume"></i>
@@ -123,7 +108,7 @@ const AccountPage = () => {
             </div>
             {/* ---- */}
             <div>
-              <Label>About you</Label>
+              <Label>About Company</Label>
               <Textarea className="mt-1.5" defaultValue="..." />
             </div>
             <div className="pt-2">

@@ -1,9 +1,37 @@
 import Prices from "@/components/Prices";
 import { PRODUCTS } from "@/data/data";
 import ButtonSecondary from "@/shared/Button/ButtonSecondary";
+import { XMarkIcon } from "@heroicons/react/24/outline";
 import Image from "next/image";
 
 const AccountOrder = () => {
+  const renderMagnifyingGlassIcon = () => {
+    return (
+      <svg
+        width={22}
+        height={22}
+        viewBox="0 0 24 24"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <path
+          d="M11.5 21C16.7467 21 21 16.7467 21 11.5C21 6.25329 16.7467 2 11.5 2C6.25329 2 2 6.25329 2 11.5C2 16.7467 6.25329 21 11.5 21Z"
+          stroke="currentColor"
+          strokeWidth="1.5"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        />
+        <path
+          d="M22 22L20 20"
+          stroke="currentColor"
+          strokeWidth="1.5"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        />
+      </svg>
+    );
+  };
+
   const renderProductItem = (product: any, index: number) => {
     const { image, name } = product;
     return (
@@ -58,20 +86,21 @@ const AccountOrder = () => {
       <div className="border border-slate-200 dark:border-slate-700 rounded-lg overflow-hidden z-0">
         <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center p-4 sm:p-8 bg-slate-50 dark:bg-slate-500/5">
           <div>
-            <p className="text-lg font-semibold">#WU3746HGG12</p>
+            <p className="text-lg font-semibold">32 Products</p>
             <p className="text-slate-500 dark:text-slate-400 text-sm mt-1.5 sm:mt-2">
-              <span>Aug 8, 2023</span>
-              <span className="mx-2">·</span>
-              <span className="text-primary-500">Delivered</span>
+              <div className="bg-white shadow-sm dark:bg-slate-800 flex items-center space-x-1.5 px-5 h-full rounded-full">
+                {renderMagnifyingGlassIcon()}
+                <input
+                  type="text"
+                  placeholder="Type and press enter"
+                  className="border-none bg-transparent focus:outline-none focus:ring-0 w-full text-base"
+                  autoFocus
+                />
+                <button type="button">
+                  <XMarkIcon className="w-5 h-5" />
+                </button>
+              </div>
             </p>
-          </div>
-          <div className="mt-3 sm:mt-0">
-            <ButtonSecondary
-              sizeClass="py-2.5 px-4 sm:px-6"
-              fontSize="text-sm font-medium"
-            >
-              View Order
-            </ButtonSecondary>
           </div>
         </div>
         <div className="border-t border-slate-200 dark:border-slate-700 p-2 sm:p-8 divide-y divide-y-slate-200 dark:divide-slate-700">
@@ -84,8 +113,7 @@ const AccountOrder = () => {
   return (
     <div className="space-y-10 sm:space-y-12">
       {/* HEADING */}
-      <h2 className="text-2xl sm:text-3xl font-semibold">Order History</h2>
-      {renderOrder()}
+      <h2 className="text-2xl sm:text-3xl font-semibold">All Products</h2>
       {renderOrder()}
     </div>
   );

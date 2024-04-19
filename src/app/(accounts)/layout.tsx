@@ -41,7 +41,7 @@ const Adminpages: {
     link: "/admin-account-dashboard",
   },
   {
-    name: "Account info",
+    name: "Business info",
     link: "/admin-account",
   },
   {

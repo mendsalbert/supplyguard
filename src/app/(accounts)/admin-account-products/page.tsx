@@ -1,10 +1,16 @@
+"use client";
+import ModalEdit from "@/components/ModalEdit";
 import Prices from "@/components/Prices";
 import { PRODUCTS } from "@/data/data";
+import ButtonPrimary from "@/shared/Button/ButtonPrimary";
 import ButtonSecondary from "@/shared/Button/ButtonSecondary";
-import { XMarkIcon } from "@heroicons/react/24/outline";
+import ButtonThird from "@/shared/Button/ButtonThird";
+import { PencilIcon, TrashIcon, XMarkIcon } from "@heroicons/react/24/outline";
 import Image from "next/image";
 
 const AccountOrder = () => {
+  const closeModalEdit = () => false;
+
   const renderMagnifyingGlassIcon = () => {
     return (
       <svg
@@ -52,12 +58,12 @@ const AccountOrder = () => {
               <div>
                 <h3 className="text-base font-medium line-clamp-1">{name}</h3>
                 <p className="mt-1 text-sm text-slate-500 dark:text-slate-400">
-                  <span>{"Natural"}</span>
-                  <span className="mx-2 border-l border-slate-200 dark:border-slate-700 h-4"></span>
-                  <span>{"XL"}</span>
+                  <span>{"Category Name"}</span>
+                </p>
+                <p className="mt-1 text-sm text-green-500 dark:text-green-400">
+                  <span>{"In stock"}</span>
                 </p>
               </div>
-              <Prices className="mt-0.5 ml-2" />
             </div>
           </div>
           <div className="flex flex-1 items-end justify-between text-sm">
@@ -67,13 +73,13 @@ const AccountOrder = () => {
               <span className="ml-2">1</span>
             </p>
 
-            <div className="flex">
-              <button
-                type="button"
-                className="font-medium text-indigo-600 dark:text-primary-500 "
-              >
-                Leave review
-              </button>
+            <div className="flex items-center space-x-2">
+              <span className="border text-green-500 cursor-pointer border-green-500 rounded-md p-1">
+                <PencilIcon className="w-4 h-4 " />
+              </span>
+              <span className="border text-red-500 cursor-pointer border-red-500 rounded-md p-1">
+                <TrashIcon className="w-4 h-4 " />
+              </span>
             </div>
           </div>
         </div>
@@ -84,11 +90,11 @@ const AccountOrder = () => {
   const renderOrder = () => {
     return (
       <div className="border border-slate-200 dark:border-slate-700 rounded-lg overflow-hidden z-0">
-        <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center p-4 sm:p-8 bg-slate-50 dark:bg-slate-500/5">
+        <div className=" w-full  sm:flex-row sm:justify-between sm:items-center p-4 sm:p-8 bg-slate-50 dark:bg-slate-500/5">
           <div>
-            <p className="text-lg font-semibold">32 Products</p>
-            <p className="text-slate-500 dark:text-slate-400 text-sm mt-1.5 sm:mt-2">
-              <div className="bg-white shadow-sm dark:bg-slate-800 flex items-center space-x-1.5 px-5 h-full rounded-full">
+            {/* <p className="text-lg font-semibold">32 Products</p> */}
+            <p className="text-slate-500 dark:text-slate-400 text-sm mt-1.5 sm:mt-2 w-full">
+              <div className="bg-white shadow-sm dark:bg-slate-800 flex items-center space-x-1.5 px-5 h-full rounded-full w-full">
                 {renderMagnifyingGlassIcon()}
                 <input
                   type="text"
@@ -104,7 +110,16 @@ const AccountOrder = () => {
           </div>
         </div>
         <div className="border-t border-slate-200 dark:border-slate-700 p-2 sm:p-8 divide-y divide-y-slate-200 dark:divide-slate-700">
-          {[PRODUCTS[0], PRODUCTS[1], PRODUCTS[2]].map(renderProductItem)}
+          {[
+            PRODUCTS[0],
+            PRODUCTS[1],
+            PRODUCTS[2],
+            PRODUCTS[3],
+            PRODUCTS[4],
+          ].map(renderProductItem)}
+          <div className="text-center pt-6">
+            <ButtonPrimary>Show me more</ButtonPrimary>
+          </div>
         </div>
       </div>
     );
@@ -113,7 +128,19 @@ const AccountOrder = () => {
   return (
     <div className="space-y-10 sm:space-y-12">
       {/* HEADING */}
-      <h2 className="text-2xl sm:text-3xl font-semibold">All Products</h2>
+      <ModalEdit
+        show={true}
+        onCloseModalEdit={() => {
+          closeModalEdit;
+        }}
+      />
+
+      <div className="flex flex-row items-center justify-between">
+        <h2 className="text-2xl sm:text-3xl font-semibold">All Products(34)</h2>
+        <ButtonThird className="bg-[#0ba5e9] text-white">
+          Add Product
+        </ButtonThird>
+      </div>
       {renderOrder()}
     </div>
   );

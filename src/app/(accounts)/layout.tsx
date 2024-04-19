@@ -30,10 +30,6 @@ const pages: {
     name: "Owned Art",
     link: "/account-arts",
   },
-  // {
-  //   name: "Change Billing",
-  //   link: "/account-billing",
-  // },
 ];
 
 const Adminpages: {
@@ -42,28 +38,28 @@ const Adminpages: {
 }[] = [
   {
     name: "Dashboard",
-    link: "/account",
+    link: "/admin-account-dashboard",
   },
   {
     name: "Account info",
-    link: "/account",
+    link: "/admin-account",
   },
   {
     name: "Products",
-    link: "/account-savelists",
+    link: "/admin-account-products",
   },
   {
     name: " Manage Products",
-    link: "/account-order",
+    link: "/admin-account-manage-products",
+  },
+  {
+    name: " Manage Roles",
+    link: "/admin-account-manage-roles",
   },
   {
     name: "Owned Art",
-    link: "/account-arts",
+    link: "/admin-account-arts",
   },
-  // {
-  //   name: "Change Billing",
-  //   link: "/account-billing",
-  // },
 ];
 const CommonLayout: FC<CommonLayoutProps> = ({ children }) => {
   const pathname = usePathname();
@@ -84,7 +80,7 @@ const CommonLayout: FC<CommonLayoutProps> = ({ children }) => {
           <hr className="mt-10 border-slate-200 dark:border-slate-700"></hr>
 
           <div className="flex space-x-8 md:space-x-14 overflow-x-auto hiddenScrollbar">
-            {pages.map((item, index) => {
+            {Adminpages.map((item, index) => {
               return (
                 <Link
                   key={index}

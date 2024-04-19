@@ -35,14 +35,14 @@ const PageLogin = () => {
   return (
     <div className=" bg-[#f7f7f9] ">
       <Heading
-        className="mb-18 lg:mb-4 lg:pt-10 text-neutral-900 dark:text-neutral-50"
+        className="mb-18 pb-10  lg:mb-4 lg:pt-14 text-neutral-900 dark:text-neutral-50"
         fontClass="text-3xl md:text-3xl 2xl:text-5xl font-semibold"
         isCenter
         desc=""
       >
         Let's get you started
       </Heading>{" "}
-      <div className="grid gap-4 md:gap-7 x-10  grid-cols-1 md:grid-cols-2 xl:grid-cols-2 py-4 max-w-4xl mx-auto pb-20 ">
+      <div className="grid px-10 gap-4 md:gap-7 x-10  grid-cols-1 md:grid-cols-2 xl:grid-cols-2 py-4 max-w-4xl mx-auto pb-20 ">
         <OnBoardCardCategory
           name="Client"
           desc="onboard as a"

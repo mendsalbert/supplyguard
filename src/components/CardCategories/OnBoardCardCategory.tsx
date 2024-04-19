@@ -1,9 +1,15 @@
 import React, { FC } from "react";
 import NcImage from "@/shared/NcImage/NcImage";
 import explore1Svg from "@/images/collections/explore1.svg";
-import { ArrowRightIcon } from "@heroicons/react/24/outline";
+import {
+  ArrowRightIcon,
+  BuildingOffice2Icon,
+  UserCircleIcon,
+} from "@heroicons/react/24/outline";
 import Image, { StaticImageData } from "next/image";
 import Link from "next/link";
+import ButtonPrimary from "@/shared/Button/ButtonPrimary";
+import ButtonSecondary from "@/shared/Button/ButtonSecondary";
 
 export interface CardCategory4Props {
   className?: string;
@@ -13,6 +19,8 @@ export interface CardCategory4Props {
   desc: string;
   color?: string;
   count?: number;
+  client?: boolean;
+  supplier?: boolean;
 }
 
 const OnBoardCardCategory: FC<CardCategory4Props> = ({
@@ -23,25 +31,37 @@ const OnBoardCardCategory: FC<CardCategory4Props> = ({
   desc,
   color = "bg-rose-50",
   count,
+  client,
+  supplier,
 }) => {
   return (
     <div
-      className={`nc-CardCategory4 relative w-full aspect-w-12 aspect-h-11 h-0 rounded-3xl overflow-hidden bg-white dark:bg-neutral-900 group hover:nc-shadow-lg transition-shadow ${className}`}
+      className={` relative w-full aspect-w-2 aspect-h-2 h-0 rounded-3xl overflow-hidden bg-white dark:bg-neutral-900 group hover:nc-shadow-lg transition-shadow ${className}`}
     >
       <div>
         <div className="absolute bottom-0 right-0 max-w-[280px] opacity-80">
           <Image src={bgSVG} alt="" />
         </div>
 
-        <div className="absolute inset-5 sm:inset-8 flex flex-col justify-between">
+        <div className="absolute inset-5 sm:inset-8 flex flex-col justify-around">
           <div className="flex justify-center items-center">
-            <NcImage
+            {client ? (
+              <UserCircleIcon
+                className={`w-16 h-16 rounded-full overflow-hidden z-0 `}
+              />
+            ) : (
+              <BuildingOffice2Icon
+                className={`w-16 h-16 rounded-full overflow-hidden z-0 `}
+              />
+            )}
+
+            {/* <NcImage
               alt=""
               src={featuredImage}
-              containerClassName={`w-20 h-20 rounded-full overflow-hidden z-0 ${color}`}
+              containerClassName={`w-24 h-24 rounded-full overflow-hidden z-0 ${color}`}
               width={80}
               height={80}
-            />
+            /> */}
           </div>
 
           <div className="text-center">
@@ -53,17 +73,18 @@ const OnBoardCardCategory: FC<CardCategory4Props> = ({
             <h2 className={`text-2xl sm:text-3xl font-semibold`}>{name}</h2>
           </div>
 
-          <Link
+          <ButtonSecondary>Connect</ButtonSecondary>
+          {/* <Link
             href={"/collection"}
             className="flex items-center text-sm font-medium group-hover:text-primary-500 transition-colors"
           >
             <span>See Collection</span>
             <ArrowRightIcon className="w-4 h-4 ml-2.5" />
-          </Link>
+          </Link> */}
         </div>
       </div>
 
-      <Link href={"/collection"}></Link>
+      {/* <Link href={"/collection"}></Link> */}
     </div>
   );
 };

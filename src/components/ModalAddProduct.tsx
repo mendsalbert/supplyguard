@@ -43,36 +43,24 @@ const ModalAddProduct: FC<ModalEditProps> = ({ show, onCloseModalEdit }) => {
           <div className="flex-grow mt-10 md:mt-0  max-w-3xl space-y-6">
             <div>
               <Label>Product Name</Label>
-              <Input className="mt-1.5" placeholder="Satori Eco Yoga Mat" />
+              <Input className="mt-1.5" placeholder="" />
             </div>
 
             <div>
-              <Label>Email</Label>
-              <div className="mt-1.5 flex">
-                <span className="inline-flex items-center px-2.5 rounded-l-2xl border border-r-0 border-neutral-200 dark:border-neutral-700 bg-neutral-50 dark:bg-neutral-800 text-neutral-500 dark:text-neutral-400 text-sm">
-                  <i className="text-2xl las la-envelope"></i>
-                </span>
-                <Input
-                  className="!rounded-l-none"
-                  placeholder="example@email.com"
-                />
-              </div>
+              <Label>Price</Label>
+              <Input className="mt-1.5" placeholder="$7.99" type="number" />
             </div>
 
             <div>
-              <Label>Addess</Label>
+              <Label>Image</Label>
               <div className="mt-1.5 flex">
                 <span className="inline-flex items-center px-2.5 rounded-l-2xl border border-r-0 border-neutral-200 dark:border-neutral-700 bg-neutral-50 dark:bg-neutral-800 text-neutral-500 dark:text-neutral-400 text-sm">
-                  <i className="text-2xl las la-map-signs"></i>
+                  <i className="text-2xl las la-camera"></i>
                 </span>
-                <Input
-                  className="!rounded-l-none"
-                  defaultValue="New york, USA"
-                />
+                <Input className="!rounded-l-none" type="file" />
               </div>
             </div>
 
-            {/* ---- */}
             <div>
               <Label>Category</Label>
               <Select className="mt-1.5">
@@ -82,20 +70,9 @@ const ModalAddProduct: FC<ModalEditProps> = ({ show, onCloseModalEdit }) => {
               </Select>
             </div>
 
-            {/* ---- */}
-            <div>
-              <Label>Contact number</Label>
-              <div className="mt-1.5 flex">
-                <span className="inline-flex items-center px-2.5 rounded-l-2xl border border-r-0 border-neutral-200 dark:border-neutral-700 bg-neutral-50 dark:bg-neutral-800 text-neutral-500 dark:text-neutral-400 text-sm">
-                  <i className="text-2xl las la-phone-volume"></i>
-                </span>
-                <Input className="!rounded-l-none" defaultValue="003 888 232" />
-              </div>
-            </div>
-            {/* ---- */}
             <div>
               <Label>Product Description</Label>
-              <Textarea className="mt-1.5" placeholder="..." />
+              <Textarea className="mt-1.5" placeholder="" />
             </div>
           </div>
         </div>

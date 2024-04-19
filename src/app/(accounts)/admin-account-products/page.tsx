@@ -1,6 +1,8 @@
 "use client";
 import ModalAddProduct from "@/components/ModalAddProduct";
+import ModalProductDelete from "@/components/ModalDeleteProduct";
 import ModalEdit from "@/components/ModalEdit";
+import ModalEditProduct from "@/components/ModalEditProduct";
 import Prices from "@/components/Prices";
 import { PRODUCTS } from "@/data/data";
 import ButtonPrimary from "@/shared/Button/ButtonPrimary";
@@ -8,9 +10,17 @@ import ButtonSecondary from "@/shared/Button/ButtonSecondary";
 import ButtonThird from "@/shared/Button/ButtonThird";
 import { PencilIcon, TrashIcon, XMarkIcon } from "@heroicons/react/24/outline";
 import Image from "next/image";
-
+import React, { useState } from "react";
 const AccountOrder = () => {
-  const closeModalEdit = () => false;
+  const [isAdding, setIsAdding] = useState(false);
+  const [isEditing, setIsEditing] = useState(false);
+  const [isDeleting, setIsDeleting] = useState(false);
+  const openModalAdd = () => setIsAdding(true);
+  const openModalEdit = () => setIsEditing(true);
+  const openModalDelete = () => setIsDeleting(true);
+  const closeModalAdd = () => setIsAdding(false);
+  const closeModalEdit = () => setIsEditing(false);
+  const closeModalDelete = () => setIsDeleting(false);
 
   const renderMagnifyingGlassIcon = () => {
     return (
@@ -75,10 +85,16 @@ const AccountOrder = () => {
             </p>
 
             <div className="flex items-center space-x-2">
-              <span className="border text-green-500 cursor-pointer border-green-500 rounded-md p-1">
+              <span
+                onClick={openModalEdit}
+                className="border text-green-500 cursor-pointer border-green-500 rounded-md p-1"
+              >
                 <PencilIcon className="w-4 h-4 " />
               </span>
-              <span className="border text-red-500 cursor-pointer border-red-500 rounded-md p-1">
+              <span
+                onClick={openModalDelete}
+                className="border text-red-500 cursor-pointer border-red-500 rounded-md p-1"
+              >
                 <TrashIcon className="w-4 h-4 " />
               </span>
             </div>
@@ -129,16 +145,15 @@ const AccountOrder = () => {
   return (
     <div className="space-y-10 sm:space-y-12">
       {/* HEADING */}
-      <ModalAddProduct
-        show={true}
-        onCloseModalEdit={() => {
-          closeModalEdit;
-        }}
+      <ModalAddProduct show={isAdding} onCloseModalEdit={closeModalAdd} />
+      <ModalEditProduct show={isEditing} onCloseModalEdit={closeModalEdit} />
+      <ModalProductDelete
+        show={isDeleting}
+        onCloseModalDelete={closeModalDelete}
       />
-
       <div className="flex flex-row items-center justify-between">
         <h2 className="text-2xl sm:text-3xl font-semibold">All Products(34)</h2>
-        <ButtonThird className="bg-[#0ba5e9] text-white">
+        <ButtonThird onClick={openModalAdd} className="bg-[#0ba5e9] text-white">
           Add Product
         </ButtonThird>
       </div>

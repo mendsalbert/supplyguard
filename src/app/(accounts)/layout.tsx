@@ -45,12 +45,8 @@ const Adminpages: {
     link: "/admin-account",
   },
   {
-    name: "Products",
+    name: "Manage Products",
     link: "/admin-account-products",
-  },
-  {
-    name: " Manage Products",
-    link: "/admin-account-manage-products",
   },
   {
     name: " Manage Roles",

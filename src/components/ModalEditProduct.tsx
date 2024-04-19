@@ -4,13 +4,18 @@ import ButtonPrimary from "@/shared/Button/ButtonPrimary";
 import ButtonSecondary from "@/shared/Button/ButtonSecondary";
 import Input from "@/shared/Input/Input";
 import NcModal from "@/shared/NcModal/NcModal";
+import Label from "@/components/Label/Label";
+import Textarea from "@/shared/Textarea/Textarea";
+import Image from "next/image";
+import { avatarImgs } from "@/contains/fakeData";
+import Select from "@/shared/Select/Select";
 
 export interface ModalEditProps {
   show: boolean;
   onCloseModalEdit: () => void;
 }
 
-const ModalEdit: FC<ModalEditProps> = ({ show, onCloseModalEdit }) => {
+const ModalEditProduct: FC<ModalEditProps> = ({ show, onCloseModalEdit }) => {
   const textareaRef = useRef(null);
 
   useEffect(() => {
@@ -31,26 +36,44 @@ const ModalEdit: FC<ModalEditProps> = ({ show, onCloseModalEdit }) => {
   const renderContent = () => {
     return (
       <form action="#">
-        <h3 className="text-lg font-semibold text-neutral-900 dark:text-neutral-200">
-          Change price
+        <h3 className="text-lg pb-5 font-semibold text-neutral-900 dark:text-neutral-200">
+          Edit Product (Nike)
         </h3>
-        <span className="text-sm">Are you sure you want to change price?</span>
-        <div className="mt-8 relative rounded-md shadow-sm">
-          <Input ref={textareaRef} defaultValue={"1.000"} type={"text"} />
+        <div className="flex flex-col md:flex-row">
+          <div className="flex-grow mt-10 md:mt-0  max-w-3xl space-y-6">
+            <div>
+              <Label>Product Name</Label>
+              <Input className="mt-1.5" placeholder="" />
+            </div>
 
-          <div className="absolute inset-y-0 right-0 flex items-center">
-            <label htmlFor="currency" className="sr-only">
-              Currency
-            </label>
-            <select
-              id="currency"
-              name="currency"
-              className="focus:ring-indigo-500 focus:border-indigo-500 h-full py-0 pl-2 pr-7 border-transparent bg-transparent text-neutral-500 dark:text-neutral-300 sm:text-sm rounded-md"
-            >
-              <option>ETH</option>
-              <option>BC</option>
-              <option>BTH</option>
-            </select>
+            <div>
+              <Label>Price</Label>
+              <Input className="mt-1.5" placeholder="$7.99" type="number" />
+            </div>
+
+            <div>
+              <Label>Image</Label>
+              <div className="mt-1.5 flex">
+                <span className="inline-flex items-center px-2.5 rounded-l-2xl border border-r-0 border-neutral-200 dark:border-neutral-700 bg-neutral-50 dark:bg-neutral-800 text-neutral-500 dark:text-neutral-400 text-sm">
+                  <i className="text-2xl las la-camera"></i>
+                </span>
+                <Input className="!rounded-l-none" type="file" />
+              </div>
+            </div>
+
+            <div>
+              <Label>Category</Label>
+              <Select className="mt-1.5">
+                <option value="Male">Category 1</option>
+                <option value="Female">Category 2</option>
+                <option value="Other">Category 3</option>
+              </Select>
+            </div>
+
+            <div>
+              <Label>Product Description</Label>
+              <Textarea className="mt-1.5" placeholder="" />
+            </div>
           </div>
         </div>
         <div className="mt-4 space-x-3">
@@ -71,7 +94,7 @@ const ModalEdit: FC<ModalEditProps> = ({ show, onCloseModalEdit }) => {
     <NcModal
       isOpenProp={show}
       onCloseModal={onCloseModalEdit}
-      contentExtraClass="max-w-lg"
+      contentExtraClass="max-w-3xl"
       renderContent={renderContent}
       renderTrigger={renderTrigger}
       modalTitle=""
@@ -79,4 +102,4 @@ const ModalEdit: FC<ModalEditProps> = ({ show, onCloseModalEdit }) => {
   );
 };
 
-export default ModalEdit;
+export default ModalEditProduct;

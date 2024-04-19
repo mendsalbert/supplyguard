@@ -46,9 +46,6 @@ const ModalAddProduct: FC<ModalEditProps> = ({ show, onCloseModalEdit }) => {
               <Input className="mt-1.5" placeholder="Satori Eco Yoga Mat" />
             </div>
 
-            {/* ---- */}
-
-            {/* ---- */}
             <div>
               <Label>Email</Label>
               <div className="mt-1.5 flex">
@@ -97,8 +94,8 @@ const ModalAddProduct: FC<ModalEditProps> = ({ show, onCloseModalEdit }) => {
             </div>
             {/* ---- */}
             <div>
-              <Label>About Company</Label>
-              <Textarea className="mt-1.5" defaultValue="..." />
+              <Label>Product Description</Label>
+              <Textarea className="mt-1.5" placeholder="..." />
             </div>
           </div>
         </div>

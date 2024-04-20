@@ -15,6 +15,7 @@ import Link from "next/link";
 import { ClockIcon } from "@heroicons/react/24/outline";
 import ButtonSecondary from "@/shared/Button/ButtonSecondary";
 import { avatarImgs, qrCode } from "@/contains/fakeData";
+import ButtonThird from "@/shared/Button/ButtonThird";
 
 const CheckoutPage = () => {
   const [tabActive, setTabActive] = useState<
@@ -91,12 +92,13 @@ const CheckoutPage = () => {
           </div>
           <div className="mt-3 sm:mt-0">
             <Link href="/track-order-single">
-              <ButtonSecondary
+              <ButtonThird
                 sizeClass="py-2.5 px-4 sm:px-6"
                 fontSize="text-sm font-medium"
+                className="bg-green-500 text-white"
               >
-                View Order
-              </ButtonSecondary>
+                Approve
+              </ButtonThird>
             </Link>
           </div>
         </div>
@@ -168,16 +170,16 @@ const CheckoutPage = () => {
 
   return (
     <div className="nc-CheckoutPage">
-      <div className="relative h-24 w-24 flex-shrink-0 overflow-hidden rounded-xl bg-slate-100">
-        <Image
-          fill
-          src={qrCode}
-          alt={"name"}
-          className="h-14 w-14 object-cover object-center"
-        />
-      </div>
       <main className="container py-16 lg:pb-28 lg:pt-20 ">
         <div className="mb-6">
+          <div className="relative h-24 w-24 flex-shrink-0 overflow-hidden rounded-xl bg-slate-100">
+            <Image
+              fill
+              src={qrCode}
+              alt={"name"}
+              className="h-24 w-24 object-cover object-center"
+            />
+          </div>
           <h2 className="block text-2xl sm:text-2xl lg:text-4xl font-semibold ">
             Approve as a supplier manager
           </h2>

@@ -14,6 +14,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { ClockIcon } from "@heroicons/react/24/outline";
 import ButtonSecondary from "@/shared/Button/ButtonSecondary";
+import { avatarImgs, qrCode } from "@/contains/fakeData";
 
 const CheckoutPage = () => {
   const [tabActive, setTabActive] = useState<
@@ -167,20 +168,27 @@ const CheckoutPage = () => {
 
   return (
     <div className="nc-CheckoutPage">
+      <div className="relative h-24 w-24 flex-shrink-0 overflow-hidden rounded-xl bg-slate-100">
+        <Image
+          fill
+          src={qrCode}
+          alt={"name"}
+          className="h-14 w-14 object-cover object-center"
+        />
+      </div>
       <main className="container py-16 lg:pb-28 lg:pt-20 ">
-        <div className="mb-16">
-          <h2 className="block text-2xl sm:text-3xl lg:text-4xl font-semibold ">
-            Tracked Orders
+        <div className="mb-6">
+          <h2 className="block text-2xl sm:text-2xl lg:text-4xl font-semibold ">
+            Approve as a supplier manager
           </h2>
         </div>
 
         <div className="flex flex-col lg:flex-row">
           <div className="w-full lg:w-full ">
-            <h3 className="text-lg font-semibold mb-10">Order summary</h3>
-            <div className="space-y-5">
-              {renderOrder()}
-              {renderOrder()}
-            </div>
+            <h3 className="text-lg font-semibold mb-10">
+              Albert Mends | 0x4f...43f
+            </h3>
+            <div className="space-y-5">{renderOrder()}</div>
           </div>
         </div>
       </main>

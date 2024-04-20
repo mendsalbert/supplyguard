@@ -1,3 +1,5 @@
+import qr_code from "@/images/qr-code.webp";
+
 import avatar1 from "@/images/avatars/Image-1.png";
 import avatar2 from "@/images/avatars/Image-2.png";
 import avatar3 from "@/images/avatars/Image-3.png";
@@ -107,6 +109,8 @@ export const avatarImgs = [
   avatar9,
   avatar10,
 ];
+
+export const qrCode = qr_code;
 
 export const personNames = [
   "Kailey Greer",

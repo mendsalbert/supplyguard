@@ -95,7 +95,7 @@ const CheckoutPage = () => {
               <ButtonThird
                 sizeClass="py-2.5 px-4 sm:px-6"
                 fontSize="text-sm font-medium"
-                className="bg-green-500 text-white"
+                className="bg-green-600 text-white"
               >
                 Approve
               </ButtonThird>
@@ -194,6 +194,7 @@ const CheckoutPage = () => {
           </div>
         </div>
       </main>
+      Y
     </div>
   );
 };

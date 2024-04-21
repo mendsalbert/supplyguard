@@ -1,6 +1,6 @@
 "use client";
 import { createClient } from "@sanity/client";
-import React, { Fragment, useState } from "react";
+import React, { Fragment, useState, useEffect } from "react";
 import { Dialog, Popover, Transition } from "@/app/headlessui";
 import ButtonPrimary from "@/shared/Button/ButtonPrimary";
 import ButtonThird from "@/shared/Button/ButtonThird";
@@ -18,6 +18,12 @@ const client = createClient({
   useCdn: true, // set to `false` to bypass the edge cache
   apiVersion: apiVersion, // use current date (YYYY-MM-DD) to target the latest API version
 });
+
+export async function getPosts() {
+  const posts = await client.fetch('*[_type == "category"]');
+  return posts;
+}
+
 // DEMO DATA
 const DATA_categories = [
   {
@@ -94,6 +100,15 @@ const TabFilters = ({ onPriceRangeUpdate, onCategoryUpdate }: any) => {
   const [colorsState, setColorsState] = useState<string[]>([]);
   const [sizesState, setSizesState] = useState<string[]>([]);
   const [sortOrderStates, setSortOrderStates] = useState<string>("");
+
+  useEffect(() => {
+    async function fetchCategories() {
+      const categories = await getPosts();
+      console.log(categories);
+    }
+
+    fetchCategories();
+  }, []);
 
   const submitPriceRange = () => {
     onPriceRangeUpdate(rangePrices);

@@ -79,7 +79,7 @@ export default defineType({
       name: "assignedTo",
       title: "Assigned To",
       type: "reference",
-      to: [{ type: "supplierRole" }],
+      to: [{ type: "supplierUser" }],
       description: "Role responsible for handling the order.",
     }),
     // You may add additional fields such as shipping address, billing details, etc.

@@ -6,7 +6,8 @@ import product from "./schemaTypes/product";
 import roles from "./schemaTypes/roles";
 import supplier from "./schemaTypes/supplier";
 import user from "./schemaTypes/user";
+import SUser from "./schemaTypes/SUser";
 
 export const schema: { types: SchemaTypeDefinition[] } = {
-  types: [order, product, category, roles, supplier, user],
+  types: [order, product, category, roles, supplier, user, SUser],
 };

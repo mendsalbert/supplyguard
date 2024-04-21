@@ -1,5 +1,5 @@
 "use client";
-
+import { createClient } from "@sanity/client";
 import React, { Fragment, useState } from "react";
 import { Dialog, Popover, Transition } from "@/app/headlessui";
 import ButtonPrimary from "@/shared/Button/ButtonPrimary";
@@ -10,7 +10,14 @@ import Slider from "rc-slider";
 import Radio from "@/shared/Radio/Radio";
 import { ChevronDownIcon } from "@heroicons/react/24/outline";
 import MySwitch from "@/components/MySwitch";
+import { apiVersion, dataset, projectId } from "../../sanity/env";
 
+const client = createClient({
+  projectId: projectId,
+  dataset: dataset,
+  useCdn: true, // set to `false` to bypass the edge cache
+  apiVersion: apiVersion, // use current date (YYYY-MM-DD) to target the latest API version
+});
 // DEMO DATA
 const DATA_categories = [
   {

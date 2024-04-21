@@ -11,19 +11,12 @@ import Radio from "@/shared/Radio/Radio";
 import { ChevronDownIcon } from "@heroicons/react/24/outline";
 import MySwitch from "@/components/MySwitch";
 import { apiVersion, dataset, projectId } from "../../sanity/env";
-
-const client = createClient({
-  projectId: projectId,
-  dataset: dataset,
-  useCdn: true, // set to `false` to bypass the edge cache
-  apiVersion: apiVersion, // use current date (YYYY-MM-DD) to target the latest API version
-});
-
-export async function getPosts() {
-  const posts = await client.fetch('*[_type == "category"]');
-  return posts;
-}
-
+import {
+  fetchCategories,
+  selectCategories,
+} from "../features/category/categorySlice";
+import { useAppDispatch, useAppSelector } from "@/app/store";
+useAppDispatch;
 // DEMO DATA
 const DATA_categories = [
   {
@@ -92,6 +85,15 @@ const DATA_sortOrderRadios = [
 const PRICE_RANGE = [1, 500];
 //
 const TabFilters = ({ onPriceRangeUpdate, onCategoryUpdate }: any) => {
+  const dispatch = useAppDispatch();
+  const { categories, status, error } = useAppSelector(selectCategories);
+
+  useEffect(() => {
+    dispatch(fetchCategories());
+  }, [dispatch]);
+
+  console.log("categories", categories);
+
   const [isOpenMoreFilter, setisOpenMoreFilter] = useState(false);
   //
   const [isOnSale, setIsIsOnSale] = useState(false);
@@ -100,15 +102,6 @@ const TabFilters = ({ onPriceRangeUpdate, onCategoryUpdate }: any) => {
   const [colorsState, setColorsState] = useState<string[]>([]);
   const [sizesState, setSizesState] = useState<string[]>([]);
   const [sortOrderStates, setSortOrderStates] = useState<string>("");
-
-  useEffect(() => {
-    async function fetchCategories() {
-      const categories = await getPosts();
-      console.log(categories);
-    }
-
-    fetchCategories();
-  }, []);
 
   const submitPriceRange = () => {
     onPriceRangeUpdate(rangePrices);

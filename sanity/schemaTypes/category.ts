@@ -6,8 +6,8 @@ export default defineType({
   type: "document",
   fields: [
     defineField({
-      name: "title",
-      title: "Title",
+      name: "name",
+      title: "name",
       type: "string",
       validation: (Rule) => Rule.required().error("A title is required."),
     }),

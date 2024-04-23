@@ -21,9 +21,9 @@ const CommonLayout: FC<CommonLayoutProps> = ({ children }) => {
   const user = useAppSelector((state) => state.users.currentUser) as any;
 
   useEffect(() => {
-    const address = localStorage.getItem("address")
-    dispatch(fetchUserByAddress(auth?.state?.userId));
-  }, []);
+    const address = localStorage.getItem("address") as any;
+    dispatch(fetchUserByAddress(JSON.parse(address)));
+  }, [dispatch]);
 
   const pages: {
     name: string;

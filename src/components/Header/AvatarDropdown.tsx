@@ -7,13 +7,29 @@ import Avatar from "@/shared/Avatar/Avatar";
 import SwitchDarkMode2 from "@/shared/SwitchDarkMode/SwitchDarkMode2";
 import Link from "next/link";
 import { Auth } from "@polybase/auth";
+import { useAppDispatch, useAppSelector } from "@/app/store";
+import imageUrlBuilder from "@sanity/image-url";
+import { client } from "@/api/client";
+import truncateEthAddress from "truncate-eth-address";
 
 const auth = typeof window !== "undefined" ? new Auth() : null;
 
 export default function AvatarDropdown() {
+  const user = useAppSelector((state) => state.users.currentUser) as any;
+  const builder = imageUrlBuilder(client);
+
+  function urlFor(source: any) {
+    return builder.image(source);
+  }
+
   const signOut = () => {
     auth?.signOut();
   };
+
+  const imageUrl =
+    user && user.profilePicture && user.profilePicture.asset
+      ? urlFor(user.profilePicture.asset).url()
+      : null;
 
   return (
     <div className="AvatarDropdown ">
@@ -58,11 +74,18 @@ export default function AvatarDropdown() {
                 <div className="overflow-hidden rounded-3xl shadow-lg ring-1 ring-black ring-opacity-5">
                   <div className="relative grid grid-cols-1 gap-6 bg-white dark:bg-neutral-800 py-7 px-6">
                     <div className="flex items-center space-x-3">
-                      <Avatar imgUrl={avatarImgs[7]} sizeClass="w-12 h-12" />
+                      <Avatar
+                        imgUrl={imageUrl || avatarImgs[7]}
+                        sizeClass="w-12 h-12"
+                      />
 
                       <div className="flex-grow">
-                        <h4 className="font-semibold">mends.eth</h4>
-                        <p className="text-xs mt-0.5">0x43..343f</p>
+                        <h4 className="font-semibold">
+                          {user?.supplierName || user?.username}
+                        </h4>
+                        <p className="text-xs mt-0.5">
+                          {truncateEthAddress(user?.ethereumAddress || "")}
+                        </p>
                       </div>
                     </div>
 
@@ -70,7 +93,7 @@ export default function AvatarDropdown() {
 
                     {/* ------------------ 1 --------------------- */}
                     <Link
-                      href={"/account"}
+                      href={user.isSupplier ? "/admin-account" : "/account"}
                       className="flex items-center p-2 -m-3 transition duration-150 ease-in-out rounded-lg hover:bg-neutral-100 dark:hover:bg-neutral-700 focus:outline-none focus-visible:ring focus-visible:ring-orange-500 focus-visible:ring-opacity-50"
                       onClick={() => close()}
                     >

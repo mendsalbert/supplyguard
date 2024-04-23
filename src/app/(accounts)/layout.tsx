@@ -82,7 +82,7 @@ const CommonLayout: FC<CommonLayoutProps> = ({ children }) => {
             <h2 className="text-3xl xl:text-4xl font-semibold">Account</h2>
             <span className="block mt-4 text-neutral-500 dark:text-neutral-400 text-base sm:text-lg">
               <span className="text-slate-900 dark:text-slate-200 font-semibold">
-                {user?.supplierName || user?.name},
+                {user?.supplierName || user?.username} ·
               </span>{" "}
               {user?.email} · {truncateEthAddress(user?.ethereumAddress || "")}
             </span>

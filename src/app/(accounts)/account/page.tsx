@@ -154,7 +154,7 @@ const AccountPage = () => {
                 height={128}
                 className="w-32 h-32 rounded-full object-cover z-0"
               />
-              <div className="absolute inset-0 bg-black bg-opacity-60 flex flex-col items-center justify-center text-neutral-50 cursor-pointer">
+              <div className="absolute inset-0 bg-black bg-opacity-40 flex flex-col items-center justify-center text-neutral-50 cursor-pointer">
                 <svg
                   width="30"
                   height="30"

@@ -23,6 +23,16 @@ export default defineType({
         Rule.required().email().error("A valid email is required."),
     }),
     defineField({
+      name: "phone",
+      title: "Phone",
+      type: "string",
+    }),
+    defineField({
+      name: "about",
+      title: "About",
+      type: "string",
+    }),
+    defineField({
       name: "ethereumAddress",
       title: "Ethereum Address",
       type: "string",

@@ -1,15 +1,143 @@
+"use client";
 import Label from "@/components/Label/Label";
-import React, { FC } from "react";
+import React, { FC, useState, useEffect } from "react";
 import ButtonPrimary from "@/shared/Button/ButtonPrimary";
 import Input from "@/shared/Input/Input";
 import Select from "@/shared/Select/Select";
 import Textarea from "@/shared/Textarea/Textarea";
 import { avatarImgs } from "@/contains/fakeData";
 import Image from "next/image";
+import { useAppDispatch, useAppSelector } from "@/app/store";
+import { fetchUserByAddress, updateUserByAddress } from "@/features/user";
+import { Auth } from "@polybase/auth";
+import imageUrlBuilder from "@sanity/image-url";
+import { client } from "@/api/client";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
+const auth = typeof window !== "undefined" ? new Auth() : null;
 const AccountPage = () => {
+  const user = useAppSelector((state) => state.users.currentUser) as any;
+
+  const dispatch = useAppDispatch();
+  const [isLoading, setIsLoading] = useState(false);
+
+  const [userData, setUserData] = useState({
+    username: "",
+    fullname: "",
+    email: "",
+    phone: "",
+    about: "",
+    shippingAddress: {
+      street: "",
+      city: "",
+      state: "",
+      postalCode: "",
+      country: "",
+    },
+  });
+
+  useEffect(() => {
+    // Check if the user data is available before setting it
+    if (user) {
+      setUserData({
+        username: user.username || "",
+        fullname: user.fullname || "",
+        email: user.email || "",
+        phone: user.phone || "",
+        about: user.about || "",
+        shippingAddress: {
+          street: user.shippingAddress?.street || "",
+          city: user.shippingAddress?.city || "",
+          state: user.shippingAddress?.state || "",
+          postalCode: user.shippingAddress?.postalCode || "",
+          country: user.shippingAddress?.country || "",
+        },
+      });
+    }
+  }, [user]);
+
+  useEffect(() => {
+    const address = localStorage.getItem("address") as any;
+    dispatch(fetchUserByAddress(JSON.parse(address)));
+  }, [dispatch, isLoading]);
+
+  const [imageFile, setImageFile] = useState(null);
+  const ethereumAddress = auth?.state?.userId;
+
+  const builder = imageUrlBuilder(client);
+
+  function urlFor(source: any) {
+    return builder.image(source);
+  }
+
+  const handleInputChange = (e: any) => {
+    const { name, value } = e.target;
+    const [nestedKey, nestedName] = name.split(".");
+
+    if (nestedName) {
+      setUserData((prevData: any) => ({
+        ...prevData,
+        [nestedKey]: {
+          ...prevData[nestedKey],
+          [nestedName]: value,
+        },
+      }));
+    } else {
+      setUserData((prevData) => ({
+        ...prevData,
+        [name]: value,
+      }));
+    }
+  };
+
+  const handleImageChange = (e: any) => {
+    // console.log(e.target.files[0]);
+    setImageFile(e.target.files[0]);
+  };
+
+  const handleSubmit = async () => {
+    const id = toast.loading("Updating...");
+
+    setIsLoading(true);
+
+    try {
+      const updatedUser = await dispatch(
+        updateUserByAddress({
+          ethereumAddress: auth?.state?.userId,
+          userData,
+          imageFile,
+        })
+      ).unwrap();
+
+      console.log("User updated:", updatedUser);
+      toast.update(id, {
+        render: "All is good :) Account Updated!",
+        type: "success",
+        isLoading: false,
+      });
+      setIsLoading(false);
+    } catch (error) {
+      console.error(error);
+      toast.update(id, {
+        render: "Ops! Something went wrong",
+        type: "error",
+        isLoading: false,
+      });
+      setIsLoading(false);
+    }
+  };
+
+  // Safe check and fallback
+  const imageUrl =
+    user && user.profilePicture && user.profilePicture.asset
+      ? urlFor(user.profilePicture.asset).url()
+      : null;
+
   return (
     <div className={`nc-AccountPage `}>
+      <ToastContainer hideProgressBar={false} />
+
       <div className="space-y-10 sm:space-y-12">
         {/* HEADING */}
         <h2 className="text-2xl sm:text-3xl font-semibold">
@@ -20,7 +148,7 @@ const AccountPage = () => {
             {/* AVATAR */}
             <div className="relative rounded-full overflow-hidden flex">
               <Image
-                src={avatarImgs[7]}
+                src={imageUrl || avatarImgs[7]}
                 alt="avatar"
                 width={128}
                 height={128}
@@ -47,14 +175,32 @@ const AccountPage = () => {
               </div>
               <input
                 type="file"
+                onChange={handleImageChange}
                 className="absolute inset-0 opacity-0 cursor-pointer"
               />
             </div>
           </div>
           <div className="flex-grow mt-10 md:mt-0 md:pl-16 max-w-3xl space-y-6">
             <div>
+              <Label>User Name</Label>
+              <Input
+                className="mt-1.5"
+                placeholder={user?.username || "username"}
+                name="username"
+                value={userData.username}
+                onChange={handleInputChange}
+              />
+            </div>
+
+            <div>
               <Label>Full name</Label>
-              <Input className="mt-1.5" defaultValue="John Doe" />
+              <Input
+                className="mt-1.5"
+                placeholder={user?.fullname || "John Doe"}
+                name="fullname"
+                value={userData.fullname}
+                onChange={handleInputChange}
+              />
             </div>
 
             {/* ---- */}
@@ -68,48 +214,103 @@ const AccountPage = () => {
                 </span>
                 <Input
                   className="!rounded-l-none"
-                  placeholder="example@email.com"
+                  placeholder={user?.email || "example@gmail.com"}
+                  name="email"
+                  value={userData.email}
+                  onChange={handleInputChange}
                 />
               </div>
             </div>
 
             {/* ---- */}
-            <div className="max-w-lg">
-              <Label>Date of birth</Label>
-              <div className="mt-1.5 flex">
-                <span className="inline-flex items-center px-2.5 rounded-l-2xl border border-r-0 border-neutral-200 dark:border-neutral-700 bg-neutral-50 dark:bg-neutral-800 text-neutral-500 dark:text-neutral-400 text-sm">
-                  <i className="text-2xl las la-calendar"></i>
-                </span>
-                <Input
-                  className="!rounded-l-none"
-                  type="date"
-                  defaultValue="1990-07-22"
-                />
-              </div>
-            </div>
+
             {/* ---- */}
             <div>
-              <Label>Addess</Label>
+              <Label>Street</Label>
               <div className="mt-1.5 flex">
                 <span className="inline-flex items-center px-2.5 rounded-l-2xl border border-r-0 border-neutral-200 dark:border-neutral-700 bg-neutral-50 dark:bg-neutral-800 text-neutral-500 dark:text-neutral-400 text-sm">
                   <i className="text-2xl las la-map-signs"></i>
                 </span>
                 <Input
                   className="!rounded-l-none"
-                  defaultValue="New york, USA"
+                  name="shippingAddress.street"
+                  type="text"
+                  placeholder={user?.shippingAddress?.street || "New york, USA"}
+                  value={userData.shippingAddress.street}
+                  onChange={handleInputChange}
+                />
+              </div>
+            </div>
+
+            <div>
+              <Label>City</Label>
+              <div className="mt-1.5 flex">
+                <span className="inline-flex items-center px-2.5 rounded-l-2xl border border-r-0 border-neutral-200 dark:border-neutral-700 bg-neutral-50 dark:bg-neutral-800 text-neutral-500 dark:text-neutral-400 text-sm">
+                  <i className="text-2xl las la-city"></i>
+                </span>
+                <Input
+                  className="!rounded-l-none"
+                  name="shippingAddress.city"
+                  type="text"
+                  placeholder={user?.shippingAddress?.city || "Seattle"}
+                  value={userData.shippingAddress.city}
+                  onChange={handleInputChange}
+                />
+              </div>
+            </div>
+
+            <div>
+              <Label>State</Label>
+              <div className="mt-1.5 flex">
+                <span className="inline-flex items-center px-2.5 rounded-l-2xl border border-r-0 border-neutral-200 dark:border-neutral-700 bg-neutral-50 dark:bg-neutral-800 text-neutral-500 dark:text-neutral-400 text-sm">
+                  <i className="text-2xl las la-sign"></i>
+                </span>
+                <Input
+                  className="!rounded-l-none"
+                  name="shippingAddress.state"
+                  type="text"
+                  placeholder={user?.shippingAddress?.state || "Delaware"}
+                  value={userData.shippingAddress.state}
+                  onChange={handleInputChange}
+                />
+              </div>
+            </div>
+
+            <div>
+              <Label>Postal Code</Label>
+              <div className="mt-1.5 flex">
+                <span className="inline-flex items-center px-2.5 rounded-l-2xl border border-r-0 border-neutral-200 dark:border-neutral-700 bg-neutral-50 dark:bg-neutral-800 text-neutral-500 dark:text-neutral-400 text-sm">
+                  <i className="text-2xl las la-inbox"></i>
+                </span>
+                <Input
+                  className="!rounded-l-none"
+                  name="shippingAddress.postalCode"
+                  type="text"
+                  placeholder={user?.shippingAddress?.postalCode || "DL,434 "}
+                  value={userData.shippingAddress.postalCode}
+                  onChange={handleInputChange}
+                />
+              </div>
+            </div>
+
+            <div>
+              <Label>Country</Label>
+              <div className="mt-1.5 flex">
+                <span className="inline-flex items-center px-2.5 rounded-l-2xl border border-r-0 border-neutral-200 dark:border-neutral-700 bg-neutral-50 dark:bg-neutral-800 text-neutral-500 dark:text-neutral-400 text-sm">
+                  <i className="text-2xl las la-globe"></i>
+                </span>
+                <Input
+                  className="!rounded-l-none"
+                  name="shippingAddress.country"
+                  type="text"
+                  placeholder={user?.shippingAddress?.country || "US"}
+                  value={userData.shippingAddress.country}
+                  onChange={handleInputChange}
                 />
               </div>
             </div>
 
             {/* ---- */}
-            <div>
-              <Label>Gender</Label>
-              <Select className="mt-1.5">
-                <option value="Male">Male</option>
-                <option value="Female">Female</option>
-                <option value="Other">Other</option>
-              </Select>
-            </div>
 
             {/* ---- */}
             <div>
@@ -118,13 +319,25 @@ const AccountPage = () => {
                 <span className="inline-flex items-center px-2.5 rounded-l-2xl border border-r-0 border-neutral-200 dark:border-neutral-700 bg-neutral-50 dark:bg-neutral-800 text-neutral-500 dark:text-neutral-400 text-sm">
                   <i className="text-2xl las la-phone-volume"></i>
                 </span>
-                <Input className="!rounded-l-none" defaultValue="003 888 232" />
+                <Input
+                  className="!rounded-l-none"
+                  placeholder={user?.phone || "003 888 232"}
+                  name="phone"
+                  value={userData.phone}
+                  onChange={handleInputChange}
+                />
               </div>
             </div>
             {/* ---- */}
             <div>
               <Label>About you</Label>
-              <Textarea className="mt-1.5" defaultValue="..." />
+              <Textarea
+                className="mt-1.5"
+                placeholder={user?.about || "about me"}
+                name="about"
+                value={userData.about}
+                onChange={handleInputChange}
+              />
             </div>
             <div className="pt-2">
               <ButtonPrimary>Update account</ButtonPrimary>

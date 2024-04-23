@@ -19,7 +19,6 @@ const auth = typeof window !== "undefined" ? new Auth() : null;
 // use the get user by address, to fill the users with the defualt space
 
 const AccountPage = () => {
-  const notify = () => toast("Wow so easy !");
   const user = useAppSelector((state) => state.users.currentUser) as any;
 
   const dispatch = useAppDispatch();
@@ -51,6 +50,11 @@ const AccountPage = () => {
       });
     }
   }, [user]);
+
+  useEffect(() => {
+    const address = localStorage.getItem("address") as any;
+    dispatch(fetchUserByAddress(JSON.parse(address)));
+  }, [dispatch, isLoading]);
 
   const [imageFile, setImageFile] = useState(null);
   const ethereumAddress = auth?.state?.userId;
@@ -107,16 +111,6 @@ const AccountPage = () => {
         isLoading: false,
       });
       setIsLoading(false);
-      setUserData({
-        supplierName: "",
-        description: "",
-        address: "",
-        email: "",
-        contactInfo: {
-          phone: "",
-          website: "",
-        },
-      });
     } catch (error) {
       console.error(error);
       toast.update(id, {
@@ -124,21 +118,9 @@ const AccountPage = () => {
         type: "error",
         isLoading: false,
       });
-      setUserData({
-        supplierName: "",
-        description: "",
-        address: "",
-        email: "",
-        contactInfo: {
-          phone: "",
-          website: "",
-        },
-      });
       setIsLoading(false);
     }
   };
-
-  console.log(user);
 
   // Safe check and fallback
   const imageUrl =

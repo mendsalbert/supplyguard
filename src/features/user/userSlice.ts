@@ -34,6 +34,8 @@ export interface User {
   username?: string;
   fullName?: string;
   email?: string;
+  phone?: any;
+  about?: string;
   ethereumAddress?: any;
   orderHistory?: Array<{ _ref: string; _type: "reference" }>;
   wishlist?: Array<{ _ref: string; _type: "reference" }>;

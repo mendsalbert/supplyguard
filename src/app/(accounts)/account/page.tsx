@@ -340,7 +340,9 @@ const AccountPage = () => {
               />
             </div>
             <div className="pt-2">
-              <ButtonPrimary>Update account</ButtonPrimary>
+              <ButtonPrimary loading={isLoading} onClick={handleSubmit}>
+                Update account
+              </ButtonPrimary>{" "}
             </div>
           </div>
         </div>

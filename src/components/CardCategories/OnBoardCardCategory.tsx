@@ -63,9 +63,7 @@ const OnBoardCardCategory: FC<CardCategory4Props> = ({
     try {
       // Starting the loading state
       setisLoading(true);
-
       const res = await auth?.signIn();
-
       // Dispatch the addUser redux action and wait for it to complete
       await dispatch(
         addUser({

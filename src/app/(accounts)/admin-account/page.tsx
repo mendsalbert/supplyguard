@@ -1,13 +1,100 @@
+"use client";
 import Label from "@/components/Label/Label";
-import React, { FC } from "react";
+import React, { FC, useState } from "react";
 import ButtonPrimary from "@/shared/Button/ButtonPrimary";
 import Input from "@/shared/Input/Input";
 import Select from "@/shared/Select/Select";
 import Textarea from "@/shared/Textarea/Textarea";
 import { avatarImgs } from "@/contains/fakeData";
 import Image from "next/image";
+import { useAppDispatch, useAppSelector } from "@/app/store";
+import { updateUserByAddress } from "@/features/user";
+import { Auth } from "@polybase/auth";
+import imageUrlBuilder from "@sanity/image-url";
+import { client } from "@/api/client";
+
+const auth = typeof window !== "undefined" ? new Auth() : null;
+// use the get user by address, to fill the users with the defualt space
 
 const AccountPage = () => {
+  const dispatch = useAppDispatch();
+  const [isLoading, setIsLoading] = useState(false);
+  const [userData, setUserData] = useState({
+    supplierName: "",
+    description: "",
+    address: "",
+    email: "",
+    contactInfo: {
+      phone: "",
+      website: "",
+    },
+  });
+  const [imageFile, setImageFile] = useState(null);
+  const ethereumAddress = auth?.state?.userId;
+
+  const builder = imageUrlBuilder(client);
+
+  function urlFor(source: any) {
+    return builder.image(source);
+  }
+
+  const handleInputChange = (e: any) => {
+    const { name, value } = e.target;
+    const [nestedKey, nestedName] = name.split(".");
+
+    if (nestedName) {
+      setUserData((prevData: any) => ({
+        ...prevData,
+        [nestedKey]: {
+          ...prevData[nestedKey],
+          [nestedName]: value,
+        },
+      }));
+    } else {
+      setUserData((prevData) => ({
+        ...prevData,
+        [name]: value,
+      }));
+    }
+  };
+
+  const handleImageChange = (e: any) => {
+    // console.log(e.target.files[0]);
+    setImageFile(e.target.files[0]);
+  };
+
+  const handleSubmit = async () => {
+    setIsLoading(true);
+    // console.log(auth?.state?.userId);
+    // console.log(userData);
+    // console.log(imageFile);
+    // console.log(isLoading);
+
+    try {
+      const updatedUser = await dispatch(
+        updateUserByAddress({
+          ethereumAddress: auth?.state?.userId,
+          userData,
+          imageFile,
+        })
+      ).unwrap();
+
+      console.log("User updated:", updatedUser);
+      setIsLoading(false);
+      // TODO://clear input filed
+    } catch (error) {
+      console.error(error);
+      setIsLoading(false);
+    }
+  };
+
+  const user = useAppSelector((state) => state.users.currentUser) as any;
+
+  // Safe check and fallback
+  const imageUrl =
+    user && user.profilePicture && user.profilePicture.asset
+      ? urlFor(user.profilePicture.asset).url()
+      : null;
   return (
     <div className={`nc-AccountPage `}>
       <div className="space-y-10 sm:space-y-12">
@@ -20,13 +107,13 @@ const AccountPage = () => {
             {/* AVATAR */}
             <div className="relative rounded-full overflow-hidden flex">
               <Image
-                src={avatarImgs[7]}
+                src={imageUrl || avatarImgs[7]}
                 alt="avatar"
                 width={128}
                 height={128}
                 className="w-32 h-32 rounded-full object-cover z-0"
               />
-              <div className="absolute inset-0 bg-black bg-opacity-60 flex flex-col items-center justify-center text-neutral-50 cursor-pointer">
+              <div className="absolute inset-0 bg-black bg-opacity-40 flex flex-col items-center justify-center text-neutral-50 cursor-pointer">
                 <svg
                   width="30"
                   height="30"
@@ -47,6 +134,7 @@ const AccountPage = () => {
               </div>
               <input
                 type="file"
+                onChange={handleImageChange}
                 className="absolute inset-0 opacity-0 cursor-pointer"
               />
             </div>
@@ -54,12 +142,15 @@ const AccountPage = () => {
           <div className="flex-grow mt-10 md:mt-0 md:pl-16 max-w-3xl space-y-6">
             <div>
               <Label>Company Name</Label>
-              <Input className="mt-1.5" defaultValue="SupplyGuard" />
+              <Input
+                className="mt-1.5"
+                placeholder={user?.supplierName || "Supply Guard"}
+                name="supplierName"
+                value={userData.supplierName}
+                onChange={handleInputChange}
+              />
             </div>
 
-            {/* ---- */}
-
-            {/* ---- */}
             <div>
               <Label>Email</Label>
               <div className="mt-1.5 flex">
@@ -68,7 +159,10 @@ const AccountPage = () => {
                 </span>
                 <Input
                   className="!rounded-l-none"
-                  placeholder="example@email.com"
+                  placeholder={user?.email || "example@gmail.com"}
+                  name="email"
+                  value={userData.email}
+                  onChange={handleInputChange}
                 />
               </div>
             </div>
@@ -81,20 +175,15 @@ const AccountPage = () => {
                 </span>
                 <Input
                   className="!rounded-l-none"
-                  defaultValue="New york, USA"
+                  name="address"
+                  placeholder={user?.address || "New york, USA"}
+                  value={userData.address}
+                  onChange={handleInputChange}
                 />
               </div>
             </div>
 
             {/* ---- */}
-            <div>
-              <Label>Category</Label>
-              <Select className="mt-1.5">
-                <option value="Male">Category 1</option>
-                <option value="Female">Category 2</option>
-                <option value="Other">Category 3</option>
-              </Select>
-            </div>
 
             {/* ---- */}
             <div>
@@ -103,16 +192,31 @@ const AccountPage = () => {
                 <span className="inline-flex items-center px-2.5 rounded-l-2xl border border-r-0 border-neutral-200 dark:border-neutral-700 bg-neutral-50 dark:bg-neutral-800 text-neutral-500 dark:text-neutral-400 text-sm">
                   <i className="text-2xl las la-phone-volume"></i>
                 </span>
-                <Input className="!rounded-l-none" defaultValue="003 888 232" />
+                <Input
+                  className="!rounded-l-none"
+                  name="contactInfo.phone"
+                  type="phone"
+                  placeholder={user?.contactInfo?.phone || "003 888 232"}
+                  value={userData.contactInfo.phone}
+                  onChange={handleInputChange}
+                />
               </div>
             </div>
             {/* ---- */}
             <div>
               <Label>About Company</Label>
-              <Textarea className="mt-1.5" defaultValue="..." />
+              <Textarea
+                className="mt-1.5"
+                name="description"
+                placeholder={user?.description || "about company"}
+                value={userData.description}
+                onChange={handleInputChange}
+              />
             </div>
             <div className="pt-2">
-              <ButtonPrimary>Update account</ButtonPrimary>
+              <ButtonPrimary loading={isLoading} onClick={handleSubmit}>
+                Update account
+              </ButtonPrimary>
             </div>
           </div>
         </div>

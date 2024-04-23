@@ -89,11 +89,13 @@ export const updateUserByAddress = createAsyncThunk(
   async ({
     ethereumAddress,
     userData,
+    imageFile,
   }: {
-    ethereumAddress: string;
+    ethereumAddress: any;
     userData: Partial<User>;
+    imageFile: any;
   }) => {
-    return await updateUserByAddressAPI(ethereumAddress, userData);
+    return await updateUserByAddressAPI(ethereumAddress, userData, imageFile);
   }
 );
 

@@ -9,5 +9,5 @@ import user from "./schemaTypes/user";
 import SUser from "./schemaTypes/SUser";
 
 export const schema: { types: SchemaTypeDefinition[] } = {
-  types: [order, product, category, roles, supplier, user, SUser],
+  types: [order, product, category, roles, user, SUser],
 };

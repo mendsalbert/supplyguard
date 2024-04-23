@@ -35,7 +35,7 @@ export default defineType({
       name: "supplier",
       title: "Supplier",
       type: "reference",
-      to: [{ type: "supplier" }],
+      to: [{ type: "user" }],
       description: "The supplier this user belongs to.",
     }),
     defineField({

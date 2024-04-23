@@ -9,13 +9,11 @@ export default defineType({
       name: "username",
       title: "Username",
       type: "string",
-      validation: (Rule) => Rule.required().error("A username is required."),
     }),
     defineField({
       name: "fullName",
       title: "Full Name",
       type: "string",
-      validation: (Rule) => Rule.required().error("A full name is required."),
     }),
     defineField({
       name: "email",
@@ -100,6 +98,69 @@ export default defineType({
         collapsible: true, // Makes the object field collapsible in the studio for better UX
         collapsed: false, // Defaults to open (false) or closed (true)
       },
+    }),
+    defineField({
+      name: "isSupplier",
+      title: "Is Supplier",
+      description: "Check if the user is also a supplier",
+      type: "boolean",
+    }),
+    defineField({
+      name: "supplierName",
+      title: "Supplier Name",
+      type: "string",
+    }),
+    defineField({
+      name: "description",
+      title: "Description",
+      type: "text",
+    }),
+    defineField({
+      name: "image",
+      title: "Image",
+      type: "image",
+      options: {
+        hotspot: true,
+      },
+      fields: [
+        defineField({
+          name: "caption",
+          type: "string",
+          title: "Caption",
+        }),
+        defineField({
+          name: "alt",
+          type: "string",
+          title: "Alternative Text",
+          description: "Important for SEO and accessibility.",
+        }),
+      ],
+    }),
+    defineField({
+      name: "address",
+      title: "Address",
+      type: "string",
+    }),
+    defineField({
+      name: "contactInfo",
+      title: "Contact Information",
+      type: "object",
+      fields: [
+        defineField({
+          name: "phone",
+          title: "Phone",
+          type: "string",
+        }),
+        defineField({
+          name: "website",
+          title: "Website",
+          type: "url",
+          validation: (Rule) =>
+            Rule.uri({
+              scheme: ["http", "https"],
+            }).error("The URL must start with http:// or https://"),
+        }),
+      ],
     }),
   ],
 });

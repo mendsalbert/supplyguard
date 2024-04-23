@@ -13,24 +13,6 @@ import explore2Svg from "@/images/collections/explore6.svg";
 import explore1Png from "@/images/collections/explore1.png";
 import Heading from "@/components/Heading/Heading";
 
-const loginSocials = [
-  {
-    name: "Continue with Facebook",
-    href: "#",
-    icon: facebookSvg,
-  },
-  {
-    name: "Continue with Twitter",
-    href: "#",
-    icon: twitterSvg,
-  },
-  {
-    name: "Continue with Google",
-    href: "#",
-    icon: googleSvg,
-  },
-];
-
 const PageLogin = () => {
   return (
     <div className=" bg-[#f7f7f9] ">

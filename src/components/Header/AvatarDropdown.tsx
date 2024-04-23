@@ -6,8 +6,15 @@ import { Fragment } from "react";
 import Avatar from "@/shared/Avatar/Avatar";
 import SwitchDarkMode2 from "@/shared/SwitchDarkMode/SwitchDarkMode2";
 import Link from "next/link";
+import { Auth } from "@polybase/auth";
+
+const auth = typeof window !== "undefined" ? new Auth() : null;
 
 export default function AvatarDropdown() {
+  const signOut = () => {
+    auth?.signOut();
+  };
+
   return (
     <div className="AvatarDropdown ">
       <Popover className="relative">
@@ -214,7 +221,13 @@ export default function AvatarDropdown() {
                           />
                         </svg>
                       </div>
-                      <div className="ml-4">
+                      <div
+                        className="ml-4"
+                        onClick={() => {
+                          signOut();
+                          window.location.reload();
+                        }}
+                      >
                         <p className="text-sm font-medium ">{"Disconnect"}</p>
                       </div>
                     </Link>

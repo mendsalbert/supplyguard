@@ -1,4 +1,5 @@
-import React, { FC } from "react";
+"use client";
+import React, { FC, useState } from "react";
 import NcImage from "@/shared/NcImage/NcImage";
 import explore1Svg from "@/images/collections/explore1.svg";
 import {
@@ -10,6 +11,10 @@ import Image, { StaticImageData } from "next/image";
 import Link from "next/link";
 import ButtonPrimary from "@/shared/Button/ButtonPrimary";
 import ButtonSecondary from "@/shared/Button/ButtonSecondary";
+import { Auth } from "@polybase/auth";
+import { useAppDispatch, useAppSelector } from "@/app/store";
+
+import { addUser, selectAllUsers, selectCurrentUser } from "@/features/user";
 
 export interface CardCategory4Props {
   className?: string;
@@ -22,6 +27,7 @@ export interface CardCategory4Props {
   client?: boolean;
   supplier?: boolean;
 }
+const auth = typeof window !== "undefined" ? new Auth() : null;
 
 const OnBoardCardCategory: FC<CardCategory4Props> = ({
   className = "",
@@ -34,6 +40,32 @@ const OnBoardCardCategory: FC<CardCategory4Props> = ({
   client,
   supplier,
 }) => {
+  const dispatch = useAppDispatch();
+  const [isLoading, setisLoading] = useState(false);
+
+  const signIn = () => {
+    // setisLoading(true);
+    auth?.signIn().then((res) => {
+      dispatch(
+        addUser({
+          isSupplier: name === "Client" ? false : true,
+          ethereumAddress: res?.userId,
+        })
+      );
+      // store address in localstorage
+      console.log(res);
+      // setisLoading(false);
+    });
+  };
+
+  const signOut = () => {
+    auth?.signOut();
+  };
+
+  const sign = () => {
+    auth?.ethPersonalSign("approve");
+  };
+
   return (
     <div
       className={` relative w-full aspect-w-2 aspect-h-2 h-0 rounded-3xl overflow-hidden bg-white dark:bg-neutral-900 group hover:nc-shadow-lg transition-shadow ${className}`}
@@ -73,7 +105,17 @@ const OnBoardCardCategory: FC<CardCategory4Props> = ({
             <h2 className={`text-2xl sm:text-3xl font-semibold`}>{name}</h2>
           </div>
 
-          <ButtonSecondary>Connect</ButtonSecondary>
+          <ButtonSecondary
+            loading={isLoading}
+            onClick={() => {
+              signIn();
+              //add is an admin here
+              window.location.href = "/account";
+            }}
+          >
+            Connect
+          </ButtonSecondary>
+
           {/* <Link
             href={"/collection"}
             className="flex items-center text-sm font-medium group-hover:text-primary-500 transition-colors"

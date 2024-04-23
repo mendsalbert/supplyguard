@@ -79,5 +79,11 @@ export default defineType({
         }),
       ],
     }),
+    defineField({
+      name: "isSupplier",
+      title: "Is Supplier",
+      type: "boolean",
+      description: "Is this user a supplier?",
+    }),
   ],
 });

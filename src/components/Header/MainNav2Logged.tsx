@@ -1,23 +1,47 @@
 "use client";
 
-import React, { createRef, FC, useState } from "react";
+import React, { createRef, FC, useState, useEffect } from "react";
 import Logo from "@/shared/Logo/Logo";
 import MenuBar from "@/shared/MenuBar/MenuBar";
 import AvatarDropdown from "./AvatarDropdown";
 import Navigation from "@/shared/Navigation/Navigation";
 import CartDropdown from "./CartDropdown";
 import { XMarkIcon } from "@heroicons/react/24/outline";
-import { useRouter } from "next/navigation";
 import LangDropdown from "./LangDropdown";
 import ButtonPrimary from "@/shared/Button/ButtonPrimary";
 import ButtonSecondary from "@/shared/Button/ButtonSecondary";
+import { Auth } from "@polybase/auth";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 export interface MainNav2LoggedProps {}
+
+const auth = typeof window !== "undefined" ? new Auth() : null;
 
 const MainNav2Logged: FC<MainNav2LoggedProps> = () => {
   const inputRef = createRef<HTMLInputElement>();
   const [showSearchForm, setShowSearchForm] = useState(false);
   const router = useRouter();
+
+  const [isOnboarded, setIsOnboarded] = useState<boolean | null>(null); // Correct naming and type
+  const [isAuthenticated, setIsAuthenticated] = useState<boolean | null>(null);
+
+  useEffect(() => {
+    auth?.onAuthUpdate((authState) => {
+      setIsAuthenticated(!!authState); // Directly set isAuthenticated to boolean based on authState presence
+    });
+  }, []);
+
+  useEffect(() => {
+    const onboard = localStorage.getItem("isOnboard") === "true"; // Ensure you handle string appropriately
+    setIsOnboarded(onboard);
+  }, []);
+
+  const signIn = () => {
+    auth?.signIn().then((res) => {
+      console.log(res);
+    });
+  };
 
   const renderMagnifyingGlassIcon = () => {
     return (
@@ -74,6 +98,41 @@ const MainNav2Logged: FC<MainNav2LoggedProps> = () => {
     );
   };
 
+  const renderConnectButton = () => (
+    <div
+      onClick={() => {
+        localStorage.setItem("isOnboard", JSON.stringify(true));
+        router.push("/onboard");
+      }}
+      className="hover:cursor-pointer rounded-full py-2 px-7 border border-slate-300 dark:border-slate-700"
+    >
+      Connect
+    </div>
+  );
+  const renderConnectToButton = () => (
+    <div
+      onClick={() => {
+        signIn();
+      }}
+      className="hover:cursor-pointer rounded-full py-2 px-7 border border-slate-300 dark:border-slate-700"
+    >
+      Connect to
+    </div>
+  );
+  // const renderContent = () => (
+  //   <div className="h-20 flex justify-between">
+  //     {/* Content rendering logic */}
+  //     {isAuthenticated ? (
+  //       <>
+  //         {showSearchForm ? renderSearchForm() : <Navigation />}
+  //         <AvatarDropdown />
+  //         <CartDropdown />
+  //       </>
+  //     ) : (
+  //       <>{isOnboarded ? null : renderConnectButton()}</>
+  //     )}
+  //   </div>
+  // );
   const renderContent = () => {
     return (
       <div className="h-20 flex justify-between">
@@ -90,23 +149,22 @@ const MainNav2Logged: FC<MainNav2LoggedProps> = () => {
         </div>
 
         <div className="flex-1 flex items-center justify-end text-slate-700 dark:text-slate-100">
-          {/* {!showSearchForm && <LangDropdown />} */}
-          {!showSearchForm && (
-            <button
-              className="hidden lg:flex w-10 h-10 sm:w-12 sm:h-12 rounded-full text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 focus:outline-none items-center justify-center"
-              onClick={() => setShowSearchForm(!showSearchForm)}
-            >
-              {renderMagnifyingGlassIcon()}
-            </button>
+          {isAuthenticated ? (
+            <>
+              {!showSearchForm && (
+                <button
+                  className="hidden lg:flex w-10 h-10 sm:w-12 sm:h-12 rounded-full text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 focus:outline-none items-center justify-center"
+                  onClick={() => setShowSearchForm(!showSearchForm)}
+                >
+                  {renderMagnifyingGlassIcon()}
+                </button>
+              )}
+              <AvatarDropdown />
+              <CartDropdown />
+            </>
+          ) : (
+            <>{isOnboarded ? renderConnectToButton() : renderConnectButton()}</>
           )}
-          <AvatarDropdown />
-          <CartDropdown />
-          <div
-            onClick={() => {}}
-            className="hover:cursor-pointer rounded-full py-2 px-7 border border-slate-300 dark:border-slate-700 "
-          >
-            connect{" "}
-          </div>
         </div>
       </div>
     );

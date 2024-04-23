@@ -3,62 +3,75 @@
 import { Route } from "@/routers/types";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import React from "react";
+import React, { useEffect } from "react";
 import { FC } from "react";
+import { useAppSelector, useAppDispatch } from "../store";
+import { fetchUserByAddress } from "@/features/user";
+import { Auth } from "@polybase/auth";
+
+const auth = typeof window !== "undefined" ? new Auth() : null;
 
 export interface CommonLayoutProps {
   children?: React.ReactNode;
 }
 
-const pages: {
-  name: string;
-  link: Route;
-}[] = [
-  {
-    name: "Account info",
-    link: "/account",
-  },
-  {
-    name: "Save lists",
-    link: "/account-savelists",
-  },
-  {
-    name: " My order",
-    link: "/account-order",
-  },
-  {
-    name: "Owned Art",
-    link: "/account-arts",
-  },
-];
-
-const Adminpages: {
-  name: string;
-  link: Route;
-}[] = [
-  {
-    name: "Dashboard",
-    link: "/admin-account-dashboard",
-  },
-  {
-    name: "Business info",
-    link: "/admin-account",
-  },
-  {
-    name: "Manage Products",
-    link: "/admin-account-products",
-  },
-  {
-    name: " Manage Roles",
-    link: "/admin-account-manage-roles",
-  },
-  {
-    name: "Owned Art",
-    link: "/admin-account-arts",
-  },
-];
 const CommonLayout: FC<CommonLayoutProps> = ({ children }) => {
   const pathname = usePathname();
+  const dispatch = useAppDispatch();
+  const user = useAppSelector((state) => state.users.currentUser) as any;
+
+  useEffect(() => {
+    dispatch(fetchUserByAddress("0x5b29f4a7c1715ef2f974f21216fffb1834a33f04"));
+  }, [dispatch]);
+
+  const pages: {
+    name: string;
+    link: Route;
+  }[] = [
+    {
+      name: "Account info",
+      link: "/account",
+    },
+    {
+      name: "Save lists",
+      link: "/account-savelists",
+    },
+    {
+      name: " My order",
+      link: "/account-order",
+    },
+    {
+      name: "Owned Art",
+      link: "/account-arts",
+    },
+  ];
+
+  const Adminpages: {
+    name: string;
+    link: Route;
+  }[] = [
+    {
+      name: "Dashboard",
+      link: "/admin-account-dashboard",
+    },
+    {
+      name: "Business info",
+      link: "/admin-account",
+    },
+    {
+      name: "Manage Products",
+      link: "/admin-account-products",
+    },
+    {
+      name: " Manage Roles",
+      link: "/admin-account-manage-roles",
+    },
+    {
+      name: "Owned Art",
+      link: "/admin-account-arts",
+    },
+  ];
+  console.log(user?.isSupplier);
 
   return (
     <div className="nc-AccountCommonLayout container">
@@ -76,21 +89,37 @@ const CommonLayout: FC<CommonLayoutProps> = ({ children }) => {
           <hr className="mt-10 border-slate-200 dark:border-slate-700"></hr>
 
           <div className="flex space-x-8 md:space-x-14 overflow-x-auto hiddenScrollbar">
-            {Adminpages.map((item, index) => {
-              return (
-                <Link
-                  key={index}
-                  href={item.link}
-                  className={`block py-5 md:py-8 border-b-2 flex-shrink-0 text-sm sm:text-base ${
-                    pathname === item.link
-                      ? "border-primary-500 font-medium text-slate-900 dark:text-slate-200"
-                      : "border-transparent text-slate-500 dark:text-slate-400 hover:text-slate-800 dark:hover:text-slate-200"
-                  }`}
-                >
-                  {item.name}
-                </Link>
-              );
-            })}
+            {
+              user?.isSupplier === true
+                ? Adminpages.map((item, index) => (
+                    <Link
+                      key={index}
+                      href={item.link}
+                      className={`block py-5 md:py-8 border-b-2 flex-shrink-0 text-sm sm:text-base ${
+                        pathname === item.link
+                          ? "border-primary-500 font-medium text-slate-900 dark:text-slate-200"
+                          : "border-transparent text-slate-500 dark:text-slate-400 hover:text-slate-800 dark:hover:text-slate-200"
+                      }`}
+                    >
+                      {item.name}
+                    </Link>
+                  ))
+                : user?.isSupplier === false
+                ? pages.map((item, index) => (
+                    <Link
+                      key={index}
+                      href={item.link}
+                      className={`block py-5 md:py-8 border-b-2 flex-shrink-0 text-sm sm:text-base ${
+                        pathname === item.link
+                          ? "border-primary-500 font-medium text-slate-900 dark:text-slate-200"
+                          : "border-transparent text-slate-500 dark:text-slate-400 hover:text-slate-800 dark:hover:text-slate-200"
+                      }`}
+                    >
+                      {item.name}
+                    </Link>
+                  ))
+                : null // Or handle the case when neither condition is true
+            }
           </div>
           <hr className="border-slate-200 dark:border-slate-700"></hr>
         </div>

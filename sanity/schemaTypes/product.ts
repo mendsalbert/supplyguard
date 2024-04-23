@@ -46,7 +46,7 @@ export default defineType({
       name: "supplier",
       title: "Supplier",
       type: "reference",
-      to: [{ type: "supplier" }],
+      to: [{ type: "user" }],
     }),
     defineField({
       name: "smartContractAddress",

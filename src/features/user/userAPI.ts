@@ -49,3 +49,23 @@ export const fetchUserByAddress = async (ethereumAddress: string) => {
     throw new Error("Failed to fetch user by address");
   }
 };
+
+// userAPI.ts
+export const updateUserByAddress = async (
+  ethereumAddress: string,
+  userData: Partial<User>
+) => {
+  try {
+    const query = `*[_type == "user" && ethereumAddress == '${ethereumAddress}']`;
+    const user = await client.fetch(query, { ethereumAddress });
+    if (user && user._id) {
+      const result = await client.patch(user._id).set(userData).commit();
+      return result;
+    } else {
+      throw new Error("User not found");
+    }
+  } catch (error) {
+    console.error("Failed to update user by address:", error);
+    throw new Error("Failed to update user by address");
+  }
+};

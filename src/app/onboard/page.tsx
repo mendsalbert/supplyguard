@@ -1,12 +1,4 @@
 import React, { FC } from "react";
-import facebookSvg from "@/images/Facebook.svg";
-import twitterSvg from "@/images/Twitter.svg";
-import googleSvg from "@/images/Google.svg";
-import Input from "@/shared/Input/Input";
-import ButtonPrimary from "@/shared/Button/ButtonPrimary";
-import Image from "next/image";
-import Link from "next/link";
-import SectionGridMoreExplore from "@/components/SectionGridMoreExplore/SectionGridMoreExplore";
 import OnBoardCardCategory from "@/components/CardCategories/OnBoardCardCategory";
 import explore1Svg from "@/images/collections/explore8.svg";
 import explore2Svg from "@/images/collections/explore6.svg";

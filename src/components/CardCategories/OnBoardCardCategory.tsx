@@ -1,15 +1,12 @@
 "use client";
 import React, { FC, useState } from "react";
-import NcImage from "@/shared/NcImage/NcImage";
 import explore1Svg from "@/images/collections/explore1.svg";
 import {
-  ArrowRightIcon,
   BuildingOffice2Icon,
   UserCircleIcon,
 } from "@heroicons/react/24/outline";
 import Image, { StaticImageData } from "next/image";
-import Link from "next/link";
-import ButtonPrimary from "@/shared/Button/ButtonPrimary";
+
 import ButtonSecondary from "@/shared/Button/ButtonSecondary";
 import { Auth } from "@polybase/auth";
 import { useAppDispatch, useAppSelector } from "@/app/store";
@@ -43,19 +40,53 @@ const OnBoardCardCategory: FC<CardCategory4Props> = ({
   const dispatch = useAppDispatch();
   const [isLoading, setisLoading] = useState(false);
 
-  const signIn = () => {
-    // setisLoading(true);
-    auth?.signIn().then((res) => {
-      dispatch(
+  // const signIn = () => {
+  //   // setisLoading(true);
+  //   auth?.signIn().then((res) => {
+  //     dispatch(
+  //       addUser({
+  //         isSupplier: name === "Client" ? false : true,
+  //         ethereumAddress: res?.userId,
+  //       })
+  //     );
+
+  //     client
+  //       ? (window.location.href = "/account")
+  //       : (window.location.href = "/admin-account");
+  //     // store address in localstorage
+  //     console.log(res);
+  //     // setisLoading(false);
+  //   });
+  // };
+
+  const signIn = async () => {
+    try {
+      // Starting the loading state
+      setisLoading(true);
+
+      const res = await auth?.signIn();
+
+      // Dispatch the addUser redux action and wait for it to complete
+      await dispatch(
         addUser({
           isSupplier: name === "Client" ? false : true,
           ethereumAddress: res?.userId,
         })
-      );
-      // store address in localstorage
+      ).unwrap();
+
+      // Determine the redirect based on the user type
+      const redirectPath = client ? "/account" : "/admin-account";
+      window.location.href = redirectPath;
+
+      // Log the response for debugging
       console.log(res);
-      // setisLoading(false);
-    });
+    } catch (error) {
+      // Handle errors such as authentication failure or dispatch failure
+      console.error("Login failed:", error);
+    } finally {
+      // Stop the loading state regardless of the outcome
+      setisLoading(false);
+    }
   };
 
   const signOut = () => {
@@ -86,14 +117,6 @@ const OnBoardCardCategory: FC<CardCategory4Props> = ({
                 className={`w-16 h-16 rounded-full overflow-hidden z-0 `}
               />
             )}
-
-            {/* <NcImage
-              alt=""
-              src={featuredImage}
-              containerClassName={`w-24 h-24 rounded-full overflow-hidden z-0 ${color}`}
-              width={80}
-              height={80}
-            /> */}
           </div>
 
           <div className="text-center">
@@ -109,24 +132,12 @@ const OnBoardCardCategory: FC<CardCategory4Props> = ({
             loading={isLoading}
             onClick={() => {
               signIn();
-              //add is an admin here
-              window.location.href = "/account";
             }}
           >
             Connect
           </ButtonSecondary>
-
-          {/* <Link
-            href={"/collection"}
-            className="flex items-center text-sm font-medium group-hover:text-primary-500 transition-colors"
-          >
-            <span>See Collection</span>
-            <ArrowRightIcon className="w-4 h-4 ml-2.5" />
-          </Link> */}
         </div>
       </div>
-
-      {/* <Link href={"/collection"}></Link> */}
     </div>
   );
 };

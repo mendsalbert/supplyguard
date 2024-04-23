@@ -5,6 +5,7 @@ import {
   addUser as addUserAPI,
   fetchUser as fetchUserAPI,
   fetchUserByAddress as fetchUserByAddressAPI,
+  updateUserByAddress as updateUserByAddressAPI,
 } from "./userAPI";
 interface ShippingAddress {
   street: string;
@@ -83,6 +84,19 @@ export const getSingleUser = createAsyncThunk(
   }
 );
 
+export const updateUserByAddress = createAsyncThunk(
+  "users/updateUserByAddress",
+  async ({
+    ethereumAddress,
+    userData,
+  }: {
+    ethereumAddress: string;
+    userData: Partial<User>;
+  }) => {
+    return await updateUserByAddressAPI(ethereumAddress, userData);
+  }
+);
+
 const userSlice = createSlice({
   name: "users",
   initialState,
@@ -121,6 +135,26 @@ const userSlice = createSlice({
       )
       .addCase(fetchUserByAddress.rejected, (state, action) => {
         state.error = action.error.message || "Failed to fetch user by address";
+        state.status = "failed";
+      })
+      .addCase(updateUserByAddress.pending, (state) => {
+        state.status = "loading";
+      })
+      .addCase(
+        updateUserByAddress.fulfilled,
+        (state, action: PayloadAction<any>) => {
+          const index = state.users.findIndex(
+            (user) => user.ethereumAddress === action.payload.ethereumAddress
+          );
+          if (index !== -1) {
+            state.users[index] = action.payload;
+          }
+          state.status = "succeeded";
+        }
+      )
+      .addCase(updateUserByAddress.rejected, (state, action) => {
+        state.error =
+          action.error.message || "Failed to update user by address";
         state.status = "failed";
       });
   },

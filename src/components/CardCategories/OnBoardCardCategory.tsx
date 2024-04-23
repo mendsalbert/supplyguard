@@ -71,6 +71,7 @@ const OnBoardCardCategory: FC<CardCategory4Props> = ({
           ethereumAddress: res?.userId,
         })
       ).unwrap();
+      localStorage.setItem("address", JSON.stringify(res?.userId));
 
       // Determine the redirect based on the user type
       const redirectPath = client ? "/account" : "/admin-account";

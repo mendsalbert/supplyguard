@@ -12,11 +12,15 @@ import { updateUserByAddress } from "@/features/user";
 import { Auth } from "@polybase/auth";
 import imageUrlBuilder from "@sanity/image-url";
 import { client } from "@/api/client";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const auth = typeof window !== "undefined" ? new Auth() : null;
 // use the get user by address, to fill the users with the defualt space
 
 const AccountPage = () => {
+  const notify = () => toast("Wow so easy !");
+
   const dispatch = useAppDispatch();
   const [isLoading, setIsLoading] = useState(false);
   const [userData, setUserData] = useState({
@@ -64,11 +68,9 @@ const AccountPage = () => {
   };
 
   const handleSubmit = async () => {
+    const id = toast.loading("Updating...");
+
     setIsLoading(true);
-    // console.log(auth?.state?.userId);
-    // console.log(userData);
-    // console.log(imageFile);
-    // console.log(isLoading);
 
     try {
       const updatedUser = await dispatch(
@@ -80,10 +82,39 @@ const AccountPage = () => {
       ).unwrap();
 
       console.log("User updated:", updatedUser);
+      toast.update(id, {
+        render: "All is good :) Records Updated!",
+        type: "success",
+        isLoading: false,
+      });
       setIsLoading(false);
-      // TODO://clear input filed
+      setUserData({
+        supplierName: "",
+        description: "",
+        address: "",
+        email: "",
+        contactInfo: {
+          phone: "",
+          website: "",
+        },
+      });
     } catch (error) {
       console.error(error);
+      toast.update(id, {
+        render: "Ops! Something went wrong",
+        type: "error",
+        isLoading: false,
+      });
+      setUserData({
+        supplierName: "",
+        description: "",
+        address: "",
+        email: "",
+        contactInfo: {
+          phone: "",
+          website: "",
+        },
+      });
       setIsLoading(false);
     }
   };
@@ -97,6 +128,8 @@ const AccountPage = () => {
       : null;
   return (
     <div className={`nc-AccountPage `}>
+      <ToastContainer hideProgressBar={false} />
+
       <div className="space-y-10 sm:space-y-12">
         {/* HEADING */}
         <h2 className="text-2xl sm:text-3xl font-semibold">

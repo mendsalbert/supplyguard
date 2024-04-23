@@ -39,6 +39,7 @@ const MainNav2Logged: FC<MainNav2LoggedProps> = () => {
 
   const signIn = () => {
     auth?.signIn().then((res) => {
+      localStorage.setItem("address", JSON.stringify(res?.userId));
       console.log(res);
     });
   };

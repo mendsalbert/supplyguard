@@ -64,7 +64,7 @@ const initialState: UserState = {
 
 export const fetchUserByAddress = createAsyncThunk(
   "users/fetchUserByAddress",
-  async (ethereumAddress: string) => {
+  async (ethereumAddress: any) => {
     return await fetchUserByAddressAPI(ethereumAddress);
   }
 );

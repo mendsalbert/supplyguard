@@ -21,8 +21,9 @@ const CommonLayout: FC<CommonLayoutProps> = ({ children }) => {
   const user = useAppSelector((state) => state.users.currentUser) as any;
 
   useEffect(() => {
-    dispatch(fetchUserByAddress("0x5b29f4a7c1715ef2f974f21216fffb1834a33f04"));
-  }, [dispatch]);
+    const address = localStorage.getItem("address")
+    dispatch(fetchUserByAddress(auth?.state?.userId));
+  }, []);
 
   const pages: {
     name: string;
@@ -71,7 +72,6 @@ const CommonLayout: FC<CommonLayoutProps> = ({ children }) => {
       link: "/admin-account-arts",
     },
   ];
-  console.log(user?.isSupplier);
 
   return (
     <div className="nc-AccountCommonLayout container">

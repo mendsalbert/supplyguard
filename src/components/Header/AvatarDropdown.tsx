@@ -1,5 +1,5 @@
 "use client";
-
+import React, { FC, useState, useEffect } from "react";
 import { Popover, Transition } from "@/app/headlessui";
 import { avatarImgs } from "@/contains/fakeData";
 import { Fragment } from "react";
@@ -11,12 +11,19 @@ import { useAppDispatch, useAppSelector } from "@/app/store";
 import imageUrlBuilder from "@sanity/image-url";
 import { client } from "@/api/client";
 import truncateEthAddress from "truncate-eth-address";
+import { fetchUserByAddress } from "@/features/user";
 
 const auth = typeof window !== "undefined" ? new Auth() : null;
 
 export default function AvatarDropdown() {
   const user = useAppSelector((state) => state.users.currentUser) as any;
   const builder = imageUrlBuilder(client);
+  const dispatch = useAppDispatch();
+
+  useEffect(() => {
+    const address = localStorage.getItem("address") as any;
+    dispatch(fetchUserByAddress(JSON.parse(address)));
+  }, [dispatch]);
 
   function urlFor(source: any) {
     return builder.image(source);
@@ -24,6 +31,7 @@ export default function AvatarDropdown() {
 
   const signOut = () => {
     auth?.signOut();
+    window.location.href = "/";
   };
 
   const imageUrl =
@@ -93,7 +101,7 @@ export default function AvatarDropdown() {
 
                     {/* ------------------ 1 --------------------- */}
                     <Link
-                      href={user.isSupplier ? "/admin-account" : "/account"}
+                      href={user?.isSupplier ? "/admin-account" : "/account"}
                       className="flex items-center p-2 -m-3 transition duration-150 ease-in-out rounded-lg hover:bg-neutral-100 dark:hover:bg-neutral-700 focus:outline-none focus-visible:ring focus-visible:ring-orange-500 focus-visible:ring-opacity-50"
                       onClick={() => close()}
                     >
@@ -248,7 +256,7 @@ export default function AvatarDropdown() {
                         className="ml-4"
                         onClick={() => {
                           signOut();
-                          window.location.reload();
+                          window.location.href = "/";
                         }}
                       >
                         <p className="text-sm font-medium ">{"Disconnect"}</p>

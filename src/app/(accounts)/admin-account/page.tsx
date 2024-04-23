@@ -1,6 +1,6 @@
 "use client";
 import Label from "@/components/Label/Label";
-import React, { FC, useState } from "react";
+import React, { FC, useState, useEffect } from "react";
 import ButtonPrimary from "@/shared/Button/ButtonPrimary";
 import Input from "@/shared/Input/Input";
 import Select from "@/shared/Select/Select";
@@ -8,7 +8,7 @@ import Textarea from "@/shared/Textarea/Textarea";
 import { avatarImgs } from "@/contains/fakeData";
 import Image from "next/image";
 import { useAppDispatch, useAppSelector } from "@/app/store";
-import { updateUserByAddress } from "@/features/user";
+import { fetchUserByAddress, updateUserByAddress } from "@/features/user";
 import { Auth } from "@polybase/auth";
 import imageUrlBuilder from "@sanity/image-url";
 import { client } from "@/api/client";
@@ -20,9 +20,11 @@ const auth = typeof window !== "undefined" ? new Auth() : null;
 
 const AccountPage = () => {
   const notify = () => toast("Wow so easy !");
+  const user = useAppSelector((state) => state.users.currentUser) as any;
 
   const dispatch = useAppDispatch();
   const [isLoading, setIsLoading] = useState(false);
+
   const [userData, setUserData] = useState({
     supplierName: "",
     description: "",
@@ -33,6 +35,23 @@ const AccountPage = () => {
       website: "",
     },
   });
+
+  useEffect(() => {
+    // Check if the user data is available before setting it
+    if (user) {
+      setUserData({
+        supplierName: user.supplierName || "",
+        description: user.description || "",
+        address: user.address || "",
+        email: user.email || "",
+        contactInfo: {
+          phone: user.contactInfo?.phone || "",
+          website: user.contactInfo?.website || "",
+        },
+      });
+    }
+  }, [user]);
+
   const [imageFile, setImageFile] = useState(null);
   const ethereumAddress = auth?.state?.userId;
 
@@ -83,7 +102,7 @@ const AccountPage = () => {
 
       console.log("User updated:", updatedUser);
       toast.update(id, {
-        render: "All is good :) Records Updated!",
+        render: "All is good :) Account Updated!",
         type: "success",
         isLoading: false,
       });
@@ -119,7 +138,7 @@ const AccountPage = () => {
     }
   };
 
-  const user = useAppSelector((state) => state.users.currentUser) as any;
+  console.log(user);
 
   // Safe check and fallback
   const imageUrl =

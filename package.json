@@ -46,6 +46,7 @@
     "sanity": "^3.38.0",
     "sass": "^1.69.5",
     "styled-components": "^6.1.8",
+    "truncate-eth-address": "^1.0.2",
     "typescript": "5.2.2"
   },
   "devDependencies": {

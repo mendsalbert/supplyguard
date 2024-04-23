@@ -8,6 +8,7 @@ import { FC } from "react";
 import { useAppSelector, useAppDispatch } from "../store";
 import { fetchUserByAddress } from "@/features/user";
 import { Auth } from "@polybase/auth";
+import truncateEthAddress from "truncate-eth-address";
 
 const auth = typeof window !== "undefined" ? new Auth() : null;
 
@@ -81,9 +82,9 @@ const CommonLayout: FC<CommonLayoutProps> = ({ children }) => {
             <h2 className="text-3xl xl:text-4xl font-semibold">Account</h2>
             <span className="block mt-4 text-neutral-500 dark:text-neutral-400 text-base sm:text-lg">
               <span className="text-slate-900 dark:text-slate-200 font-semibold">
-                mends.eth,
+                {user?.supplierName || user?.name},
               </span>{" "}
-              mendsalbert@gmail.com · 0x99e97...4f53f
+              {user?.email} · {truncateEthAddress(user?.ethereumAddress || "")}
             </span>
           </div>
           <hr className="mt-10 border-slate-200 dark:border-slate-700"></hr>

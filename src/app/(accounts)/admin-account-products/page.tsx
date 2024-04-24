@@ -123,7 +123,10 @@ const AccountOrder = () => {
                 <PencilIcon className="w-4 h-4 " />
               </span>
               <span
-                onClick={openModalDelete}
+                onClick={() => {
+                  openModalDelete();
+                  setProductId(_id);
+                }}
                 className="border text-red-500 cursor-pointer border-red-500 rounded-md p-1"
               >
                 <TrashIcon className="w-4 h-4 " />
@@ -179,6 +182,7 @@ const AccountOrder = () => {
       <ModalProductDelete
         show={isDeleting}
         onCloseModalDelete={closeModalDelete}
+        productId={productId}
       />
       <div className="flex flex-row items-center justify-between">
         <h2 className="text-2xl sm:text-3xl font-semibold">

@@ -52,8 +52,12 @@ const ModalAddProduct: FC<ModalEditProps> = ({ show, onCloseModalEdit }) => {
             </div>
 
             <div>
-              <Label>Price</Label>
-              <Input className="mt-1.5" placeholder="$7.99" type="number" />
+              <Label>Inventory Quantity</Label>
+              <Input className="mt-1.5" placeholder="54" type="number" />
+            </div>
+            <div>
+              <Label>SKU</Label>
+              <Input className="mt-1.5" placeholder="YM754SG" type="text" />
             </div>
 
             <div>

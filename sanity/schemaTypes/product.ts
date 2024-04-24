@@ -24,7 +24,7 @@ export default defineType({
     }),
     defineField({
       name: "price",
-      title: "Price in ETH",
+      title: "Price in USD",
       type: "number",
       validation: (Rule) => Rule.required().min(0),
     }),
@@ -65,13 +65,11 @@ export default defineType({
           { title: "Discontinued", value: "discontinued" },
         ],
       },
-      validation: (Rule) => Rule.required(),
     }),
     defineField({
       name: "inventoryQuantity",
       title: "Inventory Quantity",
       type: "number",
-      validation: (Rule) => Rule.min(0),
     }),
   ],
 });

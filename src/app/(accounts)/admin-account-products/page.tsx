@@ -29,7 +29,7 @@ const AccountOrder = () => {
   }, [dispatch]);
 
   console.log("productsBySupplier", productsBySupplier);
-
+  const [productId, setProductId] = useState("");
   const [isAdding, setIsAdding] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
@@ -74,10 +74,11 @@ const AccountOrder = () => {
   };
 
   const renderProductItem = (product: any, index: number) => {
-    const { image, name, category } = product;
+    const { image, name, category, status, inventoryQuantity, price, _id } =
+      product;
     return (
       <div key={index} className="flex py-4 sm:py-7 last:pb-0 first:pt-0">
-        <div className="relative h-24 w-24 flex-shrink-0 overflow-hidden rounded-xl bg-slate-100">
+        <div className="relative h-28 w-28 flex-shrink-0 overflow-hidden rounded-xl bg-slate-100">
           <Image
             fill
             sizes="100px"
@@ -95,8 +96,11 @@ const AccountOrder = () => {
                 <p className="mt-1 text-sm text-slate-500 dark:text-slate-400">
                   <span>{category?.name}</span>
                 </p>
-                <p className="mt-1 text-sm text-green-500 dark:text-green-400">
-                  <span>{"In stock"}</span>
+                <p className="mt-0 text-sm  text-green-500">
+                  <span>{status}</span>
+                </p>
+                <p className="mt-0 text-sm  text-slate-500">
+                  <span>${price}</span>
                 </p>
               </div>
             </div>
@@ -105,12 +109,15 @@ const AccountOrder = () => {
             <p className="text-gray-500 dark:text-slate-400 flex items-center">
               <span className="hidden sm:inline-block">Qty</span>
               <span className="inline-block sm:hidden">x</span>
-              <span className="ml-2">1</span>
+              <span className="ml-2">{inventoryQuantity}</span>
             </p>
 
             <div className="flex items-center space-x-2">
               <span
-                onClick={openModalEdit}
+                onClick={() => {
+                  openModalEdit();
+                  setProductId(_id);
+                }}
                 className="border text-green-500 cursor-pointer border-green-500 rounded-md p-1"
               >
                 <PencilIcon className="w-4 h-4 " />
@@ -164,7 +171,11 @@ const AccountOrder = () => {
     <div className="space-y-10 sm:space-y-12">
       {/* HEADING */}
       <ModalAddProduct show={isAdding} onCloseModalEdit={closeModalAdd} />
-      <ModalEditProduct show={isEditing} onCloseModalEdit={closeModalEdit} />
+      <ModalEditProduct
+        show={isEditing}
+        onCloseModalEdit={closeModalEdit}
+        productId={productId}
+      />
       <ModalProductDelete
         show={isDeleting}
         onCloseModalDelete={closeModalDelete}

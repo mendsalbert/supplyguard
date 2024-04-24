@@ -87,3 +87,27 @@ export const deleteProduct = async (productId: any) => {
     throw error;
   }
 };
+
+export const getAllProductsFromSupplier = async (
+  supplierEthereumAddress: any
+) => {
+  // Replace 'supplierEthereumAddress' with the actual field name if different
+  const query = `
+    *[_type == "product" && supplier->ethereumAddress == ${supplierEthereumAddress}]{
+      ...,
+      "category": category->{
+        ...  
+      },
+      "supplier": supplier->{
+        ...  
+    }
+  `;
+
+  try {
+    const products = await client.fetch(query, { supplierEthereumAddress });
+    return products;
+  } catch (error) {
+    console.error("Error fetching products from supplier:", error);
+    throw error;
+  }
+};

@@ -19,6 +19,7 @@ import {
   fetchCategories,
   selectCategories,
 } from "@/features/category/categorySlice";
+import { addProduct } from "@/features/product";
 
 const auth = typeof window !== "undefined" ? new Auth() : null;
 
@@ -65,9 +66,14 @@ const ModalAddProduct: FC<ModalEditProps> = ({ show, onCloseModalEdit }) => {
     description: "",
     sku: "" as any,
     price: "",
-    about: "",
-    category: "",
-    Supplier: "",
+    category: {
+      _type: "reference",
+      _ref: "", // This is the ID of the selected category
+    },
+    supplier: {
+      _type: "reference",
+      _ref: "", // This is the ID of the selected supplier
+    },
     smartContractAddress: "",
     status: "",
     inventoryQuantity: "",
@@ -101,34 +107,32 @@ const ModalAddProduct: FC<ModalEditProps> = ({ show, onCloseModalEdit }) => {
 
   const handleSubmit = async () => {
     const id = toast.loading("Updating...");
-
     setIsLoading(true);
 
-    // try {
-    //   const updatedUser = await dispatch(
-    //     updateUserByAddress({
-    //       ethereumAddress: auth?.state?.userId,
-    //       userData,
-    //       imageFile,
-    //     })
-    //   ).unwrap();
+    try {
+      const onAddProduct = await dispatch(
+        addProduct({
+          productData,
+          imageFile,
+        })
+      ).unwrap();
 
-    //   console.log("User updated:", updatedUser);
-    //   toast.update(id, {
-    //     render: "All is good :) Account Updated!",
-    //     type: "success",
-    //     isLoading: false,
-    //   });
-    //   setIsLoading(false);
-    // } catch (error) {
-    //   console.error(error);
-    //   toast.update(id, {
-    //     render: "Ops! Something went wrong",
-    //     type: "error",
-    //     isLoading: false,
-    //   });
-    //   setIsLoading(false);
-    // }
+      console.log("User added:", onAddProduct);
+      toast.update(id, {
+        render: "All is good :) Product Added!",
+        type: "success",
+        isLoading: false,
+      });
+      setIsLoading(false);
+    } catch (error) {
+      console.error(error);
+      toast.update(id, {
+        render: "Ops! Something went wrong",
+        type: "error",
+        isLoading: false,
+      });
+      setIsLoading(false);
+    }
   };
 
   const generateSKU = (e: any) => {
@@ -139,13 +143,20 @@ const ModalAddProduct: FC<ModalEditProps> = ({ show, onCloseModalEdit }) => {
     const sku = `${nameslice}${priceslice}${inventoryQuantity}SG24`;
     setProductData((prevData) => ({
       ...prevData,
-      [sku]: sku,
+      sku: sku,
+      supplier: {
+        _type: "reference",
+        _ref: user?._id,
+      },
+      smartContractAddress: user?.ethereumAddress,
     }));
   };
-  // available,outOfStock,discontinued
+
   const renderContent = () => {
     return (
-      <form action="#">
+      <div>
+        <ToastContainer hideProgressBar={false} />
+
         <h3 className="text-lg pb-5 font-semibold text-neutral-900 dark:text-neutral-200">
           Add Product
         </h3>
@@ -189,8 +200,9 @@ const ModalAddProduct: FC<ModalEditProps> = ({ show, onCloseModalEdit }) => {
               <Label>SKU</Label>
               <Input
                 className="mt-1.5"
-                placeholder="YM754SG"
+                // placeholder="YM754SG"
                 type="text"
+                disabled
                 name="sku"
                 value={productData.sku}
               />
@@ -212,10 +224,30 @@ const ModalAddProduct: FC<ModalEditProps> = ({ show, onCloseModalEdit }) => {
 
             <div>
               <Label>Category</Label>
-              <Select className="mt-1.5" onChange={handleInputChange}>
+              <Select
+                className="mt-1.5"
+                name="category._ref"
+                onChange={handleInputChange}
+              >
+                <option value="">--- Select Category ---</option>
+
                 {categories?.map((category, index) => (
-                  <option value={category?._rev}>{category.name}</option>
+                  <option value={category._id}>{category.name}</option>
                 ))}
+              </Select>
+            </div>
+
+            <div>
+              <Label>Status</Label>
+              <Select
+                className="mt-1.5"
+                name="status"
+                onChange={handleInputChange}
+              >
+                <option value="">--- Select Status ---</option>
+                <option value="available">Available</option>
+                <option value="outOfStock">Out Of Stock</option>
+                <option value="discontinued">Discontinued</option>
               </Select>
             </div>
 
@@ -232,16 +264,18 @@ const ModalAddProduct: FC<ModalEditProps> = ({ show, onCloseModalEdit }) => {
           </div>
         </div>
         <div className="mt-4 space-x-3">
-          <ButtonPrimary type="submit">Submit</ButtonPrimary>
-          <ButtonSecondary
+          <ButtonPrimary
             type="button"
-            // onClick={onCloseModalEdit}
+            loading={isLoading}
             onClick={handleSubmit}
           >
+            Submit
+          </ButtonPrimary>
+          <ButtonSecondary type="button" onClick={onCloseModalEdit}>
             Cancel
           </ButtonSecondary>
         </div>
-      </form>
+      </div>
     );
   };
 

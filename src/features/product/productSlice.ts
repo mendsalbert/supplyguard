@@ -7,6 +7,7 @@ import {
   createProduct,
   editProduct,
   deleteProduct,
+  getAllProductsFromSupplier as getAllProductsFromSupplierAPI,
 } from "./productAPI";
 
 export interface Image {
@@ -32,12 +33,13 @@ export interface Product {
     _type: "reference";
     _ref: string;
   };
-  smartContractAddress?: string;
+  smartContractAddress?: any;
   status?: "available" | "outOfStock" | "discontinued";
   inventoryQuantity?: number;
 }
 
 interface ProductState {
+  productsBySupplier: Product[];
   products: Product[];
   currentProduct: Product | null;
   status: "idle" | "loading" | "succeeded" | "failed";
@@ -45,6 +47,7 @@ interface ProductState {
 }
 
 const initialState: ProductState = {
+  productsBySupplier: [],
   products: [],
   currentProduct: null,
   status: "idle",
@@ -65,13 +68,7 @@ export const fetchProduct = createAsyncThunk(
 
 export const addProduct = createAsyncThunk(
   "products/create",
-  async ({
-    productData,
-    imageFile,
-  }: {
-    productData: Product;
-    imageFile: any;
-  }) => {
+  async ({ productData, imageFile }: { productData: any; imageFile: any }) => {
     return await createProduct(productData, imageFile);
   }
 );
@@ -98,6 +95,12 @@ export const removeProduct = createAsyncThunk(
   }
 );
 
+export const fetchProductsFromSupplier = createAsyncThunk(
+  "products/fetchFromSupplier",
+  async (ethereumAddress: string) => {
+    return await getAllProductsFromSupplierAPI(ethereumAddress);
+  }
+);
 // Slice
 const productSlice = createSlice({
   name: "products",
@@ -137,10 +140,26 @@ const productSlice = createSlice({
           (product) => product._id !== action.payload
         );
         state.status = "succeeded";
+      })
+      .addCase(fetchProductsFromSupplier.pending, (state) => {
+        state.status = "loading";
+      })
+      .addCase(
+        fetchProductsFromSupplier.fulfilled,
+        (state, action: PayloadAction<Product[]>) => {
+          state.productsBySupplier = action.payload;
+          state.status = "succeeded";
+        }
+      )
+      .addCase(fetchProductsFromSupplier.rejected, (state, action) => {
+        state.error =
+          action.error.message || "Failed to fetch products from supplier";
+        state.status = "failed";
       });
   },
 });
-
+export const selectProductsBySupplier = (state: RootState) =>
+  state.products.productsBySupplier;
 export const selectAllProducts = (state: RootState) => state.products.products;
 export const selectCurrentProduct = (state: RootState) =>
   state.products.currentProduct;

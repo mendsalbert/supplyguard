@@ -7,6 +7,7 @@ interface Category {
   id: string;
   name: string;
   description?: string;
+  _rev?: any;
 }
 
 interface CategoryState {

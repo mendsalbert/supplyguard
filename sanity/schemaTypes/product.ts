@@ -58,13 +58,6 @@ export default defineType({
       name: "status",
       title: "Status",
       type: "string",
-      options: {
-        list: [
-          { title: "Available", value: "available" },
-          { title: "Out of Stock", value: "outOfStock" },
-          { title: "Discontinued", value: "discontinued" },
-        ],
-      },
     }),
     defineField({
       name: "inventoryQuantity",

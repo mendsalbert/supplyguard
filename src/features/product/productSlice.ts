@@ -20,10 +20,10 @@ export interface Image {
 
 export interface Product {
   _id?: string;
-  name: string;
+  name: any;
   description?: string;
   sku: string;
-  price: number;
+  price: any;
   image?: Image;
   category?: {
     _type: "reference";
@@ -35,7 +35,7 @@ export interface Product {
   };
   smartContractAddress?: any;
   status?: "available" | "outOfStock" | "discontinued";
-  inventoryQuantity?: number;
+  inventoryQuantity?: any;
 }
 
 interface ProductState {

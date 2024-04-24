@@ -70,6 +70,28 @@ const ModalEditProduct: FC<ModalEditProps> = ({
     dispatch(fetchProduct(productId));
   }, [dispatch, isLoading, productId]);
 
+  useEffect(() => {
+    // Check if the user data is available before setting it
+    if (currentProduct) {
+      setProductData({
+        name: currentProduct.name || "",
+        description: currentProduct.description || "",
+        sku: currentProduct.sku || "",
+        price: currentProduct.price || "",
+        category: {
+          _type: "reference",
+          _ref: currentProduct.category?._ref || "",
+        },
+        supplier: {
+          _type: "reference",
+          _ref: currentProduct.supplier?._ref || "",
+        },
+        smartContractAddress: currentProduct.smartContractAddress || "",
+        status: currentProduct.status || "",
+        inventoryQuantity: currentProduct.inventoryQuantity || "",
+      });
+    }
+  }, [currentProduct]);
   const [imageFile, setImageFile] = useState(null);
 
   const [productData, setProductData] = useState({

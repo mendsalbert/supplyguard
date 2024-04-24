@@ -91,23 +91,28 @@ export const deleteProduct = async (productId: any) => {
 export const getAllProductsFromSupplier = async (
   supplierEthereumAddress: any
 ) => {
-  // Replace 'supplierEthereumAddress' with the actual field name if different
   const query = `
-    *[_type == "product" && supplier->ethereumAddress == ${supplierEthereumAddress}]{
-      ...,
-      "category": category->{
-        ...  
-      },
-      "supplier": supplier->{
-        ...  
+  *[_type == "product" && supplier->ethereumAddress == $supplierEthereumAddress]{
+    ...,
+    "category": category->{
+      ...  // Specify the fields you want from the category
+    },
+    "supplier": supplier->{
+      ...  // Specify the fields you want from the supplier
     }
-  `;
+  }
+`;
 
+  const params = {
+    supplierEthereumAddress,
+  };
+
+  // Then use the query and params with your Sanity client to fetch the data
   try {
-    const products = await client.fetch(query, { supplierEthereumAddress });
+    const products = await client.fetch(query, params);
     return products;
   } catch (error) {
     console.error("Error fetching products from supplier:", error);
-    throw error;
+    throw error; // You can re-throw the error to be caught by the calling function
   }
 };

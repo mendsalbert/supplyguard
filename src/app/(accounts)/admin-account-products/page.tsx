@@ -10,8 +10,26 @@ import ButtonSecondary from "@/shared/Button/ButtonSecondary";
 import ButtonThird from "@/shared/Button/ButtonThird";
 import { PencilIcon, TrashIcon, XMarkIcon } from "@heroicons/react/24/outline";
 import Image from "next/image";
-import React, { useState } from "react";
+import React, { FC, useEffect, useRef, useState } from "react";
+import { useAppDispatch, useAppSelector } from "@/app/store";
+import {
+  fetchProductsFromSupplier,
+  selectProductsBySupplier,
+} from "@/features/product";
+import imageUrlBuilder from "@sanity/image-url";
+import { client } from "@/api/client";
+
 const AccountOrder = () => {
+  const dispatch = useAppDispatch();
+  const productsBySupplier = useAppSelector(selectProductsBySupplier);
+
+  useEffect(() => {
+    const address = localStorage.getItem("address") as any;
+    dispatch(fetchProductsFromSupplier(JSON.parse(address)));
+  }, [dispatch]);
+
+  console.log("productsBySupplier", productsBySupplier);
+
   const [isAdding, setIsAdding] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
@@ -21,6 +39,12 @@ const AccountOrder = () => {
   const closeModalAdd = () => setIsAdding(false);
   const closeModalEdit = () => setIsEditing(false);
   const closeModalDelete = () => setIsDeleting(false);
+
+  const builder = imageUrlBuilder(client);
+
+  function urlFor(source: any) {
+    return builder.image(source);
+  }
 
   const renderMagnifyingGlassIcon = () => {
     return (
@@ -50,14 +74,14 @@ const AccountOrder = () => {
   };
 
   const renderProductItem = (product: any, index: number) => {
-    const { image, name } = product;
+    const { image, name, category } = product;
     return (
       <div key={index} className="flex py-4 sm:py-7 last:pb-0 first:pt-0">
         <div className="relative h-24 w-24 flex-shrink-0 overflow-hidden rounded-xl bg-slate-100">
           <Image
             fill
             sizes="100px"
-            src={image}
+            src={image?.asset && urlFor(image.asset).url()}
             alt={name}
             className="h-full w-full object-cover object-center"
           />
@@ -69,7 +93,7 @@ const AccountOrder = () => {
               <div>
                 <h3 className="text-base font-medium line-clamp-1">{name}</h3>
                 <p className="mt-1 text-sm text-slate-500 dark:text-slate-400">
-                  <span>{"Category Name"}</span>
+                  <span>{category?.name}</span>
                 </p>
                 <p className="mt-1 text-sm text-green-500 dark:text-green-400">
                   <span>{"In stock"}</span>
@@ -127,13 +151,7 @@ const AccountOrder = () => {
           </div>
         </div>
         <div className="border-t border-slate-200 dark:border-slate-700 p-2 sm:p-8 divide-y divide-y-slate-200 dark:divide-slate-700">
-          {[
-            PRODUCTS[0],
-            PRODUCTS[1],
-            PRODUCTS[2],
-            PRODUCTS[3],
-            PRODUCTS[4],
-          ].map(renderProductItem)}
+          {productsBySupplier?.map(renderProductItem)}
           <div className="text-center pt-6">
             <ButtonPrimary>Show me more</ButtonPrimary>
           </div>

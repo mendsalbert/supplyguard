@@ -1,9 +1,28 @@
+"use client";
 import Prices from "@/components/Prices";
 import { PRODUCTS } from "@/data/data";
 import ButtonSecondary from "@/shared/Button/ButtonSecondary";
 import Image from "next/image";
+import React, { FC, useEffect, useRef, useState } from "react";
+import { useAppDispatch, useAppSelector } from "@/app/store";
+import {
+  fetchProductsFromSupplier,
+  selectProductsBySupplier,
+} from "@/features/product";
 
 const AccountOrder = () => {
+  const dispatch = useAppDispatch();
+  const productsBySupplier = useAppSelector(selectProductsBySupplier);
+
+  useEffect(() => {
+    const address = localStorage.getItem("address") as any;
+    console.log(address);
+
+    dispatch(fetchProductsFromSupplier(JSON.parse(address)));
+  }, [dispatch]);
+
+  console.log("productsBySupplier", productsBySupplier);
+
   const renderProductItem = (product: any, index: number) => {
     const { image, name } = product;
     return (

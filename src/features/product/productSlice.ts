@@ -81,7 +81,7 @@ export const updateProduct = createAsyncThunk(
     imageFile,
   }: {
     productId: any;
-    productData: Product;
+    productData: any;
     imageFile: any;
   }) => {
     return await editProduct(productId, productData, imageFile);

@@ -21,8 +21,10 @@ import {
 } from "@/features/category/categorySlice";
 import {
   addProduct,
+  editProduct,
   fetchProduct,
   selectCurrentProduct,
+  updateProduct,
 } from "@/features/product";
 
 const auth = typeof window !== "undefined" ? new Auth() : null;
@@ -45,8 +47,6 @@ const ModalEditProduct: FC<ModalEditProps> = ({
   const [isLoading, setIsLoading] = useState(false);
   const { categories, status, error } = useAppSelector(selectCategories);
   const currentProduct = useAppSelector(selectCurrentProduct);
-
-  console.log(currentProduct);
 
   useEffect(() => {
     if (show) {
@@ -143,20 +143,23 @@ const ModalEditProduct: FC<ModalEditProps> = ({
     setIsLoading(true);
 
     try {
-      const onAddProduct = await dispatch(
-        addProduct({
+      const onEditProduct = await dispatch(
+        updateProduct({
+          productId,
           productData,
           imageFile,
         })
       ).unwrap();
 
-      console.log("User added:", onAddProduct);
+      console.log("product edited:", onEditProduct);
       toast.update(id, {
         render: "All is good :) Product Added!",
         type: "success",
         isLoading: false,
       });
       setIsLoading(false);
+      onCloseModalEdit();
+      window.location.reload();
     } catch (error) {
       console.error(error);
       toast.update(id, {
@@ -164,7 +167,9 @@ const ModalEditProduct: FC<ModalEditProps> = ({
         type: "error",
         isLoading: false,
       });
+
       setIsLoading(false);
+      onCloseModalEdit();
     }
   };
 
@@ -191,7 +196,7 @@ const ModalEditProduct: FC<ModalEditProps> = ({
         <ToastContainer hideProgressBar={false} />
 
         <h3 className="text-lg pb-5 font-semibold text-neutral-900 dark:text-neutral-200">
-          Add Product
+          Edit Product
         </h3>
         <div className="flex flex-col md:flex-row">
           <div className="flex-grow mt-10 md:mt-0  max-w-3xl space-y-6">
@@ -302,7 +307,7 @@ const ModalEditProduct: FC<ModalEditProps> = ({
             loading={isLoading}
             onClick={handleSubmit}
           >
-            Submit
+            Update
           </ButtonPrimary>
           <ButtonSecondary type="button" onClick={onCloseModalEdit}>
             Cancel

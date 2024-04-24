@@ -181,7 +181,9 @@ const AccountOrder = () => {
         onCloseModalDelete={closeModalDelete}
       />
       <div className="flex flex-row items-center justify-between">
-        <h2 className="text-2xl sm:text-3xl font-semibold">All Products(34)</h2>
+        <h2 className="text-2xl sm:text-3xl font-semibold">
+          All Products({productsBySupplier.length})
+        </h2>
         <ButtonThird onClick={openModalAdd} className="bg-[#0ba5e9] text-white">
           Add Product
         </ButtonThird>

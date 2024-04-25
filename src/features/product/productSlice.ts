@@ -73,6 +73,22 @@ export const addProduct = createAsyncThunk(
   }
 );
 
+// export const addProduct = createAsyncThunk(
+//   "products/create",
+//   async (
+//     { productData, imageFile }: { productData: Product; imageFile: File },
+//     { rejectWithValue }
+//   ) => {
+//     try {
+//       const response = await createProduct(productData, imageFile);
+//       return response; // Ensure response includes supplier info
+//     } catch (error) {
+//       console.error("Error adding product:", error);
+//       return rejectWithValue("Failed to create product");
+//     }
+//   }
+// );
+
 export const updateProduct = createAsyncThunk(
   "products/update",
   async ({
@@ -88,10 +104,27 @@ export const updateProduct = createAsyncThunk(
   }
 );
 
+// export const removeProduct = createAsyncThunk(
+//   "products/delete",
+//   async (productId: string) => {
+//     return await deleteProduct(productId);
+//   }
+// );
+
 export const removeProduct = createAsyncThunk(
   "products/delete",
-  async (productId: string) => {
-    return await deleteProduct(productId);
+  async (productId: string, { rejectWithValue }) => {
+    try {
+      const response = await deleteProduct(productId);
+      if (response) {
+        return productId; // Assuming the backend returns an object with success status
+      } else {
+        return rejectWithValue("Deletion failed");
+      }
+    } catch (error) {
+      console.error("Error deleting product:", error);
+      return rejectWithValue("Failed to delete product");
+    }
   }
 );
 
@@ -124,19 +157,59 @@ const productSlice = createSlice({
         }
       )
 
+      // .addCase(addProduct.fulfilled, (state, action: PayloadAction<any>) => {
+      //   state.products.push(action.payload);
+      //   state.status = "succeeded";
+      // })
+
       .addCase(addProduct.fulfilled, (state, action: PayloadAction<any>) => {
+        // Add the new product to the general products array
         state.products.push(action.payload);
+        state.productsBySupplier.push(action.payload);
+
         state.status = "succeeded";
+        console.log(
+          "Product added, updated products count:",
+          state.products.length
+        );
+        console.log(
+          "Product added, updated products by supplier count:",
+          state.productsBySupplier.length
+        );
       })
       .addCase(updateProduct.fulfilled, (state, action: PayloadAction<any>) => {
+        // Update product in the general products array
         const index = state.products.findIndex(
           (product) => product._id === action.payload._id
         );
         if (index !== -1) {
           state.products[index] = action.payload;
         }
+
+        // Also update product in the productsBySupplier array if it exists there
+        const supplierIndex = state.productsBySupplier.findIndex(
+          (product) => product._id === action.payload._id
+        );
+        if (supplierIndex !== -1) {
+          state.productsBySupplier[supplierIndex] = action.payload;
+        }
+
         state.status = "succeeded";
+        console.log("Product updated, products count:", state.products.length);
+        console.log(
+          "Product updated in supplier list, count:",
+          state.productsBySupplier.length
+        );
       })
+      // .addCase(updateProduct.fulfilled, (state, action: PayloadAction<any>) => {
+      //   const index = state.products.findIndex(
+      //     (product) => product._id === action.payload._id
+      //   );
+      //   if (index !== -1) {
+      //     state.products[index] = action.payload;
+      //   }
+      //   state.status = "succeeded";
+      // })
       // .addCase(removeProduct.fulfilled, (state, action: PayloadAction<any>) => {
       //   state.products = state.products.filter(
       //     (product) => product._id !== action.payload
@@ -144,15 +217,23 @@ const productSlice = createSlice({
       //   state.status = "succeeded";
       // })
       .addCase(removeProduct.fulfilled, (state, action: PayloadAction<any>) => {
-        // Remove the product by filtering out the product with the specific id
-        console.log("Product removed, new product count:", state.products);
-
+        // The payload is assumed to be the product ID of the product to be removed
+        const productId = action.payload;
         state.products = state.products.filter(
-          (product) => product._id !== action.payload
+          (product) => product._id !== productId
+        );
+        state.productsBySupplier = state.productsBySupplier.filter(
+          (product) => product._id !== productId
         );
         state.status = "succeeded";
-        // Log for debugging
-        console.log("Product removed, new product count:", state.products);
+        console.log(
+          "Product removed, updated products count:",
+          state.products.length
+        );
+        console.log(
+          "Product removed, updated products by supplier count:",
+          state.productsBySupplier.length
+        );
       })
 
       .addCase(fetchProductsFromSupplier.pending, (state) => {

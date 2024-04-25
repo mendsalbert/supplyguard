@@ -134,7 +134,6 @@ const ModalEditProduct: FC<ModalEditProps> = ({
   };
 
   const handleImageChange = (e: any) => {
-    // console.log(e.target.files[0]);
     setImageFile(e.target.files[0]);
   };
 
@@ -159,7 +158,6 @@ const ModalEditProduct: FC<ModalEditProps> = ({
       });
       setIsLoading(false);
       onCloseModalEdit();
-      window.location.reload();
     } catch (error) {
       console.error(error);
       toast.update(id, {

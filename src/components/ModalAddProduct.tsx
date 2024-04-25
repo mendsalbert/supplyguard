@@ -127,7 +127,6 @@ const ModalAddProduct: FC<ModalEditProps> = ({ show, onCloseModalEdit }) => {
 
       setIsLoading(false);
       onCloseModalEdit();
-      // window.location.reload();
     } catch (error) {
       console.error(error);
       toast.update(id, {

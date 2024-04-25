@@ -22,6 +22,7 @@ import { client } from "@/api/client";
 const AccountOrder = () => {
   const dispatch = useAppDispatch();
   const productsBySupplier = useAppSelector(selectProductsBySupplier);
+  const lastAddressUsedForFetching = useRef();
 
   console.log("productsBySupplier", productsBySupplier);
   const [productId, setProductId] = useState("");
@@ -35,16 +36,26 @@ const AccountOrder = () => {
   const closeModalEdit = () => setIsEditing(false);
   const closeModalDelete = () => setIsDeleting(false);
 
+  // useEffect(() => {
+  //   console.log("Fetching products for supplier...");
+  //   const address = localStorage.getItem("address");
+  //   if (address) {
+  //     const parsedAddress = JSON.parse(address);
+  //     dispatch(fetchProductsFromSupplier(parsedAddress));
+  //   } else {
+  //     console.error("Address not found in localStorage");
+  //   }
+  // }, [dispatch, productsBySupplier]);
+
   useEffect(() => {
-    console.log("Fetching products for supplier...");
     const address = localStorage.getItem("address");
-    if (address) {
+    if (address && JSON.parse(address) !== lastAddressUsedForFetching.current) {
+      console.log("Fetching products for supplier...");
       const parsedAddress = JSON.parse(address);
       dispatch(fetchProductsFromSupplier(parsedAddress));
-    } else {
-      console.error("Address not found in localStorage");
+      lastAddressUsedForFetching.current = parsedAddress;
     }
-  }, [dispatch, isAdding, isDeleting]);
+  }, [dispatch, productsBySupplier]);
 
   const builder = imageUrlBuilder(client);
 

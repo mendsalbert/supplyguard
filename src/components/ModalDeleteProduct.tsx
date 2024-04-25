@@ -18,15 +18,20 @@ const ModalProductDelete: FC<ModalDeleteProps> = ({
   onCloseModalDelete,
   productId,
 }) => {
+  const [isLoading, setIsLoading] = useState(false);
+
   const dispatch = useAppDispatch();
 
   const handleSubmit = async () => {
+    setIsLoading(true);
+
     try {
       const onAddProduct = await dispatch(removeProduct(productId)).unwrap();
-      console.log(onAddProduct);
+      onCloseModalDelete();
+      setIsLoading(false);
     } catch (error) {
       onCloseModalDelete();
-      window.location.reload();
+      setIsLoading(false);
       console.error(error);
     }
   };
@@ -42,7 +47,11 @@ const ModalProductDelete: FC<ModalDeleteProps> = ({
           action.
         </span>
         <div className="mt-4 space-x-3">
-          <ButtonThird className="bg-red-500 text-white" onClick={handleSubmit}>
+          <ButtonThird
+            loading={isLoading}
+            className="bg-red-500 text-white"
+            onClick={handleSubmit}
+          >
             Delete
           </ButtonThird>
           <ButtonSecondary type="button" onClick={onCloseModalDelete}>

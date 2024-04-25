@@ -1,21 +1,40 @@
 "use client";
-import ModalAddProduct from "@/components/ModalAddProduct";
 import ModalAddRole from "@/components/ModalAddRole";
-import ModalProductDelete from "@/components/ModalDeleteProduct";
 import ModalRoleDelete from "@/components/ModalDeleteRole";
 import ModalEdit from "@/components/ModalEdit";
-import ModalEditProduct from "@/components/ModalEditProduct";
 import ModalEditRole from "@/components/ModalEditRole";
 import Prices from "@/components/Prices";
-import { avatarImgs } from "@/contains/fakeData";
 import { PRODUCTS } from "@/data/data";
 import ButtonPrimary from "@/shared/Button/ButtonPrimary";
 import ButtonSecondary from "@/shared/Button/ButtonSecondary";
 import ButtonThird from "@/shared/Button/ButtonThird";
-import { PencilIcon, TrashIcon, XMarkIcon } from "@heroicons/react/24/outline";
+import {
+  PencilIcon,
+  TrashIcon,
+  UserCircleIcon,
+  XMarkIcon,
+} from "@heroicons/react/24/outline";
 import Image from "next/image";
-import React, { useState } from "react";
+import React, { FC, useEffect, useRef, useState } from "react";
+import { useAppDispatch, useAppSelector } from "@/app/store";
+import {
+  fetchProductsFromSupplier,
+  selectProductsBySupplier,
+} from "@/features/product";
+import imageUrlBuilder from "@sanity/image-url";
+import { client } from "@/api/client";
+import {
+  fetchRolesBySupplier,
+  selectRolesBySupplier,
+} from "@/features/role/roleSlice";
+import truncateEthAddress from "truncate-eth-address";
+
 const AccountOrder = () => {
+  const dispatch = useAppDispatch();
+  const rolesBySupplier = useAppSelector(selectRolesBySupplier);
+  const lastAddressUsedForFetching = useRef();
+
+  const [roleId, setRoleId] = useState("");
   const [isAdding, setIsAdding] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
@@ -25,6 +44,17 @@ const AccountOrder = () => {
   const closeModalAdd = () => setIsAdding(false);
   const closeModalEdit = () => setIsEditing(false);
   const closeModalDelete = () => setIsDeleting(false);
+
+  useEffect(() => {
+    const address = localStorage.getItem("address");
+    if (address && JSON.parse(address) !== lastAddressUsedForFetching.current) {
+      const parsedAddress = JSON.parse(address);
+
+      dispatch(fetchRolesBySupplier(parsedAddress));
+      lastAddressUsedForFetching.current = parsedAddress;
+    }
+  }, [dispatch, rolesBySupplier]);
+  console.log(rolesBySupplier);
 
   const renderMagnifyingGlassIcon = () => {
     return (
@@ -54,17 +84,18 @@ const AccountOrder = () => {
   };
 
   const renderProductItem = (product: any, index: number) => {
-    const { image, name } = product;
+    const { fullname, ethaddress, responsibilities, _id, _createdAt } = product;
     return (
       <div key={index} className="flex py-4 sm:py-7 last:pb-0 first:pt-0">
-        <div className="relative h-24 w-24 flex-shrink-0 overflow-hidden rounded-xl bg-slate-100">
-          <Image
+        <div className="relative h-24 w-24 flex-shrink-0 overflow-hidden rounded-xl bg-slate-100 flex flex-row justify-center items-center">
+          {/* <Image
             fill
             sizes="100px"
-            src={avatarImgs[7]}
+            src={image?.asset && urlFor(image.asset).url()}
             alt={name}
             className="h-full w-full object-cover object-center"
-          />
+          /> */}
+          <UserCircleIcon className="h-16 w-16" />
         </div>
 
         <div className="ml-4 flex flex-1 flex-col">
@@ -72,30 +103,42 @@ const AccountOrder = () => {
             <div className="flex justify-between ">
               <div>
                 <h3 className="text-base font-medium line-clamp-1">
-                  Albert Mends | 0xfd.43f
+                  {fullname} | {truncateEthAddress(ethaddress)}
                 </h3>
                 <p className="mt-1 text-sm text-slate-500 dark:text-slate-400">
-                  <span>Supplier Manager</span>
+                  <span>{responsibilities}</span>
+                </p>
+                <p className="mt-0 text-sm  text-green-500">
+                  <span>{status}</span>
+                </p>
+                <p className="mt-0 text-sm  text-slate-500">
+                  {/* <span>${price}</span> */}
                 </p>
               </div>
             </div>
           </div>
           <div className="flex flex-1 items-end justify-between text-sm">
             <p className="text-gray-500 dark:text-slate-400 flex items-center">
-              <span className="hidden sm:inline-block">Date Assigned</span>
+              <span className="hidden sm:inline-block">Date Added</span>
               <span className="inline-block sm:hidden">x</span>
-              <span className="ml-2">21-04-2022 12:32</span>
+              <span className="ml-2">{_createdAt}</span>
             </p>
 
             <div className="flex items-center space-x-2">
               <span
-                onClick={openModalEdit}
+                onClick={() => {
+                  openModalEdit();
+                  setRoleId(_id);
+                }}
                 className="border text-green-500 cursor-pointer border-green-500 rounded-md p-1"
               >
                 <PencilIcon className="w-4 h-4 " />
               </span>
               <span
-                onClick={openModalDelete}
+                onClick={() => {
+                  openModalDelete();
+                  setRoleId(_id);
+                }}
                 className="border text-red-500 cursor-pointer border-red-500 rounded-md p-1"
               >
                 <TrashIcon className="w-4 h-4 " />
@@ -130,13 +173,7 @@ const AccountOrder = () => {
           </div>
         </div>
         <div className="border-t border-slate-200 dark:border-slate-700 p-2 sm:p-8 divide-y divide-y-slate-200 dark:divide-slate-700">
-          {[
-            PRODUCTS[0],
-            PRODUCTS[1],
-            PRODUCTS[2],
-            PRODUCTS[3],
-            PRODUCTS[4],
-          ].map(renderProductItem)}
+          {rolesBySupplier?.map(renderProductItem)}
           <div className="text-center pt-6">
             <ButtonPrimary>Show me more</ButtonPrimary>
           </div>
@@ -149,13 +186,20 @@ const AccountOrder = () => {
     <div className="space-y-10 sm:space-y-12">
       {/* HEADING */}
       <ModalAddRole show={isAdding} onCloseModalEdit={closeModalAdd} />
-      <ModalEditRole show={isEditing} onCloseModalEdit={closeModalEdit} />
+      <ModalEditRole
+        show={isEditing}
+        onCloseModalEdit={closeModalEdit}
+        roleId={roleId}
+      />
       <ModalRoleDelete
         show={isDeleting}
         onCloseModalDelete={closeModalDelete}
+        roleId={roleId}
       />
       <div className="flex flex-row items-center justify-between">
-        <h2 className="text-2xl sm:text-3xl font-semibold">All Roles</h2>
+        <h2 className="text-2xl sm:text-3xl font-semibold">
+          All Roles({rolesBySupplier.length})
+        </h2>
         <ButtonThird onClick={openModalAdd} className="bg-[#0ba5e9] text-white">
           Add Role
         </ButtonThird>

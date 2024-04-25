@@ -7,11 +7,13 @@ import ButtonThird from "@/shared/Button/ButtonThird";
 export interface ModalDeleteProps {
   show: boolean;
   onCloseModalDelete: () => void;
+  roleId?: any;
 }
 
 const ModalRoleDelete: FC<ModalDeleteProps> = ({
   show,
   onCloseModalDelete,
+  roleId,
 }) => {
   const handleClickSubmitForm = () => {
     console.log({ 1: "1" });

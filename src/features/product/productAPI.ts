@@ -1,7 +1,7 @@
 // src/features/product/ProductAPI.ts
 import { client } from "@/api/client";
 import { Product, Image } from "./productSlice";
-// Helper function to upload image and return reference
+
 const uploadImage = async (imageFile: any) => {
   if (!imageFile) return null;
   try {

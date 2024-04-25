@@ -6,22 +6,17 @@ import Input from "@/shared/Input/Input";
 import NcModal from "@/shared/NcModal/NcModal";
 import Label from "@/components/Label/Label";
 import Textarea from "@/shared/Textarea/Textarea";
-import Image from "next/image";
-import { avatarImgs } from "@/contains/fakeData";
 import Select from "@/shared/Select/Select";
 import { fetchUserByAddress } from "@/features/user";
 import { useAppDispatch, useAppSelector } from "@/app/store";
-import { Auth } from "@polybase/auth";
-import { client } from "@/api/client";
+
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import {
   fetchCategories,
   selectCategories,
 } from "@/features/category/categorySlice";
-import { addProduct, fetchProductsFromSupplier } from "@/features/product";
-
-const auth = typeof window !== "undefined" ? new Auth() : null;
+import { addProduct } from "@/features/product";
 
 export interface ModalEditProps {
   show: boolean;
@@ -57,7 +52,6 @@ const ModalAddProduct: FC<ModalEditProps> = ({ show, onCloseModalEdit }) => {
     const address = localStorage.getItem("address") as any;
     dispatch(fetchUserByAddress(JSON.parse(address)));
     dispatch(fetchCategories());
-    // dispatch(fetchProductsFromSupplier(JSON.parse(address)));
   }, [dispatch, isLoading]);
 
   const [imageFile, setImageFile] = useState(null);

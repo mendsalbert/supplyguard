@@ -92,6 +92,7 @@ const ModalEditProduct: FC<ModalEditProps> = ({
       });
     }
   }, [currentProduct]);
+
   const [imageFile, setImageFile] = useState(null);
 
   const [productData, setProductData] = useState({

@@ -75,12 +75,45 @@ export default defineType({
       validation: (Rule) =>
         Rule.required().min(0).error("Total cost must be a positive number."),
     }),
+    // defineField({
+    //   name: "assignedTo",
+    //   title: "Assigned To",
+    //   type: "reference",
+    //   to: [{ type: "supplierRole" }],
+    //   description: "Role responsible for handling the order.",
+    // }),
     defineField({
-      name: "assignedTo",
-      title: "Assigned To",
-      type: "reference",
-      to: [{ type: "supplierUser" }],
-      description: "Role responsible for handling the order.",
+      name: "roleApprovals",
+      title: "Role Approvals",
+      type: "array",
+      of: [
+        {
+          type: "object",
+          fields: [
+            defineField({
+              name: "role",
+              title: "Role",
+              type: "reference",
+              to: [{ type: "supplierRole" }],
+            }),
+            defineField({
+              name: "approved",
+              title: "Approved",
+              type: "boolean",
+              initialValue: false,
+              description: "Whether the role has approved the order.",
+            }),
+            defineField({
+              name: "approvedAt",
+              title: "Approved At",
+              type: "datetime",
+              description:
+                "The date and time when the role approved the order.",
+            }),
+          ],
+        },
+      ],
+      description: "Tracking approvals for each role assigned to the order.",
     }),
     // You may add additional fields such as shipping address, billing details, etc.
   ],

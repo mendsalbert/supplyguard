@@ -6,6 +6,11 @@ import {
   fetchUser as fetchUserAPI,
   fetchUserByAddress as fetchUserByAddressAPI,
   updateUserByAddress as updateUserByAddressAPI,
+  addToCart,
+  addToWishlist,
+  addOrderToHistory,
+  removeFromCart,
+  removeFromWishlist,
 } from "./userAPI";
 interface ShippingAddress {
   street: string;
@@ -51,6 +56,11 @@ export interface User {
 }
 
 interface UserState {
+  details: {
+    cart: any[];
+    wishlist: any[];
+    orderHistory: any[];
+  };
   users: User[];
   currentUser: User | null;
   status: "idle" | "loading" | "succeeded" | "failed";
@@ -58,6 +68,11 @@ interface UserState {
 }
 
 const initialState: UserState = {
+  details: {
+    cart: [],
+    wishlist: [],
+    orderHistory: [],
+  },
   users: [],
   currentUser: null,
   status: "idle",
@@ -98,6 +113,40 @@ export const updateUserByAddress = createAsyncThunk(
     imageFile: any;
   }) => {
     return await updateUserByAddressAPI(ethereumAddress, userData, imageFile);
+  }
+);
+
+export const addProductToCart = createAsyncThunk(
+  "users/addToCart",
+  async ({ userId, productId }: { userId: any; productId: any }) => {
+    return await addToCart(userId, productId);
+  }
+);
+
+export const addProductToWishlist = createAsyncThunk(
+  "users/addToWishlist",
+  async ({ userId, productId }: { userId: any; productId: any }) => {
+    return await addToWishlist(userId, productId);
+  }
+);
+
+export const addOrderToUserHistory = createAsyncThunk(
+  "users/addOrderToHistory",
+  async ({ userId, orderId }: { userId: any; orderId: any }) => {
+    return await addOrderToHistory(userId, orderId);
+  }
+);
+export const removeProductFromCart = createAsyncThunk(
+  "users/removeFromCart",
+  async ({ userId, productId }: { userId: any; productId: any }) => {
+    return await removeFromCart(userId, productId);
+  }
+);
+
+export const removeProductFromWishlist = createAsyncThunk(
+  "users/removeFromWishlist",
+  async ({ userId, productId }: { userId: any; productId: any }) => {
+    return await removeFromWishlist(userId, productId);
   }
 );
 
@@ -160,6 +209,28 @@ const userSlice = createSlice({
         state.error =
           action.error.message || "Failed to update user by address";
         state.status = "failed";
+      })
+      .addCase(addProductToCart.fulfilled, (state, action) => {
+        // Assume state structure includes a detailed user object
+        state.details.cart = action.payload.cart;
+      })
+      .addCase(addProductToWishlist.fulfilled, (state, action) => {
+        state.details.wishlist = action.payload.wishlist;
+      })
+      .addCase(addOrderToUserHistory.fulfilled, (state, action) => {
+        state.details.orderHistory = action.payload.orderHistory;
+      })
+      .addCase(removeProductFromCart.fulfilled, (state, action) => {
+        state.details.cart = state.details.cart.filter(
+          (item) => item._ref !== action.meta.arg.productId
+        );
+        state.status = "succeeded";
+      })
+      .addCase(removeProductFromWishlist.fulfilled, (state, action) => {
+        state.details.wishlist = state.details.wishlist.filter(
+          (item) => item._ref !== action.meta.arg.productId
+        );
+        state.status = "succeeded";
       });
   },
 });

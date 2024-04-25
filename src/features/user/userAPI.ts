@@ -98,22 +98,90 @@ export const updateUserByAddress = async (
   }
 };
 
-// userAPI.ts
-// export const updateUserByAddress = async (
-//   ethereumAddress: string,
-//   userData: Partial<User>
-// ) => {
-//   try {
-//     const query = `*[_type == "user" && ethereumAddress == '${ethereumAddress}']`;
-//     const user = await client.fetch(query, { ethereumAddress });
-//     if (user && user._id) {
-//       const result = await client.patch(user._id).set(userData).commit();
-//       return result;
-//     } else {
-//       throw new Error("User not found");
-//     }
-//   } catch (error) {
-//     console.error("Failed to update user by address:", error);
-//     throw new Error("Failed to update user by address");
-//   }
-// };
+// Function to add a product to the user's cart
+export const addToCart = async (userId: any, productId: any) => {
+  try {
+    const updatedUser = await client
+      .patch(userId) // the user's document ID
+      .setIfMissing({ cart: [] })
+      .insert("after", "cart[-1]", [
+        {
+          _type: "reference",
+          _ref: productId,
+        },
+      ])
+      .commit();
+    return updatedUser;
+  } catch (error) {
+    console.error("Failed to add to cart:", error);
+    throw error;
+  }
+};
+
+// Function to add a product to the user's wishlist
+export const addToWishlist = async (userId: any, productId: any) => {
+  try {
+    const updatedUser = await client
+      .patch(userId)
+      .setIfMissing({ wishlist: [] })
+      .insert("after", "wishlist[-1]", [
+        {
+          _type: "reference",
+          _ref: productId,
+        },
+      ])
+      .commit();
+    return updatedUser;
+  } catch (error) {
+    console.error("Failed to add to wishlist:", error);
+    throw error;
+  }
+};
+
+// Function to add an order to the user's order history
+export const addOrderToHistory = async (userId: any, orderId: any) => {
+  try {
+    const updatedUser = await client
+      .patch(userId)
+      .setIfMissing({ orderHistory: [] })
+      .insert("after", "orderHistory[-1]", [
+        {
+          _type: "reference",
+          _ref: orderId,
+        },
+      ])
+      .commit();
+    return updatedUser;
+  } catch (error) {
+    console.error("Failed to add order to history:", error);
+    throw error;
+  }
+};
+
+// Function to remove a product from the user's cart
+export const removeFromCart = async (userId: any, productId: any) => {
+  try {
+    const updatedUser = await client
+      .patch(userId) // the user's document ID
+      .unset([`cart[_ref=="${productId}"]`])
+      .commit();
+    return updatedUser;
+  } catch (error) {
+    console.error("Failed to remove from cart:", error);
+    throw error;
+  }
+};
+
+// Function to remove a product from the user's wishlist
+export const removeFromWishlist = async (userId: any, productId: any) => {
+  try {
+    const updatedUser = await client
+      .patch(userId)
+      .unset([`wishlist[_ref=="${productId}"]`])
+      .commit();
+    return updatedUser;
+  } catch (error) {
+    console.error("Failed to remove from wishlist:", error);
+    throw error;
+  }
+};

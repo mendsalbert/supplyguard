@@ -52,9 +52,6 @@ const ModalEditRole: FC<ModalEditProps> = ({
     }
   }, [show]);
 
-  console.log(roleId);
-  console.log(currentRole);
-
   useEffect(() => {
     const address = localStorage.getItem("address") as any;
     dispatch(fetchUserByAddress(JSON.parse(address)));

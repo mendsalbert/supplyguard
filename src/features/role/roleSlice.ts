@@ -125,7 +125,9 @@ const roleSlice = createSlice({
         state.status = "succeeded";
       })
       .addCase(removeRole.fulfilled, (state, action: PayloadAction<any>) => {
-        const roleId = action.payload;
+        const roleId = action.payload.documentIds[0];
+        console.log(roleId);
+
         state.roles = state.roles.filter((role) => role._id !== roleId);
         state.rolesBySupplier = state.rolesBySupplier.filter(
           (role) => role._id !== roleId

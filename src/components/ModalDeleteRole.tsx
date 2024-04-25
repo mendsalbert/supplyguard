@@ -1,8 +1,11 @@
-import React, { FC } from "react";
+"use client";
+import React, { FC, useEffect, useRef, useState } from "react";
 import ButtonPrimary from "@/shared/Button/ButtonPrimary";
 import ButtonSecondary from "@/shared/Button/ButtonSecondary";
 import NcModal from "@/shared/NcModal/NcModal";
 import ButtonThird from "@/shared/Button/ButtonThird";
+import { useAppDispatch, useAppSelector } from "@/app/store";
+import { removeRole } from "@/features/role/roleSlice";
 
 export interface ModalDeleteProps {
   show: boolean;
@@ -15,15 +18,31 @@ const ModalRoleDelete: FC<ModalDeleteProps> = ({
   onCloseModalDelete,
   roleId,
 }) => {
-  const handleClickSubmitForm = () => {
-    console.log({ 1: "1" });
+  const [isLoading, setIsLoading] = useState(false);
+
+  const dispatch = useAppDispatch();
+
+  const handleSubmit = async () => {
+    setIsLoading(true);
+
+    try {
+      const deletedRole = await dispatch(removeRole(roleId)).unwrap();
+      console.log("deletedRole", deletedRole);
+
+      onCloseModalDelete();
+      setIsLoading(false);
+    } catch (error) {
+      onCloseModalDelete();
+      setIsLoading(false);
+      console.error(error);
+    }
   };
 
   const renderContent = () => {
     return (
-      <form action="#">
+      <div>
         <h3 className="text-lg font-semibold text-neutral-900 dark:text-neutral-200">
-          Revoke Role(Name of person)
+          Revoke Role
         </h3>
         <span className="text-sm">
           Are you sure you want to revoke this Role? You cannot undo this
@@ -31,8 +50,9 @@ const ModalRoleDelete: FC<ModalDeleteProps> = ({
         </span>
         <div className="mt-4 space-x-3">
           <ButtonThird
+            loading={isLoading}
             className="bg-red-500 text-white"
-            onClick={handleClickSubmitForm}
+            onClick={handleSubmit}
             type="submit"
           >
             Revoke
@@ -41,7 +61,7 @@ const ModalRoleDelete: FC<ModalDeleteProps> = ({
             Cancel
           </ButtonSecondary>
         </div>
-      </form>
+      </div>
     );
   };
 

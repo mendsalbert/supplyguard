@@ -18,6 +18,7 @@ import {
   fetchRole,
   Role,
   selectCurrentRole,
+  updateRole,
 } from "@/features/role/roleSlice";
 export interface ModalEditProps {
   show: boolean;
@@ -51,11 +52,14 @@ const ModalEditRole: FC<ModalEditProps> = ({
     }
   }, [show]);
 
+  console.log(roleId);
+  console.log(currentRole);
+
   useEffect(() => {
     const address = localStorage.getItem("address") as any;
     dispatch(fetchUserByAddress(JSON.parse(address)));
     dispatch(fetchRole(roleId));
-  }, [dispatch, isLoading]);
+  }, [dispatch, isLoading, roleId]);
 
   useEffect(() => {
     // Check if the user data is available before setting it
@@ -112,7 +116,9 @@ const ModalEditRole: FC<ModalEditProps> = ({
     setIsLoading(true);
 
     try {
-      const onAddRole = await dispatch(createRole(roleData)).unwrap();
+      const onAddRole = await dispatch(
+        updateRole({ roleId, roleData })
+      ).unwrap();
 
       console.log("User added:", onAddRole);
       toast.update(id, {
@@ -122,7 +128,7 @@ const ModalEditRole: FC<ModalEditProps> = ({
       });
 
       setIsLoading(false);
-      // onCloseModalEdit();
+      onCloseModalEdit();
     } catch (error) {
       console.error(error);
       toast.update(id, {
@@ -150,7 +156,7 @@ const ModalEditRole: FC<ModalEditProps> = ({
     return (
       <form action="#">
         <h3 className="text-lg pb-5 font-semibold text-neutral-900 dark:text-neutral-200">
-          Add Role
+          Edit Role
         </h3>
         <div className="flex flex-col md:flex-row">
           <div className="flex-grow mt-10 md:mt-0  max-w-3xl space-y-6">
@@ -232,7 +238,7 @@ const ModalEditRole: FC<ModalEditProps> = ({
             onClick={handleSubmit}
             type="submit"
           >
-            Submit
+            Edit
           </ButtonPrimary>
           <ButtonSecondary type="button" onClick={onCloseModalEdit}>
             Cancel

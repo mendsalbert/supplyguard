@@ -99,6 +99,8 @@ const roleSlice = createSlice({
       })
       .addCase(fetchRole.fulfilled, (state, action: PayloadAction<Role>) => {
         state.currentRole = action.payload;
+        console.log(state.currentRole);
+
         state.status = "succeeded";
       })
       .addCase(createRole.fulfilled, (state, action: PayloadAction<any>) => {

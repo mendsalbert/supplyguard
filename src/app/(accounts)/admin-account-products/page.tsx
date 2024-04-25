@@ -23,11 +23,6 @@ const AccountOrder = () => {
   const dispatch = useAppDispatch();
   const productsBySupplier = useAppSelector(selectProductsBySupplier);
 
-  useEffect(() => {
-    const address = localStorage.getItem("address") as any;
-    dispatch(fetchProductsFromSupplier(JSON.parse(address)));
-  }, [dispatch]);
-
   console.log("productsBySupplier", productsBySupplier);
   const [productId, setProductId] = useState("");
   const [isAdding, setIsAdding] = useState(false);
@@ -39,6 +34,17 @@ const AccountOrder = () => {
   const closeModalAdd = () => setIsAdding(false);
   const closeModalEdit = () => setIsEditing(false);
   const closeModalDelete = () => setIsDeleting(false);
+
+  useEffect(() => {
+    console.log("Fetching products for supplier...");
+    const address = localStorage.getItem("address");
+    if (address) {
+      const parsedAddress = JSON.parse(address);
+      dispatch(fetchProductsFromSupplier(parsedAddress));
+    } else {
+      console.error("Address not found in localStorage");
+    }
+  }, [dispatch, isAdding, isDeleting]);
 
   const builder = imageUrlBuilder(client);
 

@@ -108,6 +108,7 @@ const productSlice = createSlice({
   reducers: {},
   extraReducers: (builder) => {
     builder
+
       .addCase(
         fetchProducts.fulfilled,
         (state, action: PayloadAction<Product[]>) => {
@@ -122,6 +123,7 @@ const productSlice = createSlice({
           state.status = "succeeded";
         }
       )
+
       .addCase(addProduct.fulfilled, (state, action: PayloadAction<any>) => {
         state.products.push(action.payload);
         state.status = "succeeded";
@@ -135,22 +137,37 @@ const productSlice = createSlice({
         }
         state.status = "succeeded";
       })
+      // .addCase(removeProduct.fulfilled, (state, action: PayloadAction<any>) => {
+      //   state.products = state.products.filter(
+      //     (product) => product._id !== action.payload
+      //   );
+      //   state.status = "succeeded";
+      // })
       .addCase(removeProduct.fulfilled, (state, action: PayloadAction<any>) => {
+        // Remove the product by filtering out the product with the specific id
+        console.log("Product removed, new product count:", state.products);
+
         state.products = state.products.filter(
           (product) => product._id !== action.payload
         );
         state.status = "succeeded";
+        // Log for debugging
+        console.log("Product removed, new product count:", state.products);
       })
+
       .addCase(fetchProductsFromSupplier.pending, (state) => {
         state.status = "loading";
       })
+
       .addCase(
         fetchProductsFromSupplier.fulfilled,
         (state, action: PayloadAction<Product[]>) => {
+          console.log("Products fetched: ", action.payload);
           state.productsBySupplier = action.payload;
           state.status = "succeeded";
         }
       )
+
       .addCase(fetchProductsFromSupplier.rejected, (state, action) => {
         state.error =
           action.error.message || "Failed to fetch products from supplier";

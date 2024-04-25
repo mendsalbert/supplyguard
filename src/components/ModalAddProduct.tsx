@@ -19,7 +19,7 @@ import {
   fetchCategories,
   selectCategories,
 } from "@/features/category/categorySlice";
-import { addProduct } from "@/features/product";
+import { addProduct, fetchProductsFromSupplier } from "@/features/product";
 
 const auth = typeof window !== "undefined" ? new Auth() : null;
 
@@ -57,6 +57,7 @@ const ModalAddProduct: FC<ModalEditProps> = ({ show, onCloseModalEdit }) => {
     const address = localStorage.getItem("address") as any;
     dispatch(fetchUserByAddress(JSON.parse(address)));
     dispatch(fetchCategories());
+    // dispatch(fetchProductsFromSupplier(JSON.parse(address)));
   }, [dispatch, isLoading]);
 
   const [imageFile, setImageFile] = useState(null);
@@ -123,9 +124,10 @@ const ModalAddProduct: FC<ModalEditProps> = ({ show, onCloseModalEdit }) => {
         type: "success",
         isLoading: false,
       });
+
       setIsLoading(false);
       onCloseModalEdit();
-      window.location.reload();
+      // window.location.reload();
     } catch (error) {
       console.error(error);
       toast.update(id, {

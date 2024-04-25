@@ -20,21 +20,20 @@ const ModalProductDelete: FC<ModalDeleteProps> = ({
 }) => {
   const dispatch = useAppDispatch();
 
-  const handleClickSubmitForm = async () => {
-    // console.log(productId);
+  const handleSubmit = async () => {
     try {
       const onAddProduct = await dispatch(removeProduct(productId)).unwrap();
       console.log(onAddProduct);
     } catch (error) {
+      onCloseModalDelete();
+      window.location.reload();
       console.error(error);
     }
   };
 
   const renderContent = () => {
-    const dispatch = useAppDispatch();
-
     return (
-      <form action="#">
+      <div>
         <h3 className="text-lg font-semibold text-neutral-900 dark:text-neutral-200">
           Delete Product
         </h3>
@@ -43,18 +42,14 @@ const ModalProductDelete: FC<ModalDeleteProps> = ({
           action.
         </span>
         <div className="mt-4 space-x-3">
-          <ButtonThird
-            className="bg-red-500 text-white"
-            onClick={handleClickSubmitForm}
-            type="submit"
-          >
+          <ButtonThird className="bg-red-500 text-white" onClick={handleSubmit}>
             Delete
           </ButtonThird>
           <ButtonSecondary type="button" onClick={onCloseModalDelete}>
             Cancel
           </ButtonSecondary>
         </div>
-      </form>
+      </div>
     );
   };
 

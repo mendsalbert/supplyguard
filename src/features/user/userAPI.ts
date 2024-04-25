@@ -38,11 +38,31 @@ export const fetchUser = async (id: string) => {
 };
 
 export const fetchUserByAddress = async (ethereumAddress: string) => {
-  const query = `*[_type == "user" && ethereumAddress == '${ethereumAddress}']`;
+  const query = `
+    *[_type == "user" && ethereumAddress == $ethereumAddress] {
+      ...,
+      "wishlist": wishlist[]->{
+        _id,
+        name,
+        description,
+        price,
+        status,
+        image,
+        supplier->{
+          supplierName
+        },
+        category->{
+          name,
+          description
+        }
+      }
+    }
+  `;
 
   try {
+    // Passing parameters correctly using the second argument of client.fetch
     const user = await client.fetch(query, { ethereumAddress });
-    return user[0];
+    return user[0]; // Assuming you want to return the first user if multiple users have the same address
   } catch (error) {
     console.error("Failed to fetch user by address:", error);
     throw new Error("Failed to fetch user by address");

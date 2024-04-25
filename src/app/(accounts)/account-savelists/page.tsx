@@ -1,8 +1,23 @@
+"use client";
+import React, { FC, useEffect, useRef, useState } from "react";
 import ProductCard from "@/components/ProductCard";
-import { PRODUCTS } from "@/data/data";
 import ButtonSecondary from "@/shared/Button/ButtonSecondary";
+import { useAppDispatch, useAppSelector } from "@/app/store";
+import {
+  addProductToWishlist,
+  fetchUserByAddress,
+  removeProductFromWishlist,
+} from "@/features/user/userSlice";
 
 const AccountSavelists = () => {
+  const dispatch = useAppDispatch();
+  const user = useAppSelector((state) => state.users.currentUser) as any;
+
+  useEffect(() => {
+    const address = localStorage.getItem("address") as any;
+    dispatch(fetchUserByAddress(JSON.parse(address)));
+  }, [dispatch]);
+
   const renderSection1 = () => {
     return (
       <div className="space-y-10 sm:space-y-12">
@@ -13,8 +28,8 @@ const AccountSavelists = () => {
         </div>
 
         <div className="grid grid-cols-1 gap-6 md:gap-8 sm:grid-cols-2 lg:grid-cols-3 ">
-          {PRODUCTS.filter((_, i) => i < 6).map((stay) => (
-            <ProductCard key={stay.id} data={stay} />
+          {user?.wishlist?.map((item: any, index: any) => (
+            <ProductCard data={item} key={index} />
           ))}
         </div>
         <div className="flex !mt-20 justify-center items-center">

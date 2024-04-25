@@ -1,6 +1,6 @@
 "use client";
 
-import React, { FC, useState } from "react";
+import React, { FC, useState, useEffect } from "react";
 import LikeButton from "./LikeButton";
 import Prices from "./Prices";
 import {
@@ -23,7 +23,9 @@ import Link from "next/link";
 import NcImage from "@/shared/NcImage/NcImage";
 import imageUrlBuilder from "@sanity/image-url";
 import { client } from "@/api/client";
-// import { Product } from "@/features/product";
+import { fetchUserByAddress } from "@/features/user";
+import { useAppDispatch, useAppSelector } from "@/app/store";
+
 export interface ProductCardProps {
   className?: string;
   data?: Product;
@@ -32,21 +34,24 @@ export interface ProductCardProps {
 }
 
 const ProductCard: FC<any> = ({ className = "", data, art }) => {
-  const {
-    name,
-    price,
-    supplier,
-    category,
-    description,
-    variantType,
-    status,
-    image,
-    _id,
-  } = data;
+  const { name, price, supplier, description, status, image, _id } = data;
+
+  console.log(image);
 
   console.log(name);
-  const { email, supplierName, contactInfo } = supplier;
+  const { supplierName } = supplier;
 
+  const user = useAppSelector((state) => state.users.currentUser) as any;
+  const dispatch = useAppDispatch();
+
+  useEffect(() => {
+    const address = localStorage.getItem("address") as any;
+    dispatch(fetchUserByAddress(JSON.parse(address)));
+  }, [dispatch]);
+
+  const isItemInWishlist = !!user?.wishlist.filter(
+    (item: any) => item._ref !== _id
+  ).length;
   const [variantActive, setVariantActive] = useState(0);
   const [showModalQuickView, setShowModalQuickView] = useState(false);
   const router = useRouter();
@@ -91,7 +96,10 @@ const ProductCard: FC<any> = ({ className = "", data, art }) => {
           <Image
             width={80}
             height={96}
-            src={image?.asset && urlFor(image.asset).url()}
+            src={
+              (image?.asset && urlFor(image.asset).url()) ||
+              (image?.url && urlFor(image.url).url())
+            }
             alt={name}
             className="absolute object-cover object-center"
           />

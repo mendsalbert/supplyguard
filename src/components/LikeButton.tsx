@@ -1,6 +1,12 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { FC, useEffect, useRef, useState } from "react";
+import {
+  addProductToWishlist,
+  fetchUserByAddress,
+  removeProductFromWishlist,
+} from "@/features/user/userSlice";
+import { useAppDispatch, useAppSelector } from "@/app/store";
 
 export interface LikeButtonProps {
   className?: string;
@@ -14,19 +20,36 @@ const LikeButton: React.FC<LikeButtonProps> = ({
   id,
 }) => {
   const [isLiked, setIsLiked] = useState(liked);
+  const user = useAppSelector((state) => state.users.currentUser) as any;
+  const dispatch = useAppDispatch();
 
-  // make random for demo
-  // useEffect(() => {
-  //   setIsLiked(Math.random() > 0.5);
-  // }, []);
+  useEffect(() => {
+    const address = localStorage.getItem("address") as any;
+    dispatch(fetchUserByAddress(JSON.parse(address)));
+  }, [dispatch]);
 
+  useEffect(() => {
+    if (user) {
+      setIsLiked(user.wishlist.some((item: any) => item._ref === id));
+    }
+  }, [user, id]);
+
+  const handleLikeClick = async () => {
+    setIsLiked(!isLiked); // Toggle the local state first
+    if (!isLiked) {
+      await dispatch(
+        addProductToWishlist({ userId: user._id, productId: id })
+      ).unwrap();
+    } else {
+      await dispatch(
+        removeProductFromWishlist({ userId: user._id, productId: id })
+      ).unwrap();
+    }
+  };
   return (
     <button
       className={`w-9 h-9 flex items-center justify-center rounded-full bg-white dark:bg-slate-900 text-neutral-700 dark:text-slate-200 nc-shadow-lg ${className}`}
-      onClick={
-        () => setIsLiked(!isLiked)
-        //server request
-      }
+      onClick={handleLikeClick}
     >
       <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none">
         <path

@@ -1,5 +1,5 @@
 "use client";
-import React, { FC, useState } from "react";
+import React, { FC, useEffect, useRef, useState } from "react";
 import Pagination from "@/shared/Pagination/Pagination";
 import ButtonPrimary from "@/shared/Button/ButtonPrimary";
 
@@ -31,8 +31,14 @@ import product21 from "@/images/products/21.png";
 import product22 from "@/images/products/22.png";
 import product23 from "@/images/products/23.png";
 import product24 from "@/images/products/24.png";
+import { useAppDispatch, useAppSelector } from "@/app/store";
+import imageUrlBuilder from "@sanity/image-url";
+import { client } from "@/api/client";
 
-//
+import {
+  fetchProducts,
+  selectAllProducts,
+} from "@/features/product/productSlice";
 export const productImgs = [
   product1,
   product2,
@@ -61,6 +67,20 @@ export const productImgs = [
 ];
 
 const PageCollection = ({}) => {
+  const dispatch = useAppDispatch();
+  const products = useAppSelector(selectAllProducts);
+  const builder = imageUrlBuilder(client);
+
+  function urlFor(source: any) {
+    return builder.image(source);
+  }
+
+  console.log(products);
+
+  useEffect(() => {
+    dispatch(fetchProducts());
+  }, [dispatch]);
+
   const PRODUCTS: Product[] = [
     {
       id: 1,
@@ -260,7 +280,7 @@ const PageCollection = ({}) => {
 
             {/* LOOP ITEMS */}
             <div className="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-x-8 gap-y-10 mt-8 lg:mt-10">
-              {filteredProducts.map((item, index) => (
+              {products?.map((item, index) => (
                 <ProductCard data={item} key={index} />
               ))}
             </div>

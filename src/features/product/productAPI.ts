@@ -61,8 +61,18 @@ export const editProduct = async (
 
 export const getAllProducts = async () => {
   try {
-    const query = '*[_type == "product"]';
-    return await client.fetch(query);
+    const query = `*[_type == "product"]{
+      ...,
+      "category": category->{
+       ...
+      },
+      "supplier": supplier->{
+        ...
+      }
+    }`;
+    const products = client.fetch(query);
+    console.log("products", products);
+    return products;
   } catch (error) {
     console.error("Failed to fetch all products:", error);
     throw error;

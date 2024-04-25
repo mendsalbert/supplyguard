@@ -20,7 +20,8 @@ import detail3JPG from "@/images/products/detail3.jpg";
 import NotifyAddTocart from "./NotifyAddTocart";
 import Image from "next/image";
 import Link from "next/link";
-
+import imageUrlBuilder from "@sanity/image-url";
+import { client } from "@/api/client";
 export interface ProductQuickView2Props {
   className?: string;
   data: any;
@@ -32,11 +33,27 @@ const ProductQuickView2: FC<ProductQuickView2Props> = ({
   data,
   art,
 }) => {
-  const { sizes, variants, status, allOfSizes } = PRODUCTS[0];
+  const {
+    name,
+    price,
+    supplier,
+    category,
+    description,
+    variantType,
+    status,
+    image,
+    _id,
+  } = data;
+
+  console.log(name);
+  const { email, supplierName, contactInfo } = supplier;
   const LIST_IMAGES_DEMO = [detail1JPG, detail2JPG, detail3JPG];
 
+  const builder = imageUrlBuilder(client);
+  function urlFor(source: any) {
+    return builder.image(source);
+  }
   const [variantActive, setVariantActive] = useState(0);
-  const [sizeSelected, setSizeSelected] = useState(sizes ? sizes[0] : "");
   const [qualitySelected, setQualitySelected] = useState(1);
 
   // console.log("qualitySelected", qualitySelected);
@@ -49,7 +66,7 @@ const ProductQuickView2: FC<ProductQuickView2Props> = ({
           productImage={data?.image}
           qualitySelected={qualitySelected}
           show={t.visible}
-          sizeSelected={sizeSelected}
+          sizeSelected={""}
           variantActive={variantActive}
         />
       ),
@@ -63,11 +80,7 @@ const ProductQuickView2: FC<ProductQuickView2Props> = ({
         {/* ---------- 1 HEADING ----------  */}
         <div>
           <h2 className="text-2xl 2xl:text-3xl font-semibold">
-            <Link
-              href={
-                art ? `/art-detail/${data?.id}` : `/product-detail/${data?.id}`
-              }
-            >
+            <Link href={art ? `/art-detail/${_id}` : `/product-detail/${_id}`}>
               {data?.name}
             </Link>
           </h2>
@@ -92,7 +105,7 @@ const ProductQuickView2: FC<ProductQuickView2Props> = ({
                   <span>4.9</span>
                   <span className="block mx-2">·</span>
                   <span className="text-slate-600 dark:text-slate-400 ">
-                    {data?.supplier}
+                    {supplierName}
                   </span>
                 </div>
               </a>
@@ -106,11 +119,7 @@ const ProductQuickView2: FC<ProductQuickView2Props> = ({
         </div>
 
         {/* ---------- 3 VARIANTS AND SIZE LIST ----------  */}
-        <p>
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Reiciendis
-          nisi impedit hic consequatur obcaecati sed enim quasi! Impedit quod
-          voluptates dolores consequuntur?
-        </p>
+        <p>{description}</p>
         {/*  ---------- 4  QTY AND ADD TO CART BUTTON */}
         <div className="flex space-x-3.5">
           {art ? (
@@ -151,9 +160,7 @@ const ProductQuickView2: FC<ProductQuickView2Props> = ({
         <div className="text-center">
           <Link
             className="text-primary-6000 hover:text-primary-500 font-medium"
-            href={
-              art ? `/art-detail/${data?.id}` : `/product-detail/${data?.id}`
-            }
+            href={art ? `/art-detail/${_id}` : `/product-detail/${_id}`}
           >
             View full details
           </Link>
@@ -174,7 +181,7 @@ const ProductQuickView2: FC<ProductQuickView2Props> = ({
               <Image
                 fill
                 sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                src={data?.image}
+                src={image?.asset && urlFor(image.asset).url()}
                 className="w-full rounded-xl object-cover"
                 alt="product detail 1"
               />

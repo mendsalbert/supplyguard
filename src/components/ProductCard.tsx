@@ -21,7 +21,9 @@ import { useRouter } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
 import NcImage from "@/shared/NcImage/NcImage";
-
+import imageUrlBuilder from "@sanity/image-url";
+import { client } from "@/api/client";
+// import { Product } from "@/features/product";
 export interface ProductCardProps {
   className?: string;
   data?: Product;
@@ -29,31 +31,30 @@ export interface ProductCardProps {
   art?: boolean;
 }
 
-const ProductCard: FC<ProductCardProps> = ({
-  className = "",
-  data = PRODUCTS[0],
-  art,
-}) => {
+const ProductCard: FC<any> = ({ className = "", data, art }) => {
   const {
     name,
     price,
+    supplier,
+    category,
     description,
-    sizes,
-    variants,
     variantType,
     status,
     image,
-    rating,
-    id,
-    numberOfReviews,
-    supplier,
-    isLiked,
+    _id,
   } = data;
+
+  console.log(name);
+  const { email, supplierName, contactInfo } = supplier;
 
   const [variantActive, setVariantActive] = useState(0);
   const [showModalQuickView, setShowModalQuickView] = useState(false);
   const router = useRouter();
+  const builder = imageUrlBuilder(client);
 
+  function urlFor(source: any) {
+    return builder.image(source);
+  }
   const notifyAddTocart = ({ size }: { size?: string }) => {
     toast.custom(
       (t) => (
@@ -77,7 +78,7 @@ const ProductCard: FC<ProductCardProps> = ({
       ),
       {
         position: "top-right",
-        id: String(id) || "product-detail",
+        id: String(_id) || "product-detail",
         duration: 3000,
       }
     );
@@ -86,11 +87,11 @@ const ProductCard: FC<ProductCardProps> = ({
   const renderProductCartOnNotify = ({ size }: { size?: string }) => {
     return (
       <div className="flex ">
-        <div className="h-24 w-20 flex-shrink-0 overflow-hidden rounded-xl bg-slate-100">
+        <div className="h-20 w-20 flex-shrink-0 overflow-hidden rounded-xl bg-slate-100">
           <Image
             width={80}
             height={96}
-            src={image}
+            src={image?.asset && urlFor(image.asset).url()}
             alt={name}
             className="absolute object-cover object-center"
           />
@@ -102,7 +103,7 @@ const ProductCard: FC<ProductCardProps> = ({
               <div>
                 <h3 className="text-base font-medium ">{name}</h3>
                 <p className="mt-1 text-sm text-slate-500 dark:text-slate-400">
-                  <span>{data?.supplier}</span>
+                  <span> {supplierName} </span>
                   <span className="mx-2 border-s border-slate-200 dark:border-slate-700 h-4"></span>
                 </p>
               </div>
@@ -126,31 +127,6 @@ const ProductCard: FC<ProductCardProps> = ({
         </div>
       </div>
     );
-  };
-
-  const getBorderClass = (Bgclass = "") => {
-    if (Bgclass.includes("red")) {
-      return "border-red-500";
-    }
-    if (Bgclass.includes("violet")) {
-      return "border-violet-500";
-    }
-    if (Bgclass.includes("orange")) {
-      return "border-orange-500";
-    }
-    if (Bgclass.includes("green")) {
-      return "border-green-500";
-    }
-    if (Bgclass.includes("blue")) {
-      return "border-blue-500";
-    }
-    if (Bgclass.includes("sky")) {
-      return "border-sky-500";
-    }
-    if (Bgclass.includes("yellow")) {
-      return "border-yellow-500";
-    }
-    return "border-transparent";
   };
 
   const renderGroupButtons = () => {
@@ -182,58 +158,34 @@ const ProductCard: FC<ProductCardProps> = ({
     );
   };
 
-  const renderSizeList = () => {
-    if (!sizes || !sizes.length) {
-      return null;
-    }
-
-    return (
-      <div className="absolute bottom-0 inset-x-1 space-x-1.5 rtl:space-x-reverse flex justify-center opacity-0 invisible group-hover:bottom-4 group-hover:opacity-100 group-hover:visible transition-all">
-        {sizes.map((size, index) => {
-          return (
-            <div
-              key={index}
-              className="nc-shadow-lg w-10 h-10 rounded-xl bg-white hover:bg-slate-900 hover:text-white transition-colors cursor-pointer flex items-center justify-center uppercase font-semibold tracking-tight text-sm text-slate-900"
-              onClick={() => notifyAddTocart({ size })}
-            >
-              {size}
-            </div>
-          );
-        })}
-      </div>
-    );
-  };
-
   return (
     <>
       <div
         className={`nc-ProductCard relative flex flex-col bg-transparent ${className}`}
       >
         <Link
-          href={art ? `/art-detail/${data?.id}` : `/product-detail/${data?.id}`}
+          href={art ? `/art-detail/${_id}` : `/product-detail/${_id}`}
           className="absolute inset-0"
         ></Link>
 
         <div className="relative flex-shrink-0 bg-slate-50 dark:bg-slate-300 rounded-3xl overflow-hidden z-1 group">
           <Link
-            href={
-              art ? `/art-detail/${data?.id}` : `/product-detail/${data?.id}`
-            }
+            href={art ? `/art-detail/${_id}` : `/product-detail/${_id}`}
             className="block"
           >
             <NcImage
               containerClassName="flex aspect-w-4 aspect-h-4 w-full h-0"
-              src={image}
+              src={image?.asset && urlFor(image.asset).url()}
               className="object-cover w-full h-full drop-shadow-xl"
               fill
               sizes="(max-width: 640px) 100vw, (max-width: 1200px) 50vw, 40vw"
               alt="product"
             />
           </Link>
-          {/* <ProductStatus status={status} /> */}
+          <ProductStatus status={status} />
           <LikeButton
-            liked={isLiked}
-            id={id}
+            liked={false}
+            id={_id}
             className="absolute top-3 end-3 z-10"
           />
           {renderGroupButtons()}
@@ -257,14 +209,14 @@ const ProductCard: FC<ProductCardProps> = ({
               <div className="flex items-center mb-0.5">
                 <SparklesIcon className="w-5 h-5 pb-[1px] text-slate-500" />
                 <span className="text-sm ms-1 text-slate-500 dark:text-slate-400">
-                  {supplier}
+                  {supplierName}
                 </span>
               </div>
             ) : (
               <div className="flex items-center mb-0.5">
                 <BuildingStorefrontIcon className="w-5 h-5 pb-[1px] text-slate-500" />
                 <span className="text-sm ms-1 text-slate-500 dark:text-slate-400">
-                  {supplier}
+                  {supplierName}{" "}
                 </span>
               </div>
             )}

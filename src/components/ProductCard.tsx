@@ -64,12 +64,11 @@ const ProductCard: FC<any> = ({ className = "", data, art }) => {
     return builder.image(source);
   }
 
-  const handleLikeClick = async () => {
+  const handleAddToCart = async () => {
     setIsLoading(true);
     let addedProductToCart = await dispatch(
       addProductToCart({ userId: user._id, productId: _id })
     ).unwrap();
-
     // console.log("Added Product To Cart : ProductCard.tsx", addedProductToCart);
     setIsLoading(false);
   };
@@ -174,7 +173,7 @@ const ProductCard: FC<any> = ({ className = "", data, art }) => {
             fontSize="text-xs"
             sizeClass="py-2 px-4"
             onClick={() => {
-              handleLikeClick();
+              handleAddToCart();
               notifyAddTocart({ size: "XL" });
             }}
           >
@@ -212,7 +211,7 @@ const ProductCard: FC<any> = ({ className = "", data, art }) => {
           >
             <NcImage
               containerClassName="flex aspect-w-4 aspect-h-4 w-full h-0"
-              src={image?.asset && urlFor(image.asset).url()}
+              src={(image?.asset && urlFor(image.asset).url()) || image}
               className="object-cover w-full h-full drop-shadow-xl"
               fill
               sizes="(max-width: 640px) 100vw, (max-width: 1200px) 50vw, 40vw"

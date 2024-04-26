@@ -15,14 +15,22 @@ import Link from "next/link";
 import { client } from "@/api/client";
 import imageUrlBuilder from "@sanity/image-url";
 import { useAppDispatch, useAppSelector } from "@/app/store";
-import { selectCurrentCart } from "@/features/user/userSlice";
+import {
+  removeProductFromCart,
+  selectCurrentCart,
+} from "@/features/user/userSlice";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
 const CheckoutPage = () => {
   const [tabActive, setTabActive] = useState<
     "ContactInfo" | "ShippingAddress" | "PaymentMethod"
   >("ShippingAddress");
+  const dispatch = useAppDispatch();
 
   const reduxCart = useAppSelector(selectCurrentCart);
   const builder = imageUrlBuilder(client);
+  const user_ = useAppSelector((state) => state.users.currentUser) as any;
 
   function urlFor(source: any) {
     return builder.image(source);
@@ -31,6 +39,7 @@ const CheckoutPage = () => {
   const [quantityValues, setQuantityValues] = useState<{
     [key: string]: number;
   }>({});
+  const [isLoading, setisLoading] = useState(false);
 
   const handleChangeQuantity = (itemId: string, value: number) => {
     setQuantityValues((prevValues) => ({
@@ -118,6 +127,18 @@ const CheckoutPage = () => {
     );
   };
 
+  const handleRemove = async (productId: any) => {
+    const id = toast.loading("Deleting...");
+    await dispatch(
+      removeProductFromCart({ userId: user_._id, productId: productId })
+    ).unwrap();
+    toast.update(id, {
+      render: "Item Removed from cart",
+      type: "success",
+      isLoading: false,
+    });
+  };
+
   const renderProduct = (item: any, index: number) => {
     const { name, price, supplier, description, status, image, _id } = item;
     const quantity = quantityValues[_id] || 1;
@@ -125,6 +146,8 @@ const CheckoutPage = () => {
 
     return (
       <div key={index} className="relative flex py-7 first:pt-0 last:pb-0">
+        <ToastContainer />
+
         <div className="relative h-32 w-24 sm:w-28 flex-shrink-0 overflow-hidden rounded-xl bg-slate-100">
           <Image
             fill
@@ -178,12 +201,14 @@ const CheckoutPage = () => {
               />
             </div>
 
-            <a
-              href="##"
-              className="relative z-10 flex items-center mt-3 font-medium text-primary-6000 hover:text-primary-500 text-sm "
+            <div
+              onClick={() => {
+                handleRemove(_id);
+              }}
+              className="relative cursor-pointer z-10 flex items-center mt-3 font-medium text-primary-6000 hover:text-primary-500 text-sm "
             >
               <span>Remove</span>
-            </a>
+            </div>
           </div>
         </div>
       </div>
@@ -244,10 +269,6 @@ const CheckoutPage = () => {
           <div className="block mt-3 sm:mt-5 text-xs sm:text-sm font-medium text-slate-700 dark:text-slate-400">
             <Link href={"/"} className="">
               Homepage
-            </Link>
-            <span className="text-xs mx-1 sm:mx-1.5">/</span>
-            <Link href={"/collection"} className="">
-              Clothing Categories
             </Link>
             <span className="text-xs mx-1 sm:mx-1.5">/</span>
             <span className="underline">Checkout</span>

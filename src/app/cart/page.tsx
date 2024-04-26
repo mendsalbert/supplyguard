@@ -10,10 +10,17 @@ import Link from "next/link";
 import imageUrlBuilder from "@sanity/image-url";
 import { client } from "@/api/client";
 import { useAppDispatch, useAppSelector } from "@/app/store";
-import { selectCurrentCart } from "@/features/user/userSlice";
+import {
+  removeProductFromCart,
+  selectCurrentCart,
+} from "@/features/user/userSlice";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
 const CartPage = () => {
   const dispatch = useAppDispatch();
   const reduxCart = useAppSelector(selectCurrentCart);
+  const user_ = useAppSelector((state) => state.users.currentUser) as any;
 
   const builder = imageUrlBuilder(client);
 
@@ -23,6 +30,7 @@ const CartPage = () => {
   const [quantityValues, setQuantityValues] = useState<{
     [key: string]: number;
   }>({});
+  const [isLoading, setisLoading] = useState(false);
 
   const handleChangeQuantity = (itemId: string, value: number) => {
     setQuantityValues((prevValues) => ({
@@ -33,14 +41,6 @@ const CartPage = () => {
 
   const formatNumberWithCommas = (number: number) => {
     return number.toLocaleString(undefined, { minimumFractionDigits: 2 });
-  };
-  const renderStatusSoldout = () => {
-    return (
-      <div className="rounded-full flex items-center justify-center px-2.5 py-1.5 text-xs text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-700">
-        <NoSymbolIcon className="w-3.5 h-3.5" />
-        <span className="ml-1 leading-none">Sold Out</span>
-      </div>
-    );
   };
 
   const renderStatusInstock = () => {
@@ -121,6 +121,18 @@ const CartPage = () => {
     );
   };
 
+  const handleRemove = async (productId: any) => {
+    const id = toast.loading("Deleting...");
+    await dispatch(
+      removeProductFromCart({ userId: user_._id, productId: productId })
+    ).unwrap();
+    toast.update(id, {
+      render: "Item Removed from cart",
+      type: "success",
+      isLoading: false,
+    });
+  };
+
   const renderProduct = (item: any, index: number) => {
     const { name, price, supplier, description, status, image, _id } = item;
     const quantity = quantityValues[_id] || 1;
@@ -130,6 +142,8 @@ const CartPage = () => {
         key={index}
         className="relative flex py-8 sm:py-10 xl:py-12 first:pt-0 last:pb-0"
       >
+        <ToastContainer />
+
         <div className="relative h-36 w-24 sm:w-32 flex-shrink-0 overflow-hidden rounded-xl bg-slate-100">
           <Image
             fill
@@ -184,7 +198,12 @@ const CartPage = () => {
 
           <div className="flex mt-auto pt-4 items-end justify-between text-sm">
             {renderStatusInstock()}
-            <div className="relative z-10 flex items-center mt-3 font-medium text-primary-6000 hover:text-primary-500 text-sm ">
+            <div
+              onClick={() => {
+                handleRemove(_id);
+              }}
+              className="relative cursor-pointer z-10 flex items-center mt-3 font-medium text-primary-6000 hover:text-primary-500 text-sm "
+            >
               <span>Remove</span>
             </div>
           </div>

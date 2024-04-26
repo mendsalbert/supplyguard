@@ -5,6 +5,8 @@ import LikeButton from "@/components/LikeButton";
 import { StarIcon } from "@heroicons/react/24/solid";
 import BagIcon from "@/components/BagIcon";
 import NcInputNumber from "@/components/NcInputNumber";
+import { useRouter } from "next/navigation";
+
 import { PRODUCTS } from "@/data/data";
 import {
   NoSymbolIcon,
@@ -17,7 +19,8 @@ import toast from "react-hot-toast";
 import detail1JPG from "@/images/products/detail1.jpg";
 import detail2JPG from "@/images/products/detail2.jpg";
 import detail3JPG from "@/images/products/detail3.jpg";
-import NotifyAddTocart from "./NotifyAddTocart";
+import { Transition } from "@/app/headlessui";
+
 import Image from "next/image";
 import Link from "next/link";
 import imageUrlBuilder from "@sanity/image-url";
@@ -47,6 +50,7 @@ const ProductQuickView2: FC<ProductQuickView2Props> = ({
 
   const { email, supplierName, contactInfo } = supplier;
   const LIST_IMAGES_DEMO = [detail1JPG, detail2JPG, detail3JPG];
+  const router = useRouter();
 
   const builder = imageUrlBuilder(client);
   function urlFor(source: any) {
@@ -55,19 +59,96 @@ const ProductQuickView2: FC<ProductQuickView2Props> = ({
   const [variantActive, setVariantActive] = useState(0);
   const [qualitySelected, setQualitySelected] = useState(1);
 
-  const notifyAddTocart = () => {
+  // const notifyAddTocart = () => {
+  //   toast.custom(
+  //     (t) => (
+  //       <NotifyAddTocart
+  //         data={data}
+  //         productImage={data?.image}
+  //         qualitySelected={qualitySelected}
+  //         show={t.visible}
+  //         sizeSelected={""}
+  //         variantActive={variantActive}
+  //       />
+  //     ),
+  //     { position: "top-right", id: "nc-product-notify", duration: 3000 }
+  //   );
+  // };
+
+  const notifyAddTocart = ({ size }: { size?: string }) => {
     toast.custom(
       (t) => (
-        <NotifyAddTocart
-          data={data}
-          productImage={data?.image}
-          qualitySelected={qualitySelected}
+        <Transition
+          appear
           show={t.visible}
-          sizeSelected={""}
-          variantActive={variantActive}
-        />
+          className="p-4 max-w-md w-full bg-white dark:bg-slate-800 shadow-lg rounded-2xl pointer-events-auto ring-1 ring-black/5 dark:ring-white/10 text-slate-900 dark:text-slate-200"
+          enter="transition-all duration-150"
+          enterFrom="opacity-0 translate-x-20"
+          enterTo="opacity-100 translate-x-0"
+          leave="transition-all duration-150"
+          leaveFrom="opacity-100 translate-x-0"
+          leaveTo="opacity-0 translate-x-20"
+        >
+          <p className="block text-base font-semibold leading-none">
+            Added to cart!
+          </p>
+          <div className="border-t border-slate-200 dark:border-slate-700 my-4" />
+          {renderProductCartOnNotify({ size })}
+        </Transition>
       ),
-      { position: "top-right", id: "nc-product-notify", duration: 3000 }
+      {
+        position: "top-right",
+        id: String(_id) || "product-detail",
+        duration: 3000,
+      }
+    );
+  };
+
+  const renderProductCartOnNotify = ({ size }: { size?: string }) => {
+    return (
+      <div className="flex ">
+        <div className="h-20 w-20 flex-shrink-0 overflow-hidden rounded-xl bg-slate-100">
+          <Image
+            width={80}
+            height={96}
+            src={
+              (image?.asset && urlFor(image.asset).url()) ||
+              (image?.url && urlFor(image.url).url())
+            }
+            alt={name}
+            className="absolute object-cover object-center"
+          />
+        </div>
+
+        <div className="ms-4 flex flex-1 flex-col">
+          <div>
+            <div className="flex justify-between ">
+              <div>
+                <h3 className="text-base font-medium ">{name}</h3>
+                <p className="mt-1 text-sm text-slate-500 dark:text-slate-400">
+                  <span> {supplierName} </span>
+                  <span className="mx-2 border-s border-slate-200 dark:border-slate-700 h-4"></span>
+                </p>
+              </div>
+              <Prices price={price} art={art} className="mt-0.5" />
+            </div>
+          </div>
+          <div className="flex flex-1 items-end justify-between text-sm">
+            <div className="flex">
+              <button
+                type="button"
+                className="font-medium text-primary-6000 dark:text-primary-500 "
+                onClick={(e) => {
+                  e.preventDefault();
+                  router.push("/cart");
+                }}
+              >
+                View cart
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
     );
   };
 
@@ -133,7 +214,9 @@ const ProductQuickView2: FC<ProductQuickView2Props> = ({
           {art ? (
             <ButtonPrimary
               className="flex-1 flex-shrink-0"
-              onClick={notifyAddTocart}
+              onClick={() => {
+                notifyAddTocart({ size: "XL" });
+              }}
             >
               <SparklesIcon className="hidden sm:inline-block w-5 h-5 mb-0.5" />
               <span className="ml-3">Own this Art</span>
@@ -141,7 +224,9 @@ const ProductQuickView2: FC<ProductQuickView2Props> = ({
           ) : (
             <ButtonPrimary
               className="flex-1 flex-shrink-0"
-              onClick={notifyAddTocart}
+              onClick={() => {
+                notifyAddTocart({ size: "XL" });
+              }}
               // fire a function to store this inside the db
             >
               <BagIcon className="hidden sm:inline-block w-5 h-5 mb-0.5" />

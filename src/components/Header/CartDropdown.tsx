@@ -22,7 +22,6 @@ import "react-toastify/dist/ReactToastify.css";
 
 export default function CartDropdown() {
   const dispatch = useAppDispatch();
-  // const reduxCart = useAppSelector((state) => state.users.details.cart) as any;
   const reduxCart = useAppSelector(selectCurrentCart);
 
   const [isLoading, setisLoading] = useState(false);

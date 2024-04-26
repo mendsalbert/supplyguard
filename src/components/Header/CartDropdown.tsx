@@ -108,7 +108,7 @@ export default function CartDropdown() {
                   </Link>
                 </h3>
                 <p className="mt-1 text-sm text-slate-500 dark:text-slate-400">
-                  <span>{supplier?.supplierName || ""}</span>
+                  <span>{supplier?.supplierName}</span>
                   <span className="mx-2 border-l border-slate-200 dark:border-slate-700 h-4"></span>
                   <span>{""}</span>
                 </p>

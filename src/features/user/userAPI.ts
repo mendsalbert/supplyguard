@@ -157,8 +157,7 @@ export const addToCart = async (userId: any, productId: any) => {
           price,
           image,
           supplier->{
-            name,
-            description
+            supplierName
           },
           category->{
             name,
@@ -242,8 +241,7 @@ export const removeFromCart = async (userId: any, productId: any) => {
           price,
           image,
           supplier->{
-            name,
-            description
+            supplierName
           },
           category->{
             name,

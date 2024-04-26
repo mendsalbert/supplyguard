@@ -30,6 +30,10 @@ const CartPage = () => {
       [itemId]: value,
     }));
   };
+
+  const formatNumberWithCommas = (number: number) => {
+    return number.toLocaleString(undefined, { minimumFractionDigits: 2 });
+  };
   const renderStatusSoldout = () => {
     return (
       <div className="rounded-full flex items-center justify-center px-2.5 py-1.5 text-xs text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-700">
@@ -61,7 +65,7 @@ const CartPage = () => {
       <div className="flex justify-between pb-4">
         <span>Subtotal</span>
         <span className="font-semibold text-slate-900 dark:text-slate-200">
-          ${subtotal.toFixed(2)}
+          ${formatNumberWithCommas(subtotal)}
         </span>
       </div>
     );
@@ -112,7 +116,7 @@ const CartPage = () => {
     return (
       <div className="flex justify-between font-semibold text-slate-900 dark:text-slate-200 text-base pt-4">
         <span>Order total</span>
-        <span>${orderTotal.toFixed(2)}</span>
+        <span>${formatNumberWithCommas(orderTotal)}</span>
       </div>
     );
   };

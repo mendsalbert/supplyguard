@@ -25,6 +25,9 @@ import Image from "next/image";
 import Link from "next/link";
 import imageUrlBuilder from "@sanity/image-url";
 import { client } from "@/api/client";
+import { addProductToCart } from "@/features/user/userSlice";
+import { useAppDispatch, useAppSelector } from "@/app/store";
+
 export interface ProductQuickView2Props {
   className?: string;
   data: any;
@@ -48,32 +51,29 @@ const ProductQuickView2: FC<ProductQuickView2Props> = ({
     _id,
   } = data;
 
-  const { email, supplierName, contactInfo } = supplier;
-  const LIST_IMAGES_DEMO = [detail1JPG, detail2JPG, detail3JPG];
+  const dispatch = useAppDispatch();
+
+  const { supplierName } = supplier;
+
   const router = useRouter();
 
+  const user = useAppSelector((state) => state.users.currentUser) as any;
+
   const builder = imageUrlBuilder(client);
+
   function urlFor(source: any) {
     return builder.image(source);
   }
+
   const [variantActive, setVariantActive] = useState(0);
+
   const [qualitySelected, setQualitySelected] = useState(1);
 
-  // const notifyAddTocart = () => {
-  //   toast.custom(
-  //     (t) => (
-  //       <NotifyAddTocart
-  //         data={data}
-  //         productImage={data?.image}
-  //         qualitySelected={qualitySelected}
-  //         show={t.visible}
-  //         sizeSelected={""}
-  //         variantActive={variantActive}
-  //       />
-  //     ),
-  //     { position: "top-right", id: "nc-product-notify", duration: 3000 }
-  //   );
-  // };
+  const handleAddToCart = async () => {
+    await dispatch(
+      addProductToCart({ userId: user._id, productId: _id })
+    ).unwrap();
+  };
 
   const notifyAddTocart = ({ size }: { size?: string }) => {
     toast.custom(
@@ -215,7 +215,7 @@ const ProductQuickView2: FC<ProductQuickView2Props> = ({
             <ButtonPrimary
               className="flex-1 flex-shrink-0"
               onClick={() => {
-                notifyAddTocart({ size: "XL" });
+                // notifyAddTocart({ size: "XL" });
               }}
             >
               <SparklesIcon className="hidden sm:inline-block w-5 h-5 mb-0.5" />
@@ -225,6 +225,7 @@ const ProductQuickView2: FC<ProductQuickView2Props> = ({
             <ButtonPrimary
               className="flex-1 flex-shrink-0"
               onClick={() => {
+                handleAddToCart();
                 notifyAddTocart({ size: "XL" });
               }}
               // fire a function to store this inside the db

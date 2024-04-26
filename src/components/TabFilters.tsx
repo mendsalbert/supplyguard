@@ -54,8 +54,6 @@ const TabFilters = ({ onPriceRangeUpdate, onCategoryUpdate }: any) => {
       : setCategoriesState(categoriesState.filter((i) => i !== name));
   };
 
-  //
-
   // OK
   const renderXClear = () => {
     return (

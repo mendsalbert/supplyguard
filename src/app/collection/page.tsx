@@ -26,6 +26,7 @@ const PageCollection = ({}) => {
   const [priceRange, setPriceRange] = useState(null);
   const [selectedCategory, setSelectedCategory] = useState(null);
   const [filteredProducts, setFilteredProducts] = useState(products);
+  console.log(filteredProducts.length);
 
   // Callback function to update the price range
   const handlePriceRangeUpdate = (newRange: any) => {
@@ -77,9 +78,13 @@ const PageCollection = ({}) => {
 
             {/* LOOP ITEMS */}
             <div className="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-x-8 gap-y-10 mt-8 lg:mt-10">
-              {products?.map((item, index) => (
-                <ProductCard data={item} key={index} />
-              ))}
+              {filteredProducts.length <= 0
+                ? products?.map((item, index) => (
+                    <ProductCard data={item} key={index} />
+                  ))
+                : filteredProducts?.map((item, index) => (
+                    <ProductCard data={item} key={index} />
+                  ))}
             </div>
 
             {/* PAGINATION */}

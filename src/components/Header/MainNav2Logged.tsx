@@ -139,20 +139,6 @@ const MainNav2Logged: FC<MainNav2LoggedProps> = () => {
     </div>
   );
 
-  // const renderContent = () => (
-  //   <div className="h-20 flex justify-between">
-  //     {/* Content rendering logic */}
-  //     {isAuthenticated ? (
-  //       <>
-  //         {showSearchForm ? renderSearchForm() : <Navigation />}
-  //         <AvatarDropdown />
-  //         <CartDropdown />
-  //       </>
-  //     ) : (
-  //       <>{isOnboarded ? null : renderConnectButton()}</>
-  //     )}
-  //   </div>
-  // );
   const renderContent = () => {
     return (
       <div className="h-20 flex justify-between">

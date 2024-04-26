@@ -57,7 +57,7 @@ const CartPage = () => {
       ?.filter((item: any) => item !== null) // Filter out items with null fields
       .reduce(
         (acc: number, item: any) =>
-          acc + (Number(item?.price) || 0) * (quantityValues[item._id] || 0),
+          acc + Number(item?.price) * (quantityValues[item._id] || 1),
         0
       );
 
@@ -104,7 +104,7 @@ const CartPage = () => {
       ?.filter((item: any) => item !== null) // Filter out items with null fields
       .reduce(
         (acc: number, item: any) =>
-          acc + (Number(item?.price) || 0) * (quantityValues[item._id] || 0),
+          acc + (Number(item?.price) || 0) * (quantityValues[item._id] || 1),
         0
       );
 
@@ -156,19 +156,11 @@ const CartPage = () => {
                 </div>
 
                 <div className="mt-3 flex justify-between w-full sm:hidden relative">
-                  {/* <select
-                    name="qty"
-                    id="qty"
-                    className="form-select text-sm rounded-md py-1 border-slate-200 dark:border-slate-700 relative z-10 dark:bg-slate-800 "
-                  >
-                    <option value="1">1</option>
-                    <option value="2">2</option>
-                    <option value="3">3</option>
-                    <option value="4">4</option>
-                    <option value="5">5</option>
-                    <option value="6">6</option>
-                    <option value="7">7</option>
-                  </select> */}
+                  <NcInputNumber
+                    className="relative z-10"
+                    defaultValue={quantity}
+                    onChange={(value) => handleChangeQuantity(_id, value)}
+                  />
                   <Prices
                     contentClass="py-1 px-2 md:py-1.5 md:px-2.5 text-sm font-medium h-full"
                     price={Number(price * quantity)}
@@ -192,12 +184,9 @@ const CartPage = () => {
 
           <div className="flex mt-auto pt-4 items-end justify-between text-sm">
             {renderStatusInstock()}
-            <a
-              href="##"
-              className="relative z-10 flex items-center mt-3 font-medium text-primary-6000 hover:text-primary-500 text-sm "
-            >
+            <div className="relative z-10 flex items-center mt-3 font-medium text-primary-6000 hover:text-primary-500 text-sm ">
               <span>Remove</span>
-            </a>
+            </div>
           </div>
         </div>
       </div>
@@ -215,10 +204,7 @@ const CartPage = () => {
             <Link href={"/"} className="">
               Homepage
             </Link>
-            <span className="text-xs mx-1 sm:mx-1.5">/</span>
-            <Link href={"/collection"} className="">
-              Clothing Categories
-            </Link>
+
             <span className="text-xs mx-1 sm:mx-1.5">/</span>
             <span className="underline">Shopping Cart</span>
           </div>
@@ -237,28 +223,6 @@ const CartPage = () => {
             <div className="sticky top-28">
               <h3 className="text-lg font-semibold ">Order Summary</h3>
               <div className="mt-7 text-sm text-slate-500 dark:text-slate-400 divide-y divide-slate-200/70 dark:divide-slate-700/80">
-                {/* <div className="flex justify-between pb-4">
-                  <span>Subtotal</span>
-                  <span className="font-semibold text-slate-900 dark:text-slate-200">
-                    $249.00
-                  </span>
-                </div>
-                <div className="flex justify-between py-4">
-                  <span>Shpping estimate</span>
-                  <span className="font-semibold text-slate-900 dark:text-slate-200">
-                    $5.00
-                  </span>
-                </div>
-                <div className="flex justify-between py-4">
-                  <span>Tax estimate</span>
-                  <span className="font-semibold text-slate-900 dark:text-slate-200">
-                    $24.90
-                  </span>
-                </div>
-                <div className="flex justify-between font-semibold text-slate-900 dark:text-slate-200 text-base pt-4">
-                  <span>Order total</span>
-                  <span>$276.00</span>
-                </div> */}
                 {renderSubtotal()}
                 {renderShippingEstimate()}
                 {renderTaxEstimate()}

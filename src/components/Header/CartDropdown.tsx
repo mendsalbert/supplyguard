@@ -67,6 +67,17 @@ export default function CartDropdown() {
 
   console.log("View Carts : CartDropdown.tsx", reduxCart);
 
+  const renderTotal = () => {
+    let priceTotal = 0;
+    reduxCart
+      ?.filter((item: any) => item !== null)
+      .forEach((items, index) => {
+        priceTotal += Number(items?.price);
+      });
+
+    return priceTotal;
+  };
+
   const renderProduct = (item: any, index: number, close: () => void) => {
     const { name, price, supplier, description, status, image, _id } = item;
 
@@ -112,8 +123,6 @@ export default function CartDropdown() {
               <button
                 type="button"
                 onClick={() => {
-                  console.log(66666);
-
                   handleRemove(_id);
                 }}
                 className="font-medium text-primary-6000 dark:text-primary-500 "
@@ -215,7 +224,7 @@ export default function CartDropdown() {
                           Shipping and taxes calculated at checkout.
                         </span>
                       </span>
-                      <span className="">$299.00</span>
+                      <span className="">${renderTotal()}</span>
                     </p>
                     <div className="flex space-x-2 mt-5">
                       <ButtonSecondary

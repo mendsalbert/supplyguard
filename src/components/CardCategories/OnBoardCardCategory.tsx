@@ -76,9 +76,6 @@ const OnBoardCardCategory: FC<CardCategory4Props> = ({
       // Determine the redirect based on the user type
       const redirectPath = client ? "/account" : "/admin-account";
       window.location.href = redirectPath;
-
-      // Log the response for debugging
-      console.log(res);
     } catch (error) {
       // Handle errors such as authentication failure or dispatch failure
       console.error("Login failed:", error);

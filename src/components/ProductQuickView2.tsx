@@ -45,7 +45,6 @@ const ProductQuickView2: FC<ProductQuickView2Props> = ({
     _id,
   } = data;
 
-  console.log(name);
   const { email, supplierName, contactInfo } = supplier;
   const LIST_IMAGES_DEMO = [detail1JPG, detail2JPG, detail3JPG];
 
@@ -55,8 +54,6 @@ const ProductQuickView2: FC<ProductQuickView2Props> = ({
   }
   const [variantActive, setVariantActive] = useState(0);
   const [qualitySelected, setQualitySelected] = useState(1);
-
-  // console.log("qualitySelected", qualitySelected);
 
   const notifyAddTocart = () => {
     toast.custom(

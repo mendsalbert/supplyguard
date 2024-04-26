@@ -151,7 +151,6 @@ const ModalEditProduct: FC<ModalEditProps> = ({
         })
       ).unwrap();
 
-      console.log("product edited:", onEditProduct);
       toast.update(id, {
         render: "All is good :) Product Added!",
         type: "success",

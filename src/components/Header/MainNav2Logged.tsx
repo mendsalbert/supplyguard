@@ -13,6 +13,12 @@ import ButtonSecondary from "@/shared/Button/ButtonSecondary";
 import { Auth } from "@polybase/auth";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { useAppDispatch, useAppSelector } from "@/app/store";
+import {
+  fetchCart,
+  fetchUserByAddress,
+  selectCurrentCart,
+} from "@/features/user/userSlice";
 
 export interface MainNav2LoggedProps {}
 
@@ -22,9 +28,18 @@ const MainNav2Logged: FC<MainNav2LoggedProps> = () => {
   const inputRef = createRef<HTMLInputElement>();
   const [showSearchForm, setShowSearchForm] = useState(false);
   const router = useRouter();
+  const reduxCart = useAppSelector(selectCurrentCart);
 
   const [isOnboarded, setIsOnboarded] = useState<boolean | null>(null); // Correct naming and type
   const [isAuthenticated, setIsAuthenticated] = useState<boolean | null>(null);
+
+  const user = useAppSelector((state) => state.users.currentUser) as any;
+  const dispatch = useAppDispatch();
+
+  useEffect(() => {
+    const address = localStorage.getItem("address") as any;
+    dispatch(fetchUserByAddress(JSON.parse(address)));
+  }, [dispatch]);
 
   useEffect(() => {
     auth?.onAuthUpdate((authState) => {
@@ -40,9 +55,12 @@ const MainNav2Logged: FC<MainNav2LoggedProps> = () => {
   const signIn = () => {
     auth?.signIn().then((res) => {
       localStorage.setItem("address", JSON.stringify(res?.userId));
-      console.log(res);
     });
   };
+
+  useEffect(() => {
+    dispatch(fetchCart(user?._id));
+  }, [dispatch, user]);
 
   const renderMagnifyingGlassIcon = () => {
     return (
@@ -120,6 +138,7 @@ const MainNav2Logged: FC<MainNav2LoggedProps> = () => {
       Connect to
     </div>
   );
+
   // const renderContent = () => (
   //   <div className="h-20 flex justify-between">
   //     {/* Content rendering logic */}

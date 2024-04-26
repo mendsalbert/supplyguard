@@ -54,7 +54,6 @@ const AccountOrder = () => {
       lastAddressUsedForFetching.current = parsedAddress;
     }
   }, [dispatch, rolesBySupplier]);
-  console.log(rolesBySupplier);
 
   const renderMagnifyingGlassIcon = () => {
     return (

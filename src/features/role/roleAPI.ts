@@ -60,8 +60,6 @@ export const getSingleRole = async (roleId: any) => {
 // src/features/role/roleAPI.ts
 
 export const getRolesBySupplier = async (supplierEthereumAddress: string) => {
-  console.log("getRolesBySupplier function");
-
   // Correctly use parameters in GROQ query
   const query = `
       *[_type == "supplierRole" && supplier->ethereumAddress == $supplierEthereumAddress]{

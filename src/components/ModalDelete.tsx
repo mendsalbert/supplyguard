@@ -9,9 +9,7 @@ export interface ModalDeleteProps {
 }
 
 const ModalDelete: FC<ModalDeleteProps> = ({ show, onCloseModalDelete }) => {
-  const handleClickSubmitForm = () => {
-    console.log({ 1: "1" });
-  };
+  const handleClickSubmitForm = () => {};
 
   const renderContent = () => {
     return (

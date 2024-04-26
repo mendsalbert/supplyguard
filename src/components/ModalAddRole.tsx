@@ -85,7 +85,6 @@ const ModalAddRole: FC<ModalEditProps> = ({ show, onCloseModalEdit }) => {
     try {
       const onAddRole = await dispatch(createRole(roleData)).unwrap();
 
-      console.log("User added:", onAddRole);
       toast.update(id, {
         render: "All is good :) Role Added!",
         type: "success",

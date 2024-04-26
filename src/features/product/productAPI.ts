@@ -71,7 +71,6 @@ export const getAllProducts = async () => {
       }
     }`;
     const products = client.fetch(query);
-    console.log("products", products);
     return products;
   } catch (error) {
     console.error("Failed to fetch all products:", error);

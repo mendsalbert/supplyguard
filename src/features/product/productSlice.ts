@@ -180,14 +180,6 @@ const productSlice = createSlice({
           (product) => product._id !== productId
         );
         state.status = "succeeded";
-        // console.log(
-        //   "Product removed, updated products count:",
-        //   state.products.length
-        // );
-        // console.log(
-        //   "Product removed, updated products by supplier count:",
-        //   state.productsBySupplier.length
-        // );
       })
 
       .addCase(fetchProductsFromSupplier.pending, (state) => {

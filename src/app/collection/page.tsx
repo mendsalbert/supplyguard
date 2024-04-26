@@ -38,7 +38,6 @@ const PageCollection = ({}) => {
 
   const handleCategoryUpdate = (selectedCategory: any) => {
     setSelectedCategory(selectedCategory);
-    console.log("selectedCategory", selectedCategory);
     if (
       selectedCategory.includes("All Categories") ||
       selectedCategory.length === 0

@@ -92,7 +92,6 @@ const AccountPage = () => {
   };
 
   const handleImageChange = (e: any) => {
-    // console.log(e.target.files[0]);
     setImageFile(e.target.files[0]);
   };
 
@@ -110,7 +109,6 @@ const AccountPage = () => {
         })
       ).unwrap();
 
-      console.log("User updated:", updatedUser);
       toast.update(id, {
         render: "All is good :) Account Updated!",
         type: "success",

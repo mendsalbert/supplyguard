@@ -27,7 +27,6 @@ const ModalRoleDelete: FC<ModalDeleteProps> = ({
 
     try {
       const deletedRole = await dispatch(removeRole(roleId)).unwrap();
-      console.log("deletedRole", deletedRole);
 
       onCloseModalDelete();
       setIsLoading(false);

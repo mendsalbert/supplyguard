@@ -30,7 +30,7 @@ const LikeButton: React.FC<LikeButtonProps> = ({
 
   useEffect(() => {
     if (user) {
-      setIsLiked(user.wishlist.some((item: any) => item._ref === id));
+      setIsLiked(user.wishlist.some((item: any) => item._id === id));
     }
   }, [user, id]);
 

@@ -16,8 +16,6 @@ const Prices: FC<PricesProps> = ({
   art,
   qualitySelected,
 }) => {
-  console.log(qualitySelected);
-
   return (
     <div className={`${className}`}>
       <div

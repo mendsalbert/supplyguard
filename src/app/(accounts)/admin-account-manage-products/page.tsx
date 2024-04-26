@@ -16,12 +16,9 @@ const AccountOrder = () => {
 
   useEffect(() => {
     const address = localStorage.getItem("address") as any;
-    console.log(address);
 
     dispatch(fetchProductsFromSupplier(JSON.parse(address)));
   }, [dispatch]);
-
-  console.log("productsBySupplier", productsBySupplier);
 
   const renderProductItem = (product: any, index: number) => {
     const { image, name } = product;

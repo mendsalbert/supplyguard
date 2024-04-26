@@ -1,6 +1,6 @@
 "use client";
 
-import React, { FC, useState, useEffect } from "react";
+import React, { FC, useState, useEffect, useRef } from "react";
 import LikeButton from "./LikeButton";
 import Prices from "./Prices";
 import {
@@ -23,7 +23,12 @@ import Link from "next/link";
 import NcImage from "@/shared/NcImage/NcImage";
 import imageUrlBuilder from "@sanity/image-url";
 import { client } from "@/api/client";
-import { fetchUserByAddress } from "@/features/user";
+import {
+  addProductToCart,
+  fetchCart,
+  fetchUserByAddress,
+  selectCurrentCart,
+} from "@/features/user/userSlice";
 import { useAppDispatch, useAppSelector } from "@/app/store";
 
 export interface ProductCardProps {
@@ -35,15 +40,13 @@ export interface ProductCardProps {
 
 const ProductCard: FC<any> = ({ className = "", data, art }) => {
   const { name, price, supplier, description, status, image, _id } = data;
+  const reduxCart = useAppSelector(selectCurrentCart);
 
-  console.log(image);
-
-  console.log(name);
   const { supplierName } = supplier;
 
   const user = useAppSelector((state) => state.users.currentUser) as any;
   const dispatch = useAppDispatch();
-
+  const [isLoading, setIsLoading] = useState(false);
   useEffect(() => {
     const address = localStorage.getItem("address") as any;
     dispatch(fetchUserByAddress(JSON.parse(address)));
@@ -60,6 +63,29 @@ const ProductCard: FC<any> = ({ className = "", data, art }) => {
   function urlFor(source: any) {
     return builder.image(source);
   }
+
+  const handleLikeClick = async () => {
+    setIsLoading(true);
+    let addedProductToCart = await dispatch(
+      addProductToCart({ userId: user._id, productId: _id })
+    ).unwrap();
+
+    // console.log("Added Product To Cart : ProductCard.tsx", addedProductToCart);
+    setIsLoading(false);
+  };
+  const lastUserIdUsedForFetchingCart = useRef();
+
+  useEffect(() => {
+    if (user?._id && user?._id !== lastUserIdUsedForFetchingCart.current) {
+      const fetchCartAsync = async () => {
+        await dispatch(fetchCart(user?._id));
+        lastUserIdUsedForFetchingCart.current = user?._id;
+      };
+
+      fetchCartAsync();
+    }
+  }, [dispatch, fetchCart, user?._id, isLoading, reduxCart]);
+
   const notifyAddTocart = ({ size }: { size?: string }) => {
     toast.custom(
       (t) => (
@@ -147,7 +173,10 @@ const ProductCard: FC<any> = ({ className = "", data, art }) => {
             className="shadow-lg"
             fontSize="text-xs"
             sizeClass="py-2 px-4"
-            onClick={() => notifyAddTocart({ size: "XL" })}
+            onClick={() => {
+              handleLikeClick();
+              notifyAddTocart({ size: "XL" });
+            }}
           >
             <BagIcon className="w-3.5 h-3.5 mb-0.5" />
             <span className="ms-1">Add to Cart</span>

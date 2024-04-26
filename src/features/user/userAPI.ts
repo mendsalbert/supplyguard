@@ -55,6 +55,21 @@ export const fetchUserByAddress = async (ethereumAddress: string) => {
           name,
           description
         }
+      },
+      "cart": cart[]->{
+        _id,
+        name,
+        description,
+        price,
+        status,
+        image,
+        supplier->{
+          supplierName
+        },
+        category->{
+          name,
+          description
+        }
       }
     }
   `;
@@ -118,11 +133,11 @@ export const updateUserByAddress = async (
   }
 };
 
-// Function to add a product to the user's cart
 export const addToCart = async (userId: any, productId: any) => {
   try {
-    const updatedUser = await client
-      .patch(userId) // the user's document ID
+    // First, update the cart by adding the new product
+    await client
+      .patch(userId)
       .setIfMissing({ cart: [] })
       .insert("after", "cart[-1]", [
         {
@@ -131,10 +146,40 @@ export const addToCart = async (userId: any, productId: any) => {
         },
       ])
       .commit();
-    return updatedUser;
+
+    // After updating, fetch the updated cart details with full product information
+    const query = `
+      *[_id == $userId] {
+        "cart": cart[]->{
+          _id,
+          name,
+          description,
+          price,
+          image,
+          supplier->{
+            name,
+            description
+          },
+          category->{
+            name,
+            description
+          }
+        }
+      }
+    `;
+
+    // Execute the query to fetch detailed cart items
+    const updatedUserCart = await client.fetch(query, { userId });
+
+    // Return the first user's detailed cart (assuming _id is unique and only one user is expected to match)
+    if (updatedUserCart.length > 0) {
+      return updatedUserCart[0].cart;
+    }
+
+    return []; // If no user or cart found, return an empty array
   } catch (error) {
-    console.error("Failed to add to cart:", error);
-    throw error;
+    console.error("Failed to add to cart and fetch updated cart:", error);
+    throw new Error("Failed to add to cart and fetch updated cart");
   }
 };
 
@@ -179,16 +224,47 @@ export const addOrderToHistory = async (userId: any, orderId: any) => {
 };
 
 // Function to remove a product from the user's cart
+
 export const removeFromCart = async (userId: any, productId: any) => {
   try {
-    const updatedUser = await client
-      .patch(userId) // the user's document ID
-      .unset([`cart[_ref=="${productId}"]`])
+    // First, remove the product from the cart
+    await client
+      .patch(userId)
+      .unset([`cart[_ref=="${productId}"]`]) // Correctly unset the reference
       .commit();
-    return updatedUser;
+    // After updating, fetch the updated cart details with full product information
+    const query = `
+      *[_id == $userId] {
+        "cart": cart[]->{
+          _id,
+          name,
+          description,
+          price,
+          image,
+          supplier->{
+            name,
+            description
+          },
+          category->{
+            name,
+            description
+          }
+        }
+      }
+    `;
+
+    // Execute the query to fetch detailed cart items
+    const updatedUserCart = await client.fetch(query, { userId });
+
+    // Return the first user's detailed cart (assuming _id is unique and only one user is expected to match)
+    if (updatedUserCart.length > 0) {
+      return updatedUserCart[0].cart;
+    }
+
+    return []; // If no user or cart found, return an empty array
   } catch (error) {
-    console.error("Failed to remove from cart:", error);
-    throw error;
+    console.error("Failed to remove from cart and fetch updated cart:", error);
+    throw new Error("Failed to remove from cart and fetch updated cart");
   }
 };
 
@@ -203,5 +279,39 @@ export const removeFromWishlist = async (userId: any, productId: any) => {
   } catch (error) {
     console.error("Failed to remove from wishlist:", error);
     throw error;
+  }
+};
+
+export const getCart = async (userId: any) => {
+  const query = `
+    *[_type == "user" && _id == $userId] {
+      "cart": cart[]->{
+        _id,
+        name,
+        description,
+        price,
+        image,
+        supplier->{
+          supplierName
+        },
+        category->{
+          name,
+          description
+        }
+      }
+    }
+  `;
+
+  const params = {
+    userId,
+  };
+  try {
+    const result = await client.fetch(query, params);
+    console.log("View Products To Cart : userSlice.tsx", result);
+
+    return result[0].cart;
+  } catch (error) {
+    console.error("Failed to fetch cart for user:", error);
+    throw new Error("Failed to fetch cart");
   }
 };

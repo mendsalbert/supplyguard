@@ -112,7 +112,6 @@ const ModalAddProduct: FC<ModalEditProps> = ({ show, onCloseModalEdit }) => {
         })
       ).unwrap();
 
-      console.log("User added:", onAddProduct);
       toast.update(id, {
         render: "All is good :) Product Added!",
         type: "success",

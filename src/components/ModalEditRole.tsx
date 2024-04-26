@@ -117,7 +117,6 @@ const ModalEditRole: FC<ModalEditProps> = ({
         updateRole({ roleId, roleData })
       ).unwrap();
 
-      console.log("User added:", onAddRole);
       toast.update(id, {
         render: "All is good :) Role Added!",
         type: "success",

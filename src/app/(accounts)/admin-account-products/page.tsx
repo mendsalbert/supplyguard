@@ -24,7 +24,6 @@ const AccountOrder = () => {
   const productsBySupplier = useAppSelector(selectProductsBySupplier);
   const lastAddressUsedForFetching = useRef();
 
-  console.log("productsBySupplier", productsBySupplier);
   const [productId, setProductId] = useState("");
   const [isAdding, setIsAdding] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
@@ -50,7 +49,6 @@ const AccountOrder = () => {
   useEffect(() => {
     const address = localStorage.getItem("address");
     if (address && JSON.parse(address) !== lastAddressUsedForFetching.current) {
-      console.log("Fetching products for supplier...");
       const parsedAddress = JSON.parse(address);
       dispatch(fetchProductsFromSupplier(parsedAddress));
       lastAddressUsedForFetching.current = parsedAddress;

@@ -11,6 +11,7 @@ import {
   addOrderToHistory,
   removeFromCart,
   removeFromWishlist,
+  getCart,
 } from "./userAPI";
 interface ShippingAddress {
   street: string;
@@ -150,6 +151,19 @@ export const removeProductFromWishlist = createAsyncThunk(
   }
 );
 
+export const fetchCart = createAsyncThunk(
+  "users/fetchCart",
+  async (userId: any, { rejectWithValue }) => {
+    try {
+      const cartItems = await getCart(userId);
+
+      return cartItems;
+    } catch (error) {
+      return rejectWithValue("Failed to fetch cart");
+    }
+  }
+);
+
 const userSlice = createSlice({
   name: "users",
   initialState,
@@ -211,8 +225,10 @@ const userSlice = createSlice({
         state.status = "failed";
       })
       .addCase(addProductToCart.fulfilled, (state, action) => {
-        // Assume state structure includes a detailed user object
-        state.details.cart = action.payload.cart;
+        // state.details.cart.push(action.payload);
+        // console.log("View Products To Cart : userSlice.tsx", action.payload);
+        state.details.cart = action.payload;
+        state.status = "succeeded";
       })
       .addCase(addProductToWishlist.fulfilled, (state, action) => {
         state.details.wishlist = action.payload.wishlist;
@@ -221,9 +237,11 @@ const userSlice = createSlice({
         state.details.orderHistory = action.payload.orderHistory;
       })
       .addCase(removeProductFromCart.fulfilled, (state, action) => {
-        state.details.cart = state.details.cart.filter(
-          (item) => item._ref !== action.meta.arg.productId
-        );
+        // state.details.cart = state.details.cart.filter(
+        //   (item) => item._ref !== action.meta.arg.productId
+        // );
+        // state.details.cart = action.payload;
+        state.details.cart = action.payload as any;
         state.status = "succeeded";
       })
       .addCase(removeProductFromWishlist.fulfilled, (state, action) => {
@@ -231,11 +249,24 @@ const userSlice = createSlice({
           (item) => item._ref !== action.meta.arg.productId
         );
         state.status = "succeeded";
+      })
+      .addCase(fetchCart.pending, (state) => {
+        state.status = "loading";
+      })
+      .addCase(fetchCart.fulfilled, (state, action) => {
+        // console.log("View Products To Cart : userSlice.tsx", action.payload);
+        state.details.cart = action.payload;
+        state.status = "succeeded";
+      })
+      .addCase(fetchCart.rejected, (state, action) => {
+        // state.error = action.payload;
+        state.status = "failed";
       });
   },
 });
 
 export const selectAllUsers = (state: RootState) => state.users.users;
 export const selectCurrentUser = (state: RootState) => state.users.currentUser;
+export const selectCurrentCart = (state: RootState) => state.users.details.cart;
 
 export default userSlice.reducer;

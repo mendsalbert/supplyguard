@@ -12,6 +12,8 @@
     "@glidejs/glide": "^3.6.0",
     "@headlessui/react": "^1.7.17",
     "@heroicons/react": "^2.0.18",
+    "@nomiclabs/hardhat-ethers": "^2.0.0",
+    "@nomiclabs/hardhat-waffle": "^2.0.6",
     "@polybase/auth": "^0.6.6",
     "@polybase/client": "^0.6.6",
     "@reduxjs/toolkit": "^2.2.3",
@@ -25,9 +27,11 @@
     "@types/node": "20.9.2",
     "@types/react": "18.2.37",
     "@types/react-dom": "18.2.15",
+    "@types/sinon-chai": "^3.2.3",
     "axios": "^1.6.8",
     "eslint": "8.54.0",
     "eslint-config-next": "14.0.3",
+    "ethereum-waffle": "*",
     "framer-motion": "^10.16.5",
     "fs": "^0.0.1-security",
     "next": "^14.0.3",
@@ -52,8 +56,23 @@
     "typescript": "5.2.2"
   },
   "devDependencies": {
+    "@nomicfoundation/hardhat-chai-matchers": "^2.0.0",
+    "@nomicfoundation/hardhat-ethers": "^3.0.0",
+    "@nomicfoundation/hardhat-ignition": "^0.15.0",
+    "@nomicfoundation/hardhat-ignition-ethers": "^0.15.0",
+    "@nomicfoundation/hardhat-network-helpers": "^1.0.0",
+    "@nomicfoundation/hardhat-toolbox": "^5.0.0",
+    "@nomicfoundation/hardhat-verify": "^2.0.0",
+    "@typechain/ethers-v6": "^0.5.0",
+    "@typechain/hardhat": "^9.0.0",
     "autoprefixer": "^10.4.16",
+    "chai": "^4.2.0",
+    "ethers": "^6.4.0",
+    "hardhat": "^2.14.0",
+    "hardhat-gas-reporter": "^1.0.8",
     "postcss": "^8.4.31",
-    "tailwindcss": "^3.3.5"
+    "solidity-coverage": "^0.8.0",
+    "tailwindcss": "^3.3.5",
+    "typechain": "^8.3.0"
   }
 }

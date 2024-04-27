@@ -1,13 +1,14 @@
 "use client";
-
+import React, { FC, useState, useEffect, useRef } from "react";
 import Label from "@/components/Label/Label";
-import React, { FC } from "react";
 import ButtonPrimary from "@/shared/Button/ButtonPrimary";
 import ButtonSecondary from "@/shared/Button/ButtonSecondary";
 import Input from "@/shared/Input/Input";
 import Radio from "@/shared/Radio/Radio";
 import Select from "@/shared/Select/Select";
-
+import { useAppDispatch, useAppSelector } from "@/app/store";
+import { fetchUserByAddress } from "@/features/user/userSlice";
+import Link from "next/link";
 interface Props {
   isActive: boolean;
   onCloseActive: () => void;
@@ -19,6 +20,14 @@ const ShippingAddress: FC<Props> = ({
   onCloseActive,
   onOpenActive,
 }) => {
+  const dispatch = useAppDispatch();
+  const user = useAppSelector((state) => state.users.currentUser) as any;
+
+  useEffect(() => {
+    const address = localStorage.getItem("address") as any;
+    dispatch(fetchUserByAddress(JSON.parse(address)));
+  }, [dispatch]);
+
   const renderShippingAddress = () => {
     return (
       <div className="border border-slate-200 dark:border-slate-700 rounded-xl ">
@@ -87,7 +96,7 @@ const ShippingAddress: FC<Props> = ({
             </h3>
             <div className="font-semibold mt-1 text-sm">
               <span className="">
-                {`St. Paul's Road, Norris, SD 57560, Dakota, USA`}
+                {`${user?.shippingAddress?.street},${user?.shippingAddress?.city},${user?.shippingAddress?.state},${user?.shippingAddress?.postalCode},${user?.shippingAddress?.country}`}
               </span>
             </div>
           </div>
@@ -104,14 +113,10 @@ const ShippingAddress: FC<Props> = ({
           }`}
         >
           {/* ============ */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-3">
-            <div>
-              <Label className="text-sm">First name</Label>
-              <Input className="mt-1.5" defaultValue="Cole" />
-            </div>
-            <div>
-              <Label className="text-sm">Last name</Label>
-              <Input className="mt-1.5" defaultValue="Enrico " />
+          <div className="sm:flex space-y-4 sm:space-y-0 sm:space-x-3">
+            <div className="flex-1">
+              <Label className="text-sm">Full Name</Label>
+              <Input className="mt-1.5" defaultValue={user?.fullname} />
             </div>
           </div>
 
@@ -122,13 +127,9 @@ const ShippingAddress: FC<Props> = ({
               <Input
                 className="mt-1.5"
                 placeholder=""
-                defaultValue={"123, Dream Avenue, USA"}
+                defaultValue={`${user?.shippingAddress?.street}`}
                 type={"text"}
               />
-            </div>
-            <div className="sm:w-1/3">
-              <Label className="text-sm">Apt, Suite *</Label>
-              <Input className="mt-1.5" defaultValue="55U - DD5 " />
             </div>
           </div>
 
@@ -136,19 +137,17 @@ const ShippingAddress: FC<Props> = ({
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-3">
             <div>
               <Label className="text-sm">City</Label>
-              <Input className="mt-1.5" defaultValue="Norris" />
+              <Input
+                className="mt-1.5"
+                defaultValue={`${user?.shippingAddress?.city}`}
+              />
             </div>
             <div>
               <Label className="text-sm">Country</Label>
               <Select className="mt-1.5" defaultValue="United States ">
-                <option value="United States">United States</option>
-                <option value="United States">Canada</option>
-                <option value="United States">Mexico</option>
-                <option value="United States">Israel</option>
-                <option value="United States">France</option>
-                <option value="United States">England</option>
-                <option value="United States">Laos</option>
-                <option value="United States">China</option>
+                <option value={`${user?.shippingAddress?.country}`}>
+                  {`${user?.shippingAddress?.country}`}
+                </option>
               </Select>
             </div>
           </div>
@@ -157,28 +156,16 @@ const ShippingAddress: FC<Props> = ({
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-3">
             <div>
               <Label className="text-sm">State/Province</Label>
-              <Input className="mt-1.5" defaultValue="Texas" />
+              <Input
+                className="mt-1.5"
+                defaultValue={`${user?.shippingAddress?.state}`}
+              />
             </div>
             <div>
               <Label className="text-sm">Postal code</Label>
-              <Input className="mt-1.5" defaultValue="2500 " />
-            </div>
-          </div>
-
-          {/* ============ */}
-          <div>
-            <Label className="text-sm">Address type</Label>
-            <div className="mt-1.5 grid grid-cols-1 sm:grid-cols-2 gap-2 sm:gap-3">
-              <Radio
-                label={`<span class="text-sm font-medium">Home <span class="font-light">(All Day Delivery)</span></span>`}
-                id="Address-type-home"
-                name="Address-type"
-                defaultChecked
-              />
-              <Radio
-                label={`<span class="text-sm font-medium">Office <span class="font-light">(Delivery <span class="font-medium">9 AM - 5 PM</span>)</span> </span>`}
-                id="Address-type-office"
-                name="Address-type"
+              <Input
+                className="mt-1.5"
+                defaultValue={`${user?.shippingAddress?.postalCode}`}
               />
             </div>
           </div>
@@ -187,9 +174,11 @@ const ShippingAddress: FC<Props> = ({
           <div className="flex flex-col sm:flex-row pt-6">
             <ButtonPrimary
               className="sm:!px-7 shadow-none"
-              onClick={onCloseActive}
+              // onClick={onCloseActive}
             >
-              Save and next to Payment
+              <Link href={user?.isSupplier ? "/admin-account" : "/account"}>
+                Change
+              </Link>
             </ButtonPrimary>
             <ButtonSecondary
               className="mt-3 sm:mt-0 sm:ml-3"

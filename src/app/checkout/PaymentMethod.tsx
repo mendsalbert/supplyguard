@@ -405,7 +405,7 @@ const PaymentMethod: FC<Props> = ({
             <div className="font-semibold mt-1 text-sm">
               <span className="">Cryotocurrency</span>
               <span className="ml-3">
-                {truncateEthAddress(user?.ethereumAddress)}
+                {truncateEthAddress(user?.ethereumAddress || "")}
               </span>
             </div>
           </div>

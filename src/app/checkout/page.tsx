@@ -39,6 +39,7 @@ const CheckoutPage = () => {
   const [quantityValues, setQuantityValues] = useState<{
     [key: string]: number;
   }>({});
+
   const [ethExchangeRate, setEthExchangeRate] = useState<number>(1);
 
   const [isLoading, setisLoading] = useState(false);
@@ -149,7 +150,6 @@ const CheckoutPage = () => {
           ${formatNumberWithCommas(orderTotal)}
           {" ~ "}
           {Number(orderTotal / ethExchangeRate).toFixed(4)}ETH
-          {/* {fetchEthExchangeRate(orderTotal)} */}
         </span>
       </div>
     );

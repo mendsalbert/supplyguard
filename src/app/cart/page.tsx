@@ -30,7 +30,30 @@ const CartPage = () => {
   const [quantityValues, setQuantityValues] = useState<{
     [key: string]: number;
   }>({});
+  const [ethExchangeRate, setEthExchangeRate] = useState<number>(1);
+
   const [isLoading, setisLoading] = useState(false);
+
+  useEffect(() => {
+    const fetchEthExchangeRate = async () => {
+      try {
+        const ethExchangeRateResponse = await fetch(
+          "https://api.coinbase.com/v2/exchange-rates?currency=ETH"
+        );
+        const ethExchangeRateData = await ethExchangeRateResponse.json();
+        const ethToUsdRate = parseFloat(
+          ethExchangeRateData?.data?.rates?.USD || "0"
+        );
+        // const orderTotalEth = orderTotal / ethToUsdRate;
+
+        setEthExchangeRate(ethToUsdRate);
+      } catch (error) {
+        console.error("Error fetching ETH exchange rate:", error);
+      }
+    };
+
+    fetchEthExchangeRate();
+  }, []);
 
   const handleChangeQuantity = (itemId: string, value: number) => {
     setQuantityValues((prevValues) => ({
@@ -116,7 +139,11 @@ const CartPage = () => {
     return (
       <div className="flex justify-between font-semibold text-slate-900 dark:text-slate-200 text-base pt-4">
         <span>Order total</span>
-        <span>${formatNumberWithCommas(orderTotal)}</span>
+        <span>
+          ${formatNumberWithCommas(orderTotal)}
+          {" ~ "}
+          {Number(orderTotal / ethExchangeRate).toFixed(4)}ETH
+        </span>
       </div>
     );
   };

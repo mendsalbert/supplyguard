@@ -47,12 +47,13 @@ const ProductCard: FC<any> = ({ className = "", data, art }) => {
   const user = useAppSelector((state) => state.users.currentUser) as any;
   const dispatch = useAppDispatch();
   const [isLoading, setIsLoading] = useState(false);
+
   useEffect(() => {
     const address = localStorage.getItem("address") as any;
     dispatch(fetchUserByAddress(JSON.parse(address)));
   }, [dispatch]);
 
-  const isItemInWishlist = !!user?.wishlist.filter(
+  const isItemInWishlist = !!user?.wishlist?.filter(
     (item: any) => item._ref !== _id
   ).length;
   const [variantActive, setVariantActive] = useState(0);

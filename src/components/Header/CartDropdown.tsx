@@ -147,7 +147,7 @@ export default function CartDropdown() {
             <div className="w-3.5 h-3.5 flex items-center justify-center bg-primary-500 absolute top-1.5 right-1.5 rounded-full text-[10px] leading-none text-white font-medium">
               <span className="mt-[1px]">
                 {
-                  reduxCart?.filter((item: any) => item !== null).length // Filter out items with null fields
+                  reduxCart?.filter((item: any) => item !== null).length || 0 // Filter out items with null fields
                 }
               </span>
             </div>

@@ -1,10 +1,12 @@
+"use client";
 import Label from "@/components/Label/Label";
-import React, { FC } from "react";
+import React, { FC, useState, useEffect, useRef } from "react";
 import ButtonPrimary from "@/shared/Button/ButtonPrimary";
 import ButtonSecondary from "@/shared/Button/ButtonSecondary";
 import Checkbox from "@/shared/Checkbox/Checkbox";
 import Input from "@/shared/Input/Input";
-
+import { useAppDispatch, useAppSelector } from "@/app/store";
+import { fetchUserByAddress } from "@/features/user/userSlice";
 interface Props {
   isActive: boolean;
   onOpenActive: () => void;
@@ -12,6 +14,16 @@ interface Props {
 }
 
 const ContactInfo: FC<Props> = ({ isActive, onCloseActive, onOpenActive }) => {
+  const dispatch = useAppDispatch();
+  const user = useAppSelector((state) => state.users.currentUser) as any;
+
+  useEffect(() => {
+    const address = localStorage.getItem("address") as any;
+    dispatch(fetchUserByAddress(JSON.parse(address)));
+  }, [dispatch]);
+
+  console.log(user);
+
   const renderAccount = () => {
     return (
       <div className="border border-slate-200 dark:border-slate-700 rounded-xl overflow-hidden z-0">
@@ -64,8 +76,8 @@ const ContactInfo: FC<Props> = ({ isActive, onCloseActive, onOpenActive }) => {
               </svg>
             </h3>
             <div className="font-semibold mt-1 text-sm">
-              <span className="">Enrico Smith</span>
-              <span className="ml-3 tracking-tighter">+855 - 666 - 7744</span>
+              <span className="">{user?.fullname}</span>
+              <span className="ml-3 tracking-tighter">{user?.phone}</span>
             </div>
           </div>
           <button
@@ -82,20 +94,18 @@ const ContactInfo: FC<Props> = ({ isActive, onCloseActive, onOpenActive }) => {
         >
           <div className="flex justify-between flex-wrap items-baseline">
             <h3 className="text-lg font-semibold">Contact infomation</h3>
-            <span className="block text-sm my-1 md:my-0">
-              Do not have an account?{` `}
-              <a href="##" className="text-primary-500 font-medium">
-                Log in
-              </a>
-            </span>
           </div>
           <div className="max-w-lg">
             <Label className="text-sm">Your phone number</Label>
-            <Input className="mt-1.5" defaultValue={"+808 xxx"} type={"tel"} />
+            <Input className="mt-1.5" defaultValue={user?.phone} type={"tel"} />
           </div>
           <div className="max-w-lg">
             <Label className="text-sm">Email address</Label>
-            <Input className="mt-1.5" type={"email"} />
+            <Input
+              className="mt-1.5"
+              type={"email"}
+              defaultValue={user?.email}
+            />
           </div>
           <div>
             <Checkbox

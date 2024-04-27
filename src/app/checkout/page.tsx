@@ -259,6 +259,7 @@ const CheckoutPage = () => {
       </div>
     );
   };
+
   return (
     <div className="nc-CheckoutPage">
       <main className="container py-16 lg:pb-28 lg:pt-20 ">

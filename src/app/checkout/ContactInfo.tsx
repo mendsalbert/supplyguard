@@ -7,6 +7,7 @@ import Checkbox from "@/shared/Checkbox/Checkbox";
 import Input from "@/shared/Input/Input";
 import { useAppDispatch, useAppSelector } from "@/app/store";
 import { fetchUserByAddress } from "@/features/user/userSlice";
+import Link from "next/link";
 interface Props {
   isActive: boolean;
   onOpenActive: () => void;
@@ -118,11 +119,10 @@ const ContactInfo: FC<Props> = ({ isActive, onCloseActive, onOpenActive }) => {
 
           {/* ============ */}
           <div className="flex flex-col sm:flex-row pt-6">
-            <ButtonPrimary
-              className="sm:!px-7 shadow-none"
-              onClick={() => onCloseActive()}
-            >
-              Save and next to Shipping
+            <ButtonPrimary className="sm:!px-7 shadow-none">
+              <Link href={user?.isSupplier ? "/admin-account" : "/account"}>
+                Change
+              </Link>
             </ButtonPrimary>
             <ButtonSecondary
               className="mt-3 sm:mt-0 sm:ml-3"

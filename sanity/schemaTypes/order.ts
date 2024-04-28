@@ -40,6 +40,12 @@ export default defineType({
               validation: (Rule) =>
                 Rule.required().min(1).error("Quantity must be at least 1"),
             }),
+            defineField({
+              name: "supplierRoles",
+              title: "Supplier Roles",
+              type: "array",
+              of: [],
+            }),
           ],
         },
       ],

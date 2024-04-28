@@ -22,8 +22,9 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import axios from "axios";
 import { Auth } from "@polybase/auth";
-
+import { useAccount } from "wagmi";
 import { makePayment } from "../../lib/queries";
+import { addOrder } from "@/features/order/orderSlice";
 const auth = typeof window !== "undefined" ? new Auth() : null;
 
 const CheckoutPage = () => {
@@ -36,6 +37,7 @@ const CheckoutPage = () => {
   const builder = imageUrlBuilder(client);
   const user_ = useAppSelector((state) => state.users.currentUser) as any;
   const [loading, setLoading] = useState(false);
+  const account = useAccount();
 
   function urlFor(source: any) {
     return builder.image(source);
@@ -173,6 +175,51 @@ const CheckoutPage = () => {
     });
   };
 
+  console.log(reduxCart);
+
+  const handlePayment = async () => {
+    setLoading(true);
+
+    try {
+      const id = toast.loading("Getting your order ready...");
+      const receipt = await makePayment("0.0000000000003");
+
+      const orderDetails = {
+        orderNumber: `SG${reduxCart.length}${reduxCart[0]?.name
+          ?.slice(0, 2)
+          ?.toUpperCase()}MA24${
+          quantityValues[reduxCart[0]?.product?._id] || 1
+        }${account.address?.slice(0, 3).toUpperCase()}`,
+        items: reduxCart.map((product) => ({
+          product: { _type: "reference", _ref: product._id },
+          quantity: quantityValues[product._id] || 1,
+        })),
+        user: {
+          _type: "reference",
+          _ref: user_._id,
+        },
+      };
+
+      // Dispatch the addOrder async thunk
+      const addedOrder = await dispatch(
+        addOrder({
+          orderData: orderDetails as any,
+          email: user_.email,
+        })
+      );
+
+      toast.update(id, {
+        render: "Order Went Through",
+        type: "success",
+        isLoading: false,
+      });
+    } catch (error) {
+      console.error("Payment error:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   const renderProduct = (item: any, index: number) => {
     const { name, price, supplier, description, status, image, _id } = item;
     const quantity = quantityValues[_id] || 1;
@@ -294,24 +341,6 @@ const CheckoutPage = () => {
         </div>
       </div>
     );
-  };
-
-  const handlePayment = async () => {
-    setLoading(true);
-    try {
-      const id = toast.loading("Getting your order ready...");
-      const receipt = await makePayment("0.0000000000003");
-      console.log("receipt", receipt);
-      toast.update(id, {
-        render: "Order Went Through",
-        type: "success",
-        isLoading: false,
-      });
-    } catch (error) {
-      console.error("Payment error:", error);
-    } finally {
-      setLoading(false);
-    }
   };
 
   return (

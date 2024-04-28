@@ -80,6 +80,7 @@ const CheckoutPage = () => {
   const formatNumberWithCommas = (number: number) => {
     return number.toLocaleString(undefined, { minimumFractionDigits: 2 });
   };
+
   const handleScrollToEl = (id: string) => {
     const element = document.getElementById(id);
     setTimeout(() => {
@@ -175,6 +176,7 @@ const CheckoutPage = () => {
   const renderProduct = (item: any, index: number) => {
     const { name, price, supplier, description, status, image, _id } = item;
     const quantity = quantityValues[_id] || 1;
+
     const totalPrice = price * quantity;
 
     return (
@@ -220,7 +222,7 @@ const CheckoutPage = () => {
               </div>
 
               <div className="hidden flex-1 sm:flex justify-end">
-                <Prices price={price} className="mt-0.5" />
+                <Prices price={totalPrice} className="mt-0.5" />
               </div>
             </div>
           </div>

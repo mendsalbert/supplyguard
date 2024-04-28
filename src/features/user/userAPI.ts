@@ -14,15 +14,27 @@ export const fetchUsers = async () => {
 
 export const addUser = async (user: User) => {
   try {
+    // Check if the user already exists by Ethereum address
+    const existingUsersQuery = `*[_type == "user" && ethereumAddress == $ethereumAddress]`;
+    const existingUsers = await client.fetch(existingUsersQuery, {
+      ethereumAddress: user.ethereumAddress,
+    });
+
+    if (existingUsers.length > 0) {
+      // User already exists with the same Ethereum address
+      throw new Error("A user with this Ethereum address already exists.");
+    }
+
+    // If no existing user, create a new one
     const newUser = await client.create({
       _type: "user",
       ...user,
     });
-    console.log("fsdf", newUser);
+    console.log("User created", newUser);
     return newUser;
   } catch (error) {
     console.error("Failed to add user:", error);
-    throw new Error("Failed to add user");
+    throw error;
   }
 };
 
@@ -89,10 +101,13 @@ export const updateUserByAddress = async (
   userData: Partial<User>,
   imageFile?: File
 ) => {
-  console.log("fsdfafsdfsfd");
   try {
-    const query = `*[_type == "user" && ethereumAddress == '${ethereumAddress}']`;
-    const [user] = await client.fetch(query, { ethereumAddress });
+    console.log(ethereumAddress);
+
+    const query = `*[_type == "user" && ethereumAddress == $ethereumAddress]`;
+    const params = { ethereumAddress }; // Using an object to hold parameters
+    const users = await client.fetch(query, params);
+    const user = users[0]; // Assuming you want the first user that matches
 
     if (!user) {
       throw new Error("User not found");

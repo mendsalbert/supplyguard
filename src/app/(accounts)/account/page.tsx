@@ -14,10 +14,12 @@ import imageUrlBuilder from "@sanity/image-url";
 import { client } from "@/api/client";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { useAccount } from "wagmi";
 
 const auth = typeof window !== "undefined" ? new Auth() : null;
 const AccountPage = () => {
   const user = useAppSelector((state) => state.users.currentUser) as any;
+  const account = useAccount();
 
   const dispatch = useAppDispatch();
   const [isLoading, setIsLoading] = useState(false);
@@ -63,7 +65,6 @@ const AccountPage = () => {
   }, [dispatch, isLoading]);
 
   const [imageFile, setImageFile] = useState(null);
-  const ethereumAddress = auth?.state?.userId;
 
   const builder = imageUrlBuilder(client);
 
@@ -103,7 +104,7 @@ const AccountPage = () => {
     try {
       const updatedUser = await dispatch(
         updateUserByAddress({
-          ethereumAddress: auth?.state?.userId,
+          ethereumAddress: account.address,
           userData,
           imageFile,
         })

@@ -19,16 +19,21 @@ import {
   fetchUserByAddress,
   selectCurrentCart,
 } from "@/features/user/userSlice";
+import { useWeb3Modal } from "@web3modal/wagmi/react";
+import { useAccount } from "wagmi";
 
 export interface MainNav2LoggedProps {}
 
 const auth = typeof window !== "undefined" ? new Auth() : null;
 
 const MainNav2Logged: FC<MainNav2LoggedProps> = () => {
+  const { open } = useWeb3Modal();
+
   const inputRef = createRef<HTMLInputElement>();
   const [showSearchForm, setShowSearchForm] = useState(false);
   const router = useRouter();
   const reduxCart = useAppSelector(selectCurrentCart);
+  const account = useAccount();
 
   const [isOnboarded, setIsOnboarded] = useState<boolean | null>(null); // Correct naming and type
   const [isAuthenticated, setIsAuthenticated] = useState<boolean | null>(null);
@@ -37,8 +42,20 @@ const MainNav2Logged: FC<MainNav2LoggedProps> = () => {
   const dispatch = useAppDispatch();
 
   useEffect(() => {
-    const address = localStorage.getItem("address") as any;
-    dispatch(fetchUserByAddress(JSON.parse(address)));
+    const address = localStorage.getItem("address");
+    if (address) {
+      try {
+        // Parse and dispatch only if address is not null
+        const parsedAddress = JSON.parse(address);
+        dispatch(fetchUserByAddress(parsedAddress));
+      } catch (error) {
+        console.error("Error parsing address from localStorage:", error);
+        // Handle the error, maybe clear localStorage item if it's corrupted
+      }
+    } else {
+      console.log("No address found in localStorage.");
+      // Handle cases where no address is found, perhaps set default state or redirect
+    }
   }, [dispatch]);
 
   useEffect(() => {
@@ -118,25 +135,29 @@ const MainNav2Logged: FC<MainNav2LoggedProps> = () => {
   };
 
   const renderConnectButton = () => (
-    <div
-      onClick={() => {
-        localStorage.setItem("isOnboard", JSON.stringify(true));
-        router.push("/onboard");
-      }}
-      className="hover:cursor-pointer rounded-full py-2 px-7 border border-slate-300 dark:border-slate-700"
-    >
-      Connect
-    </div>
+    <>
+      <div
+        onClick={() => {
+          localStorage.setItem("isOnboard", JSON.stringify(true));
+          open();
+          router.push("/onboard");
+        }}
+        className="hover:cursor-pointer rounded-full py-2 px-7 border border-slate-300 dark:border-slate-700"
+      >
+        Connect
+      </div>
+    </>
   );
   const renderConnectToButton = () => (
-    <div
-      onClick={() => {
-        signIn();
-      }}
-      className="hover:cursor-pointer rounded-full py-2 px-7 border border-slate-300 dark:border-slate-700"
-    >
-      Connect to
-    </div>
+    <>
+      <div
+        onClick={() => open()}
+        className="hover:cursor-pointer rounded-full py-2 px-7 border border-slate-300 dark:border-slate-700"
+      >
+        Connect to
+      </div>
+      {/* <button onClick={() => open()}>Connect Wallet</button>; */}
+    </>
   );
 
   const renderContent = () => {
@@ -155,7 +176,7 @@ const MainNav2Logged: FC<MainNav2LoggedProps> = () => {
         </div>
 
         <div className="flex-1 flex items-center justify-end text-slate-700 dark:text-slate-100">
-          {isAuthenticated ? (
+          {account?.address !== undefined ? (
             <>
               {!showSearchForm && (
                 <button

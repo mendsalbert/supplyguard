@@ -6,11 +6,11 @@ import {
   UserCircleIcon,
 } from "@heroicons/react/24/outline";
 import Image, { StaticImageData } from "next/image";
-
+import { useWeb3Modal } from "@web3modal/wagmi/react";
+import { useAccount } from "wagmi";
 import ButtonSecondary from "@/shared/Button/ButtonSecondary";
 import { Auth } from "@polybase/auth";
 import { useAppDispatch, useAppSelector } from "@/app/store";
-
 import { addUser, selectAllUsers, selectCurrentUser } from "@/features/user";
 
 export interface CardCategory4Props {
@@ -40,47 +40,25 @@ const OnBoardCardCategory: FC<CardCategory4Props> = ({
   const dispatch = useAppDispatch();
   const [isLoading, setisLoading] = useState(false);
 
-  // const signIn = () => {
-  //   // setisLoading(true);
-  //   auth?.signIn().then((res) => {
-  //     dispatch(
-  //       addUser({
-  //         isSupplier: name === "Client" ? false : true,
-  //         ethereumAddress: res?.userId,
-  //       })
-  //     );
-
-  //     client
-  //       ? (window.location.href = "/account")
-  //       : (window.location.href = "/admin-account");
-  //     // store address in localstorage
-  //     console.log(res);
-  //     // setisLoading(false);
-  //   });
-  // };
+  const { open } = useWeb3Modal();
+  const account = useAccount();
 
   const signIn = async () => {
     try {
-      // Starting the loading state
       setisLoading(true);
       const res = await auth?.signIn();
-      // Dispatch the addUser redux action and wait for it to complete
       await dispatch(
         addUser({
           isSupplier: name === "Client" ? false : true,
-          ethereumAddress: res?.userId,
+          ethereumAddress: account.address,
         })
       ).unwrap();
-      localStorage.setItem("address", JSON.stringify(res?.userId));
-
-      // Determine the redirect based on the user type
+      localStorage.setItem("address", JSON.stringify(account.address));
       const redirectPath = client ? "/account" : "/admin-account";
       window.location.href = redirectPath;
     } catch (error) {
-      // Handle errors such as authentication failure or dispatch failure
       console.error("Login failed:", error);
     } finally {
-      // Stop the loading state regardless of the outcome
       setisLoading(false);
     }
   };

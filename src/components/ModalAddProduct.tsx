@@ -96,7 +96,6 @@ const ModalAddProduct: FC<ModalEditProps> = ({ show, onCloseModalEdit }) => {
   };
 
   const handleImageChange = (e: any) => {
-    // console.log(e.target.files[0]);
     setImageFile(e.target.files[0]);
   };
 

@@ -33,8 +33,20 @@ export default function CartDropdown() {
   const user_ = useAppSelector((state) => state.users.currentUser) as any;
 
   useEffect(() => {
-    const address = localStorage.getItem("address") as any;
-    dispatch(fetchUserByAddress(JSON.parse(address)));
+    const address = localStorage.getItem("address");
+    if (address) {
+      try {
+        // Parse and dispatch only if address is not null
+        const parsedAddress = JSON.parse(address);
+        dispatch(fetchUserByAddress(parsedAddress));
+      } catch (error) {
+        console.error("Error parsing address from localStorage:", error);
+        // Handle the error, maybe clear localStorage item if it's corrupted
+      }
+    } else {
+      console.log("No address found in localStorage.");
+      // Handle cases where no address is found, perhaps set default state or redirect
+    }
   }, [dispatch]);
 
   const handleRemove = async (productId: any) => {

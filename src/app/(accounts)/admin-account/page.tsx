@@ -14,13 +14,13 @@ import imageUrlBuilder from "@sanity/image-url";
 import { client } from "@/api/client";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-
+import { useAccount } from "wagmi";
 const auth = typeof window !== "undefined" ? new Auth() : null;
 // use the get user by address, to fill the users with the defualt space
 
 const AccountPage = () => {
   const user = useAppSelector((state) => state.users.currentUser) as any;
-
+  const account = useAccount();
   const dispatch = useAppDispatch();
   const [isLoading, setIsLoading] = useState(false);
 
@@ -57,8 +57,6 @@ const AccountPage = () => {
   }, [dispatch, isLoading]);
 
   const [imageFile, setImageFile] = useState(null);
-  const ethereumAddress = auth?.state?.userId;
-
   const builder = imageUrlBuilder(client);
 
   function urlFor(source: any) {
@@ -93,11 +91,10 @@ const AccountPage = () => {
     const id = toast.loading("Updating...");
 
     setIsLoading(true);
-
     try {
       const updatedUser = await dispatch(
         updateUserByAddress({
-          ethereumAddress: auth?.state?.userId,
+          ethereumAddress: account.address,
           userData,
           imageFile,
         })

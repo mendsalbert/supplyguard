@@ -12,17 +12,31 @@ import imageUrlBuilder from "@sanity/image-url";
 import { client } from "@/api/client";
 import truncateEthAddress from "truncate-eth-address";
 import { fetchUserByAddress } from "@/features/user";
-
+import { useWeb3Modal } from "@web3modal/wagmi/react";
+import { useAccount } from "wagmi";
 const auth = typeof window !== "undefined" ? new Auth() : null;
 
 export default function AvatarDropdown() {
   const user = useAppSelector((state) => state.users.currentUser) as any;
   const builder = imageUrlBuilder(client);
   const dispatch = useAppDispatch();
+  const { open } = useWeb3Modal();
 
   useEffect(() => {
-    const address = localStorage.getItem("address") as any;
-    dispatch(fetchUserByAddress(JSON.parse(address)));
+    const address = localStorage.getItem("address");
+    if (address) {
+      try {
+        // Parse and dispatch only if address is not null
+        const parsedAddress = JSON.parse(address);
+        dispatch(fetchUserByAddress(parsedAddress));
+      } catch (error) {
+        console.error("Error parsing address from localStorage:", error);
+        // Handle the error, maybe clear localStorage item if it's corrupted
+      }
+    } else {
+      console.log("No address found in localStorage.");
+      // Handle cases where no address is found, perhaps set default state or redirect
+    }
   }, [dispatch]);
 
   function urlFor(source: any) {
@@ -42,7 +56,7 @@ export default function AvatarDropdown() {
   return (
     <div className="AvatarDropdown ">
       <Popover className="relative">
-        {({ open, close }) => (
+        {({ close }) => (
           <>
             <Popover.Button
               className={`w-10 h-10 sm:w-12 sm:h-12 rounded-full text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 focus:outline-none flex items-center justify-center`}
@@ -219,7 +233,6 @@ export default function AvatarDropdown() {
                     <Link
                       href={"/#"}
                       className="flex items-center p-2 -m-3 transition duration-150 ease-in-out rounded-lg hover:bg-neutral-100 dark:hover:bg-neutral-700 focus:outline-none focus-visible:ring focus-visible:ring-orange-500 focus-visible:ring-opacity-50"
-                      onClick={() => close()}
                     >
                       <div className="flex items-center justify-center flex-shrink-0 text-neutral-500 dark:text-neutral-300">
                         <svg
@@ -252,13 +265,7 @@ export default function AvatarDropdown() {
                           />
                         </svg>
                       </div>
-                      <div
-                        className="ml-4"
-                        onClick={() => {
-                          signOut();
-                          window.location.href = "/";
-                        }}
-                      >
+                      <div className="ml-4" onClick={() => open()}>
                         <p className="text-sm font-medium ">{"Disconnect"}</p>
                       </div>
                     </Link>

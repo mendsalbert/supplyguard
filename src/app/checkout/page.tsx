@@ -4,7 +4,6 @@ import React, { FC, useState, useEffect, useRef } from "react";
 import Label from "@/components/Label/Label";
 import NcInputNumber from "@/components/NcInputNumber";
 import Prices from "@/components/Prices";
-import { Product, PRODUCTS } from "@/data/data";
 import ButtonPrimary from "@/shared/Button/ButtonPrimary";
 import Input from "@/shared/Input/Input";
 import ContactInfo from "./ContactInfo";
@@ -22,6 +21,11 @@ import {
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import axios from "axios";
+import { Auth } from "@polybase/auth";
+
+import { makePayment } from "../../lib/queries";
+const auth = typeof window !== "undefined" ? new Auth() : null;
+
 const CheckoutPage = () => {
   const [tabActive, setTabActive] = useState<
     "ContactInfo" | "ShippingAddress" | "PaymentMethod"
@@ -31,6 +35,7 @@ const CheckoutPage = () => {
   const reduxCart = useAppSelector(selectCurrentCart);
   const builder = imageUrlBuilder(client);
   const user_ = useAppSelector((state) => state.users.currentUser) as any;
+  const [loading, setLoading] = useState(false);
 
   function urlFor(source: any) {
     return builder.image(source);
@@ -288,6 +293,24 @@ const CheckoutPage = () => {
     );
   };
 
+  const handlePayment = async () => {
+    setLoading(true);
+    try {
+      const id = toast.loading("Getting your order ready...");
+      const receipt = await makePayment("0.0000000000003");
+      console.log("receipt", receipt);
+      toast.update(id, {
+        render: "Order Went Through",
+        type: "success",
+        isLoading: false,
+      });
+    } catch (error) {
+      console.error("Payment error:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <div className="nc-CheckoutPage">
       <main className="container py-16 lg:pb-28 lg:pt-20 ">
@@ -333,7 +356,13 @@ const CheckoutPage = () => {
               {renderTaxEstimate()}
               {renderOrderTotal()}
             </div>
-            <ButtonPrimary className="mt-8 w-full">Confirm order</ButtonPrimary>
+            <ButtonPrimary
+              onClick={handlePayment}
+              loading={loading}
+              className="mt-8 w-full"
+            >
+              Confirm order
+            </ButtonPrimary>
             <div className="mt-5 text-sm text-slate-500 dark:text-slate-400 flex items-center justify-center">
               <p className="block relative pl-5">
                 <svg

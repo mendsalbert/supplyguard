@@ -6,11 +6,12 @@ module.exports = {
   defaultNetwork: "sepolia",
   networks: {
     hardhat: {
-      chainId: 1337,
+      chainId: 4202,
     },
     sepolia: {
       url: "https://rpc.sepolia-api.lisk.com",
       accounts: [privateKey],
+      gasPrice: 1000000000,
     },
     mumbai: {
       url: "https://rpc-mumbai.maticvigil.com",
@@ -29,4 +30,7 @@ module.exports = {
     },
   },
   solidity: "0.8.24",
+  allowUnlimitedContractSize: true,
+  throwOnTransactionFailures: true,
+  throwOnCallFailures: true,
 };

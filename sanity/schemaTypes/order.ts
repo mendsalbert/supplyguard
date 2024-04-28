@@ -23,8 +23,28 @@ export default defineType({
       name: "items",
       title: "Items",
       type: "array",
-      of: [{ type: "reference", to: { type: "product" } }],
-      description: "Products included in the order.",
+      of: [
+        {
+          type: "object",
+          fields: [
+            defineField({
+              name: "product",
+              title: "Product",
+              type: "reference",
+              to: [{ type: "product" }],
+            }),
+            defineField({
+              name: "quantity",
+              title: "Quantity",
+              type: "number",
+              validation: (Rule) =>
+                Rule.required().min(1).error("Quantity must be at least 1"),
+            }),
+          ],
+        },
+      ],
+      description:
+        "Products included in the order along with their quantities.",
     }),
     defineField({
       name: "status",
@@ -49,13 +69,6 @@ export default defineType({
       description: "The Ethereum transaction hash associated with this order.",
     }),
     defineField({
-      name: "createdAt",
-      title: "Created At",
-      type: "datetime",
-      validation: (Rule) =>
-        Rule.required().error("The order creation date is required."),
-    }),
-    defineField({
       name: "shippedAt",
       title: "Shipped At",
       type: "datetime",
@@ -72,8 +85,6 @@ export default defineType({
       title: "Total Cost",
       type: "number",
       description: "The total cost of the order in ETH.",
-      validation: (Rule) =>
-        Rule.required().min(0).error("Total cost must be a positive number."),
     }),
     // defineField({
     //   name: "assignedTo",

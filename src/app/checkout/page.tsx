@@ -178,6 +178,7 @@ const CheckoutPage = () => {
     const quantity = quantityValues[_id] || 1;
 
     const totalPrice = price * quantity;
+    console.log(quantityValues);
 
     return (
       <div key={index} className="relative flex py-7 first:pt-0 last:pb-0">

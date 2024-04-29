@@ -4,7 +4,7 @@ import Label from "@/components/Label/Label";
 import NcInputNumber from "@/components/NcInputNumber";
 import Prices from "@/components/Prices";
 import { Product, PRODUCTS } from "@/data/data";
-import { useState } from "react";
+import React, { FC, useState, useEffect, useRef } from "react";
 import ButtonPrimary from "@/shared/Button/ButtonPrimary";
 import Input from "@/shared/Input/Input";
 import ContactInfo from "./ContactInfo";
@@ -14,11 +14,20 @@ import Image from "next/image";
 import Link from "next/link";
 import { ClockIcon } from "@heroicons/react/24/outline";
 import ButtonSecondary from "@/shared/Button/ButtonSecondary";
+import { useAppDispatch, useAppSelector } from "@/app/store";
+import { selectCurrentOrder, fetchOrder } from "@/features/order/orderSlice";
+import { useAccount } from "wagmi";
 
 const CheckoutPage = () => {
   const [tabActive, setTabActive] = useState<
     "ContactInfo" | "ShippingAddress" | "PaymentMethod"
   >("ShippingAddress");
+
+  const dispatch = useAppDispatch();
+
+  const userOrders = useAppSelector(selectCurrentOrder);
+
+  const account = useAccount();
 
   const handleScrollToEl = (id: string) => {
     const element = document.getElementById(id);
@@ -26,6 +35,12 @@ const CheckoutPage = () => {
       element?.scrollIntoView({ behavior: "smooth" });
     }, 80);
   };
+
+  useEffect(() => {
+    dispatch(fetchOrder(account.address));
+  }, [dispatch]);
+
+  console.log(userOrders);
 
   const renderProductItem = (product: any, index: number) => {
     const { image, name } = product;

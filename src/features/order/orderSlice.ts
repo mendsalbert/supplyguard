@@ -84,7 +84,7 @@ export const updateRoleApproval = createAsyncThunk(
 
 export const fetchOrder = createAsyncThunk(
   "orders/fetchOrder",
-  async (orderId: string) => {
+  async (orderId: any) => {
     return await fetchOrderAPI(orderId);
   }
 );

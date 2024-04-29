@@ -20,6 +20,12 @@ export default defineType({
       description: "The user who placed the order.",
     }),
     defineField({
+      name: "ethereumAddress",
+      title: "Ethereum Address",
+      type: "string",
+      description: "Ethereum address for the product’s smart contract",
+    }),
+    defineField({
       name: "items",
       title: "Items",
       type: "array",

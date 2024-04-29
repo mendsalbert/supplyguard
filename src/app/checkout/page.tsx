@@ -1,6 +1,5 @@
 "use client";
 import React, { FC, useState, useEffect, useRef } from "react";
-
 import Label from "@/components/Label/Label";
 import NcInputNumber from "@/components/NcInputNumber";
 import Prices from "@/components/Prices";
@@ -26,6 +25,8 @@ import { useAccount } from "wagmi";
 import { makePayment } from "../../lib/queries";
 import { addOrder } from "@/features/order/orderSlice";
 const auth = typeof window !== "undefined" ? new Auth() : null;
+import { Resend } from "resend";
+const resend = new Resend("re_N94r2yRo_Bn22YAid7sYrd7Jktent");
 
 const CheckoutPage = () => {
   const [tabActive, setTabActive] = useState<
@@ -50,6 +51,8 @@ const CheckoutPage = () => {
   const [ethExchangeRate, setEthExchangeRate] = useState<number>(1);
 
   const [isLoading, setisLoading] = useState(false);
+
+  const [orderTotal, setOrderTotal] = useState(1);
 
   useEffect(() => {
     const fetchEthExchangeRate = async () => {
@@ -138,18 +141,24 @@ const CheckoutPage = () => {
   };
 
   const renderOrderTotal = () => {
-    const subtotal = reduxCart
-      ?.filter((item: any) => item !== null) // Filter out items with null fields
-      .reduce(
-        (acc: number, item: any) =>
-          acc + (Number(item?.price) || 0) * (quantityValues[item._id] || 1),
-        0
-      );
+    useEffect(() => {
+      const subtotal = reduxCart
+        ?.filter((item: any) => item !== null) // Filter out items with null fields
+        .reduce(
+          (acc: number, item: any) =>
+            acc + (Number(item?.price) || 0) * (quantityValues[item._id] || 1),
+          0
+        );
 
-    // You can calculate order total here based on subtotal, shipping estimate, tax estimate, etc.
-    const shippingEstimate = 5.0;
-    const taxEstimate = 24.9;
-    const orderTotal = subtotal + shippingEstimate + taxEstimate;
+      const shippingEstimate = 5.0;
+      const taxEstimate = 24.9;
+      const total = subtotal + shippingEstimate + taxEstimate;
+
+      // Check if the order total has changed before updating the state
+      if (total !== orderTotal) {
+        setOrderTotal(total);
+      }
+    }, [reduxCart, quantityValues]);
 
     return (
       <div className="flex justify-between font-semibold text-slate-900 dark:text-slate-200 text-base pt-4">
@@ -175,14 +184,13 @@ const CheckoutPage = () => {
     });
   };
 
-  console.log(reduxCart);
-
   const handlePayment = async () => {
-    setLoading(true);
+    console.log(Number(orderTotal / ethExchangeRate).toFixed(4));
 
+    setLoading(true);
     try {
       const id = toast.loading("Getting your order ready...");
-      const receipt = await makePayment("0.0000000000003");
+      const receipt = await makePayment("0.000003");
 
       const orderDetails = {
         orderNumber: `SG${reduxCart.length}${reduxCart[0]?.name
@@ -198,6 +206,7 @@ const CheckoutPage = () => {
           _type: "reference",
           _ref: user_._id,
         },
+        ethereumAddress: account.address,
       };
 
       // Dispatch the addOrder async thunk

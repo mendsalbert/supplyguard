@@ -52,6 +52,11 @@ export default defineType({
               type: "array",
               of: [],
             }),
+            defineField({
+              name: "productId",
+              title: "product ID ",
+              type: "string",
+            }),
           ],
         },
       ],
@@ -84,6 +89,12 @@ export default defineType({
       name: "shippedAt",
       title: "Shipped At",
       type: "datetime",
+      description: "The date and time the order was shipped.",
+    }),
+    defineField({
+      name: "orderDate",
+      title: "Order Date",
+      type: "string",
       description: "The date and time the order was shipped.",
     }),
     defineField({

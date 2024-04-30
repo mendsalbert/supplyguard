@@ -4,14 +4,32 @@ import ButtonPrimary from "@/shared/Button/ButtonPrimary";
 import ButtonSecondary from "@/shared/Button/ButtonSecondary";
 import Checkbox from "@/shared/Checkbox/Checkbox";
 import Input from "@/shared/Input/Input";
-
+import truncateEthAddress from "truncate-eth-address";
+import { ClockIcon, ShieldCheckIcon } from "@heroicons/react/24/outline";
+import Image from "next/image";
+import { client } from "@/api/client";
+import imageUrlBuilder from "@sanity/image-url";
 interface Props {
   isActive: boolean;
   onOpenActive: () => void;
   onCloseActive: () => void;
+  data?: any;
 }
 
-const ContactInfo: FC<Props> = ({ isActive, onCloseActive, onOpenActive }) => {
+const ContactInfo: FC<Props> = ({
+  isActive,
+  onCloseActive,
+  onOpenActive,
+  data,
+}) => {
+  const builder = imageUrlBuilder(client);
+
+  function urlFor(source: any) {
+    return builder.image(source);
+  }
+
+  // console.log(data?.role?.supplier?.profilePicture);
+
   const renderAccount = () => {
     return (
       <div className="border bg-white border-slate-200 dark:border-slate-700 rounded-xl overflow-hidden z-0">
@@ -48,8 +66,27 @@ const ContactInfo: FC<Props> = ({ isActive, onCloseActive, onOpenActive }) => {
           </span>
           <div className="sm:ml-8">
             <h3 className=" text-slate-700 dark:text-slate-300 flex ">
-              <span className="uppercase tracking-tight">CONTACT INFO</span>
-              <svg
+              <span className=" tracking-tight">
+                {data?.role?.responsibilities === "SupplierManager"
+                  ? "Supplier Manager"
+                  : data?.role?.responsibilities === "ProductOverseer"
+                  ? "Production Manager"
+                  : data?.role?.responsibilities === "QualityInspector"
+                  ? "Quality Assurance Specialist"
+                  : data?.role?.responsibilities === "InventoryController"
+                  ? "Inventory Manager"
+                  : data?.role?.responsibilities === "LogisticsCoordinations"
+                  ? "Logistics Manager"
+                  : data?.role?.responsibilities === "FulfillmentOperator"
+                  ? "Delivery Coordinator"
+                  : "Unknown Role"}
+              </span>
+              {data.approved ? (
+                <ShieldCheckIcon className="h-7 w-7 pb-1 ml-3 text-green-500" />
+              ) : (
+                <ClockIcon className="h-7 w-7 pb-1 ml-3" />
+              )}
+              {/* <svg
                 fill="none"
                 viewBox="0 0 24 24"
                 strokeWidth="2.5"
@@ -61,11 +98,14 @@ const ContactInfo: FC<Props> = ({ isActive, onCloseActive, onOpenActive }) => {
                   strokeLinejoin="round"
                   d="M4.5 12.75l6 6 9-13.5"
                 />
-              </svg>
+              </svg> */}
             </h3>
             <div className="font-semibold mt-1 text-sm">
-              <span className="">Enrico Smith</span>
-              <span className="ml-3 tracking-tighter">+855 - 666 - 7744</span>
+              <span className="">{data?.role?.fullname}</span>
+              <span className="ml-3 tracking-tighter">
+                {truncateEthAddress(data?.role?.ethaddress || "")}
+                <span>{String(data?.approved)}</span>
+              </span>
             </div>
           </div>
           <button
@@ -81,17 +121,26 @@ const ContactInfo: FC<Props> = ({ isActive, onCloseActive, onOpenActive }) => {
           }`}
         >
           <div className="flex justify-between flex-wrap items-baseline">
-            <h3 className="text-lg font-semibold">Contact infomation</h3>
+            <h3 className="text-lg font-semibold">Supplier Infomation</h3>
             <span className="block text-sm my-1 md:my-0">
-              Do not have an account?{` `}
-              <a href="##" className="text-primary-500 font-medium">
-                Log in
-              </a>
+              {/* <Image
+                fill
+                src={
+                  (data?.role?.supplier?.profilePicture?.asset &&
+                    urlFor(
+                      data?.role?.supplier?.profilePicture?.asset
+                    ).url()) ||
+                  ""
+                }
+                alt={""}
+                className="h-5 w-5 object-contain object-center"
+                sizes="10px"
+              /> */}
             </span>
           </div>
           <div className="max-w-lg">
-            <Label className="text-sm">Your phone number</Label>
-            <Input className="mt-1.5" defaultValue={"+808 xxx"} type={"tel"} />
+            <Label className="text-sm">Supplier Name</Label>
+            <p className="text-md">{data?.role?.supplier?.supplierName}</p>
           </div>
           <div className="max-w-lg">
             <Label className="text-sm">Email address</Label>

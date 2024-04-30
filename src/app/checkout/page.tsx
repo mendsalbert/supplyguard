@@ -201,6 +201,7 @@ const CheckoutPage = () => {
         items: reduxCart.map((product) => ({
           product: { _type: "reference", _ref: product._id },
           quantity: quantityValues[product._id] || 1,
+          productId: product._id,
         })),
         user: {
           _type: "reference",

@@ -27,6 +27,7 @@ const CartPage = () => {
   function urlFor(source: any) {
     return builder.image(source);
   }
+
   const [quantityValues, setQuantityValues] = useState<{
     [key: string]: number;
   }>({});

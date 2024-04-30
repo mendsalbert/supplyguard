@@ -17,29 +17,41 @@ const fetchSupplierRoles = async (ethereumAddress: any) => {
 
 // Function to fetch a specific order by ID
 export const fetchOrder = async (orderId: any) => {
-  const query = `*[_type == "order" && ethereumAddress == $orderId][0]{
-    _id,
-    _type,
-    orderNumber,
-    status,
-    ethereumAddress,
+  const query = `*[_type == "order" && ethereumAddress == $orderId]{
+   ...,
     user->{
       _id,
       name,
       ethereumAddress
     },
-    roleApprovals,
+    roleApprovals[]{
+      ...,
+       roleApprovals[]{
+         ...,
+         role->{
+           ...,
+           supplier->{
+            ...,
+            profilePicture
+           }
+         }
+       }
+     },
     items[] {
       quantity,
       roles,
+      productId,
       product->{
         _id,
         name,
         description,
         price,
         image ,
-        supplier,
+        supplier->{
+          supplierName
+        },
         category
+        
       }
     }
   }`;
@@ -56,10 +68,34 @@ export const fetchOrder = async (orderId: any) => {
 };
 
 // Initialize role approvals with the first role set to active
+// const initRoleApprovals = (items: any) => {
+//    items.map((item: any) => ({
+//     roles: item.roles.map((role: any) => ({
+//       role: role._id,
+//       approved: false,
+//       approvedAt: null,
+//     })),
+//   }));
+// };
+
+// const initRoleApprovals = (items: any) => {
+//   return items.flatMap((item: any) =>
+//     item.roles.map((role: any) => ({
+//       role: role._id,
+//       approved: false,
+//       approvedAt: null,
+//     }))
+//   );
+// };
+
 const initRoleApprovals = (items: any) => {
   return items.map((item: any) => ({
-    roles: item.roles.map((role: any) => ({
-      role: role._id,
+    productId: item.productId,
+    roleApprovals: item.roles.map((role: any) => ({
+      role: {
+        _type: "reference",
+        _ref: role._id,
+      },
       approved: false,
       approvedAt: null,
     })),
@@ -404,6 +440,7 @@ export const addOrder = async (orderDetails: any, email: any) => {
               product: item.product,
               quantity: item.quantity,
               roles: supplierRoles,
+              productId: item.productId,
             };
           })
         );
@@ -415,6 +452,7 @@ export const addOrder = async (orderDetails: any, email: any) => {
       ...orderDetails,
       items: flatProductsWithRoles,
       status: "pending",
+      orderDate: new Date().toISOString(),
       roleApprovals: initRoleApprovals(flatProductsWithRoles),
     };
     const createdOrder = await client.create({
@@ -449,6 +487,7 @@ export const fetchOrdersByUser = async (ethereumAddress: any) => {
 };
 
 // API to update role approval
+// to approve a role, you need specific order id , supplier-address, approval-status, product id
 export const updateRoleApproval = async (
   orderId: any,
   roleAddress: any,

@@ -72,10 +72,7 @@ const CheckoutPage = ({ params }: { params: { id: any } }) => {
             <Link href={"/"} className="">
               Homepage
             </Link>
-            <span className="text-xs mx-1 sm:mx-1.5">/</span>
-            <Link href={"/collection"} className="">
-              Clothing Categories
-            </Link>
+
             <span className="text-xs mx-1 sm:mx-1.5">/</span>
             <span className="underline">Checkout</span>
           </div>

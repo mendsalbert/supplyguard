@@ -51,8 +51,11 @@ const CheckoutPage = () => {
   console.log(userOrders);
 
   const renderProductItem = (product: any, index: number) => {
-    const { image, price, name, quantity, supplier, _id } = product?.product;
+    const { image, price, name, quantity, supplier, _id, category } =
+      product?.product;
     const { supplierName } = supplier;
+    const { name: categoryName } = category;
+
     return (
       <div key={index} className="flex py-4 sm:py-7 last:pb-0 first:pt-0">
         <div className="relative h-24 w-24  flex-shrink-0 overflow-hidden rounded-xl bg-slate-100">
@@ -73,6 +76,7 @@ const CheckoutPage = () => {
                 <p className="mt-1 text-sm text-slate-500 dark:text-slate-400">
                   <span>{supplierName}</span>
                   <span className="mx-2 border-l border-slate-200 dark:border-slate-700 h-4"></span>
+                  <span>{categoryName}</span>
                 </p>
               </div>
               <Prices price={price} className="mt-0.5 ml-2" />
@@ -107,8 +111,8 @@ const CheckoutPage = () => {
             <p className="text-lg font-semibold">#{order?.orderNumber}</p>
             <p className="text-slate-500 dark:text-slate-400 text-sm mt-1.5 sm:mt-2">
               <span>{order?.orderDate || ""}</span>
-              <span className="mx-2">·</span>
-              <span className="text-primary-500">{order?.status}</span>
+              {/* <span className="mx-2">·</span> */}
+              {/* <span className="text-primary-500">{order?.status}</span> */}
             </p>
           </div>
           <div className="mt-3 sm:mt-0">

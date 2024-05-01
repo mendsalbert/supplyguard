@@ -65,8 +65,9 @@ export const fetchOrder = async (orderId: any) => {
         supplier->{
           supplierName
         },
-        category
-        
+        category->{
+          ...,
+        }
       }
     }
   }`;
@@ -173,9 +174,8 @@ const sendApprovalRequestEmail = async (role: any, createdOrder: any) => {
       r.roles.map(async (rr: any) => {
         if (rr.responsibilities === "SupplierManager") {
           const qrCodeDataURL = await QRCode.toDataURL(
-            `http://localhost:3000/${orderNumner}/${r.supplierAddress}/${r.productId}`
+            `http://localhost:3000/approve-order/${orderNumner}/${r.supplierAddress}/${r.productId}/${r.role.ethaddress}/${r.role.responsibilities}/${r.role.fullname}`
           );
-          console.log(rr.email);
 
           const requestBody = {
             from: "supplyguard@supplyguard.xyz",
@@ -207,7 +207,7 @@ const sendApprovalRequestEmail = async (role: any, createdOrder: any) => {
                                           <p style="font-size:14px;line-height:2;margin:0;font-weight:bold">Aprove Order </p>
                                           <p style="font-size:14px;line-height:1.4;margin:12px 0 0 0;font-weight:500;color:#6F6F6F">${orderNumner}</p>
                                         </td>
-                                        <td align="right" data-id="__react-email-column"><a style="color:#000;text-decoration:none;border:1px solid #929292;font-size:16px;padding:10px 0px;width:220px;display:block;text-align:center;font-weight:500" target="_blank" href=${`http://localhost:3000/${orderNumner}/${r.supplierAddress}/${r.productId}`}>View Order</a></td>
+                                        <td align="right" data-id="__react-email-column"><a style="color:#000;text-decoration:none;border:1px solid #929292;font-size:16px;padding:10px 0px;width:220px;display:block;text-align:center;font-weight:500" target="_blank" href=${`http://localhost:3000/approve-order/${orderNumner}/${r.supplierAddress}/${r.productId}/${rr.ethaddress}/${r.role.responsibilities}/${r.role.fullname}`}>View Order</a></td>
                                       </tr>
                                     </tbody>
                                   </table>
@@ -412,6 +412,9 @@ const sendApprovalRequestEmailToNextPerson = async (
   roles: any,
   createdOrder: any
 ) => {
+  let orderNumner = createdOrder.orderNumber;
+  let orderDate = createdOrder.orderDate;
+
   const uniqueProductIds = [
     ...new Set(roles.map((role: any) => role.productId)),
   ];
@@ -430,231 +433,236 @@ const sendApprovalRequestEmailToNextPerson = async (
       if (previousRole && previousRole.approved) {
         const nextRole = sortedRoles[currentRoleIndex];
         if (nextRole) {
-          const requestBody = {
-            from: "supplyguard@supplyguard.xyz",
-            to: rr.email,
-            subject: `${"Approve Order - "}${orderNumner}`,
-            html: `
-              <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-              <html dir="ltr" lang="en">
-          
-                <head>
-                  <meta content="text/html; charset=UTF-8" http-equiv="Content-Type" />
-                </head>
-                <div style="display:none;overflow:hidden;line-height:1px;opacity:0;max-height:0;max-width:0">Get your order summary, estimated delivery date and more<div> ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿</div>
-                </div>
-          
-                <body style="background-color:#ffffff;font-family:-apple-system,BlinkMacSystemFont,&quot;Segoe UI&quot;,Roboto,Oxygen-Sans,Ubuntu,Cantarell,&quot;Helvetica Neue&quot;,sans-serif">
-                  <table align="center" width="100%" border="0" cellPadding="0" cellSpacing="0" role="presentation" style="max-width:100%;margin:10px auto;width:600px;border:1px solid #E5E5E5">
-                    <tbody>
-                      <tr style="width:100%">
-                        <td>
-                          <table align="center" width="100%" border="0" cellPadding="0" cellSpacing="0" role="presentation" style="padding:22px 40px;background-color:#F7F7F7">
-                            <tbody>
-                              <tr>
-                                <td>
-                                  <table align="center" width="100%" border="0" cellPadding="0" cellSpacing="0" role="presentation">
-                                    <tbody style="width:100%">
-                                      <tr style="width:100%">
-                                        <td data-id="__react-email-column">
-                                          <p style="font-size:14px;line-height:2;margin:0;font-weight:bold">Aprove Order </p>
-                                          <p style="font-size:14px;line-height:1.4;margin:12px 0 0 0;font-weight:500;color:#6F6F6F">${orderNumner}</p>
-                                        </td>
-                                        <td align="right" data-id="__react-email-column"><a style="color:#000;text-decoration:none;border:1px solid #929292;font-size:16px;padding:10px 0px;width:220px;display:block;text-align:center;font-weight:500" target="_blank" href=${`http://localhost:3000/${orderNumner}/${r.supplierAddress}/${r.productId}`}>View Order</a></td>
-                                      </tr>
-                                    </tbody>
-                                  </table>
-                                </td>
-                              </tr>
-                            </tbody>
-                          </table>
-                          <hr style="width:100%;border:none;border-top:1px solid #eaeaea;border-color:#E5E5E5;margin:0" />
-                          <table align="center" width="100%" border="0" cellPadding="0" cellSpacing="0" role="presentation" style="padding:40px 74px;text-align:center">
-                            <tbody>
-                              <tr>
-                                <td>
-                                <img alt="Nike" height="150" width="150" src="${qrCodeDataURL}" style="display:block;outline:none;border:none;text-decoration:none;margin:auto"  />
-                                <img alt="Nike" height="120" width="120"  src="https://i.postimg.cc/KvCHFcgx/logo.png" style="display:block;outline:none;border:none;text-decoration:none;margin:auto" />
-                                  <h1 style="font-size:32px;line-height:1.3;font-weight:700;text-align:center;letter-spacing:-1px">Open and Verify this Order.</h1>
-                                  <p style="font-size:14px;line-height:2;margin:0;color:#747474;font-weight:500"> Use the link above to view its progress or simply Scan the QR code.</p>
-                                
-                                </td>
-                              </tr>
-                            </tbody>
-                          </table>
-                          <hr style="width:100%;border:none;border-top:1px solid #eaeaea;border-color:#E5E5E5;margin:0" />
-                         
-                         
-                          
-                          <hr style="width:100%;border:none;border-top:1px solid #eaeaea;border-color:#E5E5E5;margin:0" />
-                          <table align="center" width="100%" border="0" cellPadding="0" cellSpacing="0" role="presentation" style="padding-left:40px;padding-right:40px;padding-top:22px;padding-bottom:22px">
-                            <tbody>
-                              <tr>
-                                <td>
-                                  <table align="center" width="100%" border="0" cellPadding="0" cellSpacing="0" role="presentation" style="display:inline-flex;margin-bottom:40px">
-                                    <tbody style="width:100%">
-                                      <tr style="width:100%">
-                                        <td data-id="__react-email-column" style="width:170px">
-                                          <p style="font-size:14px;line-height:2;margin:0;font-weight:bold">Order Number</p>
-                                          <p style="font-size:14px;line-height:1.4;margin:12px 0 0 0;font-weight:500;color:#6F6F6F">${orderNumner}</p>
-                                        </td>
-                                        <td data-id="__react-email-column">
-                                          <p style="font-size:14px;line-height:2;margin:0;font-weight:bold">Order Date</p>
-                                          <p style="font-size:14px;line-height:1.4;margin:12px 0 0 0;font-weight:500;color:#6F6F6F">${orderDate}</p>
-                                        </td>
-                                      </tr>
-                                    </tbody>
-                                  </table>
-                                  <table align="center" width="100%" border="0" cellPadding="0" cellSpacing="0" role="presentation">
-                                    
-                                  </table>
-                                </td>
-                              </tr>
-                            </tbody>
-                          </table>
-                          <hr style="width:100%;border:none;border-top:1px solid #eaeaea;border-color:#E5E5E5;margin:0" />
-                          
-                          <hr style="width:100%;border:none;border-top:1px solid #eaeaea;border-color:#E5E5E5;margin:0" />
-                          <table align="center" width="100%" border="0" cellPadding="0" cellSpacing="0" role="presentation" style="padding-left:20px;padding-right:20px;padding-top:20px;background-color:#F7F7F7">
-                            <tbody>
-                              <tr>
-                                <td>
-                                  <table align="center" width="100%" border="0" cellPadding="0" cellSpacing="0" role="presentation">
-                                    <tbody style="width:100%">
-                                      <tr style="width:100%">
-                                        <p style="font-size:14px;line-height:24px;margin:16px 0;padding-left:20px;padding-right:20px;font-weight:bold">Get Help</p>
-                                      </tr>
-                                    </tbody>
-                                  </table>
-                                  <table align="center" width="100%" border="0" cellPadding="0" cellSpacing="0" role="presentation" style="padding-top:22px;padding-bottom:22px;padding-left:20px;padding-right:20px">
-                                    <tbody style="width:100%">
-                                      <tr style="width:100%">
-                                        <td colSpan="1" data-id="__react-email-column" style="width:33%"><a href="/" style="color:#000;text-decoration:none;font-size:13.5px;margin-top:0;font-weight:500" target="_blank">Shipping Status</a></td>
-                                        <td colSpan="1" data-id="__react-email-column" style="width:33%"><a href="/" style="color:#000;text-decoration:none;font-size:13.5px;margin-top:0;font-weight:500" target="_blank">Shipping &amp; Delivery</a></td>
-                                        
-                                      </tr>
-                                    </tbody>
-                                  </table>
-                                  <table align="center" width="100%" border="0" cellPadding="0" cellSpacing="0" role="presentation" style="padding-top:0;padding-bottom:22px;padding-left:20px;padding-right:20px">
-                                    <tbody style="width:100%">
-                                      <tr style="width:100%">
-                                        
-                                        <td colSpan="2" data-id="__react-email-column" style="width:66%"><a href="/" style="color:#000;text-decoration:none;font-size:13.5px;margin-top:0;font-weight:500" target="_blank">Contact Options</a></td>
-                                      </tr>
-                                    </tbody>
-                                  </table>
-                                  <hr style="width:100%;border:none;border-top:1px solid #eaeaea;border-color:#E5E5E5;margin:0" />
-                                  <table align="center" width="100%" border="0" cellPadding="0" cellSpacing="0" role="presentation" style="padding-left:20px;padding-right:20px;padding-top:32px;padding-bottom:22px">
-                                    <tbody style="width:100%">
-                                      <tr style="width:100%">
-                                        <td data-id="__react-email-column">
-                                          <table align="center" width="100%" border="0" cellPadding="0" cellSpacing="0" role="presentation">
-                                            <tbody style="width:100%">
-                                              <tr style="width:100%">
-                                                <td data-id="__react-email-column" style="width:16px"><img height="26px" src="https://react-email-demo-jsqyb0z9w-resend.vercel.app/static/nike-phone.png" style="display:block;outline:none;border:none;text-decoration:none;padding-right:14px" width="16px" /></td>
-                                                <td data-id="__react-email-column">
-                                                  <p style="font-size:13.5px;line-height:24px;margin:16px 0;margin-top:0;font-weight:500;color:#000;margin-bottom:0">1-800-806-6453</p>
-                                                </td>
-                                              </tr>
-                                            </tbody>
-                                          </table>
-                                        </td>
-                                        <td data-id="__react-email-column">
-                                          <p style="font-size:13.5px;line-height:24px;margin:16px 0;margin-top:0;font-weight:500;color:#000;margin-bottom:0">4 am - 11 pm GMT</p>
-                                        </td>
-                                      </tr>
-                                    </tbody>
-                                  </table>
-                                </td>
-                              </tr>
-                            </tbody>
-                          </table>
-                          <hr style="width:100%;border:none;border-top:1px solid #eaeaea;border-color:#E5E5E5;margin:0" />
-                          <table align="center" width="100%" border="0" cellPadding="0" cellSpacing="0" role="presentation" style="padding-top:22px;padding-bottom:22px">
-                            <tbody>
-                              <tr>
-                                <td>
-                                  <table align="center" width="100%" border="0" cellPadding="0" cellSpacing="0" role="presentation">
-                                    <tbody style="width:100%">
-                                      <tr style="width:100%">
-                                        <p style="font-size:32px;line-height:1.3;margin:16px 0;font-weight:700;text-align:center;letter-spacing:-1px">Supplyguard.xyz</p>
-                                      </tr>
-                                    </tbody>
-                                  </table>
-                                  <table align="center" width="100%" border="0" cellPadding="0" cellSpacing="0" role="presentation" style="width:370px;margin:auto;padding-top:12px">
-                                    <tbody style="width:100%">
-                                      <tr style="width:100%">
-                                        <td align="center" data-id="__react-email-column"><a href="/" style="color:#000;text-decoration:none;font-weight:500" target="_blank">Clothing</a></td>
-                                        <td align="center" data-id="__react-email-column"><a href="/" style="color:#000;text-decoration:none;font-weight:500" target="_blank">Sport Equipment</a></td>
-                                        <td align="center" data-id="__react-email-column"><a href="/" style="color:#000;text-decoration:none;font-weight:500" target="_blank">Pharmaceuticals</a></td>
-                                        
-                                      </tr>
-                                    </tbody>
-                                  </table>
-                                </td>
-                              </tr>
-                            </tbody>
-                          </table>
-                          <hr style="width:100%;border:none;border-top:1px solid #eaeaea;border-color:#E5E5E5;margin:0;margin-top:12px" />
-                          <table align="center" width="100%" border="0" cellPadding="0" cellSpacing="0" role="presentation" style="padding-top:22px;padding-bottom:22px">
-                            <tbody>
-                              <tr>
-                                <td>
-                                  <table align="center" width="100%" border="0" cellPadding="0" cellSpacing="0" role="presentation" style="width:166px;margin:auto">
-                                    <tbody style="width:100%">
-                                      <tr style="width:100%">
-                                        <td data-id="__react-email-column">
-                                          <p style="font-size:13px;line-height:24px;margin:0;color:#AFAFAF;text-align:center">Web Version</p>
-                                        </td>
-                                        <td data-id="__react-email-column">
-                                          <p style="font-size:13px;line-height:24px;margin:0;color:#AFAFAF;text-align:center">Privacy Policy</p>
-                                        </td>
-                                      </tr>
-                                    </tbody>
-                                  </table>
-                                  <table align="center" width="100%" border="0" cellPadding="0" cellSpacing="0" role="presentation">
-                                    <tbody style="width:100%">
-                                      <tr style="width:100%">
-                                        <p style="font-size:13px;line-height:24px;margin:0;color:#AFAFAF;text-align:center;padding-top:30px;padding-bottom:30px">Please contact us if you have any questions. (If you reply to this email, we won&#x27;t be able to see it.)</p>
-                                      </tr>
-                                    </tbody>
-                                  </table>
-                                  <table align="center" width="100%" border="0" cellPadding="0" cellSpacing="0" role="presentation">
-                                    <tbody style="width:100%">
-                                      <tr style="width:100%">
-                                        <p style="font-size:13px;line-height:24px;margin:0;color:#AFAFAF;text-align:center">© 2024 Supplyguard, Inc. All Rights Reserved.</p>
-                                      </tr>
-                                    </tbody>
-                                  </table>
-                                  <table align="center" width="100%" border="0" cellPadding="0" cellSpacing="0" role="presentation">
-                                    <tbody style="width:100%">
-                                      <tr style="width:100%">
-                                        <p style="font-size:13px;line-height:24px;margin:0;color:#AFAFAF;text-align:center">SUPPLYGUARD, INC. Worldwide</p>
-                                      </tr>
-                                    </tbody>
-                                  </table>
-                                </td>
-                              </tr>
-                            </tbody>
-                          </table>
-                        </td>
-                      </tr>
-                    </tbody>
-                  </table>
-                </body>
-          
-              </html>     
-        `,
-          };
+          // const qrCodeDataURL =
+          QRCode.toDataURL(
+            `http://localhost:3000/approve-order/${orderNumner}/${nextRole.role.supplier.supplierAddress}/${nextRole.productId}/${nextRole.role.ethaddress}/${nextRole.role.responsibilities}/${nextRole.role.fullname}`
+          ).then((qrCodeDataURL: any) => {
+            const requestBody = {
+              from: "supplyguard@supplyguard.xyz",
+              to: nextRole.role.email,
+              subject: `${"Approve Order - "}${orderNumner}`,
+              html: `
+                <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+                <html dir="ltr" lang="en">
+            
+                  <head>
+                    <meta content="text/html; charset=UTF-8" http-equiv="Content-Type" />
+                  </head>
+                  <div style="display:none;overflow:hidden;line-height:1px;opacity:0;max-height:0;max-width:0">Get your order summary, estimated delivery date and more<div> ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿</div>
+                  </div>
+            
+                  <body style="background-color:#ffffff;font-family:-apple-system,BlinkMacSystemFont,&quot;Segoe UI&quot;,Roboto,Oxygen-Sans,Ubuntu,Cantarell,&quot;Helvetica Neue&quot;,sans-serif">
+                    <table align="center" width="100%" border="0" cellPadding="0" cellSpacing="0" role="presentation" style="max-width:100%;margin:10px auto;width:600px;border:1px solid #E5E5E5">
+                      <tbody>
+                        <tr style="width:100%">
+                          <td>
+                            <table align="center" width="100%" border="0" cellPadding="0" cellSpacing="0" role="presentation" style="padding:22px 40px;background-color:#F7F7F7">
+                              <tbody>
+                                <tr>
+                                  <td>
+                                    <table align="center" width="100%" border="0" cellPadding="0" cellSpacing="0" role="presentation">
+                                      <tbody style="width:100%">
+                                        <tr style="width:100%">
+                                          <td data-id="__react-email-column">
+                                            <p style="font-size:14px;line-height:2;margin:0;font-weight:bold">Aprove Order </p>
+                                            <p style="font-size:14px;line-height:1.4;margin:12px 0 0 0;font-weight:500;color:#6F6F6F">${orderNumner}</p>
+                                          </td>
+                                          <td align="right" data-id="__react-email-column"><a style="color:#000;text-decoration:none;border:1px solid #929292;font-size:16px;padding:10px 0px;width:220px;display:block;text-align:center;font-weight:500" target="_blank" href=${`http://localhost:3000/approve-order/${orderNumner}/${nextRole.role.supplier.ethereumAddress}/${nextRole.productId}/${nextRole.role.ethaddress}/${nextRole.role.responsibilities}/${nextRole.role.fullname}`}>View Order</a></td>
+                                        </tr>
+                                      </tbody>
+                                    </table>
+                                  </td>
+                                </tr>
+                              </tbody>
+                            </table>
+                            <hr style="width:100%;border:none;border-top:1px solid #eaeaea;border-color:#E5E5E5;margin:0" />
+                            <table align="center" width="100%" border="0" cellPadding="0" cellSpacing="0" role="presentation" style="padding:40px 74px;text-align:center">
+                              <tbody>
+                                <tr>
+                                  <td>
+                                  <img alt="Nike" height="150" width="150" src="${qrCodeDataURL}" style="display:block;outline:none;border:none;text-decoration:none;margin:auto"  />
+                                  <img alt="Nike" height="120" width="120"  src="https://i.postimg.cc/KvCHFcgx/logo.png" style="display:block;outline:none;border:none;text-decoration:none;margin:auto" />
+                                    <h1 style="font-size:32px;line-height:1.3;font-weight:700;text-align:center;letter-spacing:-1px">Open and Verify this Order.</h1>
+                                    <p style="font-size:14px;line-height:2;margin:0;color:#747474;font-weight:500"> Use the link above to view its progress or simply Scan the QR code.</p>
+                                  
+                                  </td>
+                                </tr>
+                              </tbody>
+                            </table>
+                            <hr style="width:100%;border:none;border-top:1px solid #eaeaea;border-color:#E5E5E5;margin:0" />
+                           
+                           
+                            
+                            <hr style="width:100%;border:none;border-top:1px solid #eaeaea;border-color:#E5E5E5;margin:0" />
+                            <table align="center" width="100%" border="0" cellPadding="0" cellSpacing="0" role="presentation" style="padding-left:40px;padding-right:40px;padding-top:22px;padding-bottom:22px">
+                              <tbody>
+                                <tr>
+                                  <td>
+                                    <table align="center" width="100%" border="0" cellPadding="0" cellSpacing="0" role="presentation" style="display:inline-flex;margin-bottom:40px">
+                                      <tbody style="width:100%">
+                                        <tr style="width:100%">
+                                          <td data-id="__react-email-column" style="width:170px">
+                                            <p style="font-size:14px;line-height:2;margin:0;font-weight:bold">Order Number</p>
+                                            <p style="font-size:14px;line-height:1.4;margin:12px 0 0 0;font-weight:500;color:#6F6F6F">${orderNumner}</p>
+                                          </td>
+                                          <td data-id="__react-email-column">
+                                            <p style="font-size:14px;line-height:2;margin:0;font-weight:bold">Order Date</p>
+                                            <p style="font-size:14px;line-height:1.4;margin:12px 0 0 0;font-weight:500;color:#6F6F6F">${orderDate}</p>
+                                          </td>
+                                        </tr>
+                                      </tbody>
+                                    </table>
+                                    <table align="center" width="100%" border="0" cellPadding="0" cellSpacing="0" role="presentation">
+                                      
+                                    </table>
+                                  </td>
+                                </tr>
+                              </tbody>
+                            </table>
+                            <hr style="width:100%;border:none;border-top:1px solid #eaeaea;border-color:#E5E5E5;margin:0" />
+                            
+                            <hr style="width:100%;border:none;border-top:1px solid #eaeaea;border-color:#E5E5E5;margin:0" />
+                            <table align="center" width="100%" border="0" cellPadding="0" cellSpacing="0" role="presentation" style="padding-left:20px;padding-right:20px;padding-top:20px;background-color:#F7F7F7">
+                              <tbody>
+                                <tr>
+                                  <td>
+                                    <table align="center" width="100%" border="0" cellPadding="0" cellSpacing="0" role="presentation">
+                                      <tbody style="width:100%">
+                                        <tr style="width:100%">
+                                          <p style="font-size:14px;line-height:24px;margin:16px 0;padding-left:20px;padding-right:20px;font-weight:bold">Get Help</p>
+                                        </tr>
+                                      </tbody>
+                                    </table>
+                                    <table align="center" width="100%" border="0" cellPadding="0" cellSpacing="0" role="presentation" style="padding-top:22px;padding-bottom:22px;padding-left:20px;padding-right:20px">
+                                      <tbody style="width:100%">
+                                        <tr style="width:100%">
+                                          <td colSpan="1" data-id="__react-email-column" style="width:33%"><a href="/" style="color:#000;text-decoration:none;font-size:13.5px;margin-top:0;font-weight:500" target="_blank">Shipping Status</a></td>
+                                          <td colSpan="1" data-id="__react-email-column" style="width:33%"><a href="/" style="color:#000;text-decoration:none;font-size:13.5px;margin-top:0;font-weight:500" target="_blank">Shipping &amp; Delivery</a></td>
+                                          
+                                        </tr>
+                                      </tbody>
+                                    </table>
+                                    <table align="center" width="100%" border="0" cellPadding="0" cellSpacing="0" role="presentation" style="padding-top:0;padding-bottom:22px;padding-left:20px;padding-right:20px">
+                                      <tbody style="width:100%">
+                                        <tr style="width:100%">
+                                          
+                                          <td colSpan="2" data-id="__react-email-column" style="width:66%"><a href="/" style="color:#000;text-decoration:none;font-size:13.5px;margin-top:0;font-weight:500" target="_blank">Contact Options</a></td>
+                                        </tr>
+                                      </tbody>
+                                    </table>
+                                    <hr style="width:100%;border:none;border-top:1px solid #eaeaea;border-color:#E5E5E5;margin:0" />
+                                    <table align="center" width="100%" border="0" cellPadding="0" cellSpacing="0" role="presentation" style="padding-left:20px;padding-right:20px;padding-top:32px;padding-bottom:22px">
+                                      <tbody style="width:100%">
+                                        <tr style="width:100%">
+                                          <td data-id="__react-email-column">
+                                            <table align="center" width="100%" border="0" cellPadding="0" cellSpacing="0" role="presentation">
+                                              <tbody style="width:100%">
+                                                <tr style="width:100%">
+                                                  <td data-id="__react-email-column" style="width:16px"><img height="26px" src="https://react-email-demo-jsqyb0z9w-resend.vercel.app/static/nike-phone.png" style="display:block;outline:none;border:none;text-decoration:none;padding-right:14px" width="16px" /></td>
+                                                  <td data-id="__react-email-column">
+                                                    <p style="font-size:13.5px;line-height:24px;margin:16px 0;margin-top:0;font-weight:500;color:#000;margin-bottom:0">1-800-806-6453</p>
+                                                  </td>
+                                                </tr>
+                                              </tbody>
+                                            </table>
+                                          </td>
+                                          <td data-id="__react-email-column">
+                                            <p style="font-size:13.5px;line-height:24px;margin:16px 0;margin-top:0;font-weight:500;color:#000;margin-bottom:0">4 am - 11 pm GMT</p>
+                                          </td>
+                                        </tr>
+                                      </tbody>
+                                    </table>
+                                  </td>
+                                </tr>
+                              </tbody>
+                            </table>
+                            <hr style="width:100%;border:none;border-top:1px solid #eaeaea;border-color:#E5E5E5;margin:0" />
+                            <table align="center" width="100%" border="0" cellPadding="0" cellSpacing="0" role="presentation" style="padding-top:22px;padding-bottom:22px">
+                              <tbody>
+                                <tr>
+                                  <td>
+                                    <table align="center" width="100%" border="0" cellPadding="0" cellSpacing="0" role="presentation">
+                                      <tbody style="width:100%">
+                                        <tr style="width:100%">
+                                          <p style="font-size:32px;line-height:1.3;margin:16px 0;font-weight:700;text-align:center;letter-spacing:-1px">Supplyguard.xyz</p>
+                                        </tr>
+                                      </tbody>
+                                    </table>
+                                    <table align="center" width="100%" border="0" cellPadding="0" cellSpacing="0" role="presentation" style="width:370px;margin:auto;padding-top:12px">
+                                      <tbody style="width:100%">
+                                        <tr style="width:100%">
+                                          <td align="center" data-id="__react-email-column"><a href="/" style="color:#000;text-decoration:none;font-weight:500" target="_blank">Clothing</a></td>
+                                          <td align="center" data-id="__react-email-column"><a href="/" style="color:#000;text-decoration:none;font-weight:500" target="_blank">Sport Equipment</a></td>
+                                          <td align="center" data-id="__react-email-column"><a href="/" style="color:#000;text-decoration:none;font-weight:500" target="_blank">Pharmaceuticals</a></td>
+                                          
+                                        </tr>
+                                      </tbody>
+                                    </table>
+                                  </td>
+                                </tr>
+                              </tbody>
+                            </table>
+                            <hr style="width:100%;border:none;border-top:1px solid #eaeaea;border-color:#E5E5E5;margin:0;margin-top:12px" />
+                            <table align="center" width="100%" border="0" cellPadding="0" cellSpacing="0" role="presentation" style="padding-top:22px;padding-bottom:22px">
+                              <tbody>
+                                <tr>
+                                  <td>
+                                    <table align="center" width="100%" border="0" cellPadding="0" cellSpacing="0" role="presentation" style="width:166px;margin:auto">
+                                      <tbody style="width:100%">
+                                        <tr style="width:100%">
+                                          <td data-id="__react-email-column">
+                                            <p style="font-size:13px;line-height:24px;margin:0;color:#AFAFAF;text-align:center">Web Version</p>
+                                          </td>
+                                          <td data-id="__react-email-column">
+                                            <p style="font-size:13px;line-height:24px;margin:0;color:#AFAFAF;text-align:center">Privacy Policy</p>
+                                          </td>
+                                        </tr>
+                                      </tbody>
+                                    </table>
+                                    <table align="center" width="100%" border="0" cellPadding="0" cellSpacing="0" role="presentation">
+                                      <tbody style="width:100%">
+                                        <tr style="width:100%">
+                                          <p style="font-size:13px;line-height:24px;margin:0;color:#AFAFAF;text-align:center;padding-top:30px;padding-bottom:30px">Please contact us if you have any questions. (If you reply to this email, we won&#x27;t be able to see it.)</p>
+                                        </tr>
+                                      </tbody>
+                                    </table>
+                                    <table align="center" width="100%" border="0" cellPadding="0" cellSpacing="0" role="presentation">
+                                      <tbody style="width:100%">
+                                        <tr style="width:100%">
+                                          <p style="font-size:13px;line-height:24px;margin:0;color:#AFAFAF;text-align:center">© 2024 Supplyguard, Inc. All Rights Reserved.</p>
+                                        </tr>
+                                      </tbody>
+                                    </table>
+                                    <table align="center" width="100%" border="0" cellPadding="0" cellSpacing="0" role="presentation">
+                                      <tbody style="width:100%">
+                                        <tr style="width:100%">
+                                          <p style="font-size:13px;line-height:24px;margin:0;color:#AFAFAF;text-align:center">SUPPLYGUARD, INC. Worldwide</p>
+                                        </tr>
+                                      </tbody>
+                                    </table>
+                                  </td>
+                                </tr>
+                              </tbody>
+                            </table>
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </body>
+            
+                </html>     
+          `,
+            };
 
-          fetch("/api/send", {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify(requestBody),
-          }).then((res) => {
-            console.log(res);
+            fetch("/api/send", {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify(requestBody),
+            }).then((res) => {
+              console.log(res);
+            });
           });
 
           console.log(
@@ -680,245 +688,245 @@ const sendApprovalRequestEmailToNextPerson = async (
   });
 };
 
-// const sendUserOrderEmail = async (email: any, orderDetails: any) => {
-//   try {
-//     const qrCodeDataURL = await QRCode.toDataURL(
-//       "http://localhost:3000/track-order"
-//     );
+const sendUserOrderEmail = async (email: any, orderDetails: any) => {
+  try {
+    const qrCodeDataURL = await QRCode.toDataURL(
+      "http://localhost:3000/track-order"
+    );
 
-//     const requestBody = {
-//       from: "supplyguard@supplyguard.xyz",
-//       to: "mendsalbert@gmail.com",
-//       subject: "Test Email",
-//       html: `
+    const requestBody = {
+      from: "supplyguard@supplyguard.xyz",
+      to: "mendsalbert@gmail.com",
+      subject: "Test Email",
+      html: `
 
-//       <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-//       <html dir="ltr" lang="en">
+      <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+      <html dir="ltr" lang="en">
 
-//         <head>
-//           <meta content="text/html; charset=UTF-8" http-equiv="Content-Type" />
-//         </head>
-//         <div style="display:none;overflow:hidden;line-height:1px;opacity:0;max-height:0;max-width:0">Get your order summary, estimated delivery date and more<div> ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿</div>
-//         </div>
+        <head>
+          <meta content="text/html; charset=UTF-8" http-equiv="Content-Type" />
+        </head>
+        <div style="display:none;overflow:hidden;line-height:1px;opacity:0;max-height:0;max-width:0">Get your order summary, estimated delivery date and more<div> ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿</div>
+        </div>
 
-//         <body style="background-color:#ffffff;font-family:-apple-system,BlinkMacSystemFont,&quot;Segoe UI&quot;,Roboto,Oxygen-Sans,Ubuntu,Cantarell,&quot;Helvetica Neue&quot;,sans-serif">
-//           <table align="center" width="100%" border="0" cellPadding="0" cellSpacing="0" role="presentation" style="max-width:100%;margin:10px auto;width:600px;border:1px solid #E5E5E5">
-//             <tbody>
-//               <tr style="width:100%">
-//                 <td>
-//                   <table align="center" width="100%" border="0" cellPadding="0" cellSpacing="0" role="presentation" style="padding:22px 40px;background-color:#F7F7F7">
-//                     <tbody>
-//                       <tr>
-//                         <td>
-//                           <table align="center" width="100%" border="0" cellPadding="0" cellSpacing="0" role="presentation">
-//                             <tbody style="width:100%">
-//                               <tr style="width:100%">
-//                                 <td data-id="__react-email-column">
-//                                   <p style="font-size:14px;line-height:2;margin:0;font-weight:bold">Tracking Number</p>
-//                                   <p style="font-size:14px;line-height:1.4;margin:12px 0 0 0;font-weight:500;color:#6F6F6F">
-//                                   ${orderDetails.orderNumber}</p>
-//                                 </td>
-//                                 <td align="right" data-id="__react-email-column"><a style="color:#000;text-decoration:none;border:1px solid #929292;font-size:16px;padding:10px 0px;width:220px;display:block;text-align:center;font-weight:500" target="_blank" href="http://localhost:3000/track-order">Track Package</a></td>
-//                               </tr>
-//                             </tbody>
-//                           </table>
-//                         </td>
-//                       </tr>
-//                     </tbody>
-//                   </table>
-//                   <hr style="width:100%;border:none;border-top:1px solid #eaeaea;border-color:#E5E5E5;margin:0" />
-//                   <table align="center" width="100%" border="0" cellPadding="0" cellSpacing="0" role="presentation" style="padding:40px 74px;text-align:center">
-//                     <tbody>
-//                       <tr>
-//                         <td>
-//                         <img alt="Nike" height="150" width="150" src="${qrCodeDataURL}" style="display:block;outline:none;border:none;text-decoration:none;margin:auto"  />
-//                         <img alt="Nike" height="120" width="120"  src="https://i.postimg.cc/KvCHFcgx/logo.png" style="display:block;outline:none;border:none;text-decoration:none;margin:auto" />
-//                           <h1 style="font-size:32px;line-height:1.3;font-weight:700;text-align:center;letter-spacing:-1px">It&#x27;s On Its Way.</h1>
-//                           <p style="font-size:14px;line-height:2;margin:0;color:#747474;font-weight:500">You order&#x27;s is on its way. Use the link above to track its progress or simply Scan the QR code.</p>
+        <body style="background-color:#ffffff;font-family:-apple-system,BlinkMacSystemFont,&quot;Segoe UI&quot;,Roboto,Oxygen-Sans,Ubuntu,Cantarell,&quot;Helvetica Neue&quot;,sans-serif">
+          <table align="center" width="100%" border="0" cellPadding="0" cellSpacing="0" role="presentation" style="max-width:100%;margin:10px auto;width:600px;border:1px solid #E5E5E5">
+            <tbody>
+              <tr style="width:100%">
+                <td>
+                  <table align="center" width="100%" border="0" cellPadding="0" cellSpacing="0" role="presentation" style="padding:22px 40px;background-color:#F7F7F7">
+                    <tbody>
+                      <tr>
+                        <td>
+                          <table align="center" width="100%" border="0" cellPadding="0" cellSpacing="0" role="presentation">
+                            <tbody style="width:100%">
+                              <tr style="width:100%">
+                                <td data-id="__react-email-column">
+                                  <p style="font-size:14px;line-height:2;margin:0;font-weight:bold">Tracking Number</p>
+                                  <p style="font-size:14px;line-height:1.4;margin:12px 0 0 0;font-weight:500;color:#6F6F6F">
+                                  ${orderDetails.orderNumber}</p>
+                                </td>
+                                <td align="right" data-id="__react-email-column"><a style="color:#000;text-decoration:none;border:1px solid #929292;font-size:16px;padding:10px 0px;width:220px;display:block;text-align:center;font-weight:500" target="_blank" href="http://localhost:3000/track-order">Track Package</a></td>
+                              </tr>
+                            </tbody>
+                          </table>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                  <hr style="width:100%;border:none;border-top:1px solid #eaeaea;border-color:#E5E5E5;margin:0" />
+                  <table align="center" width="100%" border="0" cellPadding="0" cellSpacing="0" role="presentation" style="padding:40px 74px;text-align:center">
+                    <tbody>
+                      <tr>
+                        <td>
+                        <img alt="Nike" height="150" width="150" src="${qrCodeDataURL}" style="display:block;outline:none;border:none;text-decoration:none;margin:auto"  />
+                        <img alt="Nike" height="120" width="120"  src="https://i.postimg.cc/KvCHFcgx/logo.png" style="display:block;outline:none;border:none;text-decoration:none;margin:auto" />
+                          <h1 style="font-size:32px;line-height:1.3;font-weight:700;text-align:center;letter-spacing:-1px">It&#x27;s On Its Way.</h1>
+                          <p style="font-size:14px;line-height:2;margin:0;color:#747474;font-weight:500">You order&#x27;s is on its way. Use the link above to track its progress or simply Scan the QR code.</p>
 
-//                         </td>
-//                       </tr>
-//                     </tbody>
-//                   </table>
-//                   <hr style="width:100%;border:none;border-top:1px solid #eaeaea;border-color:#E5E5E5;margin:0" />
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                  <hr style="width:100%;border:none;border-top:1px solid #eaeaea;border-color:#E5E5E5;margin:0" />
 
-//                   <hr style="width:100%;border:none;border-top:1px solid #eaeaea;border-color:#E5E5E5;margin:0" />
-//                   <table align="center" width="100%" border="0" cellPadding="0" cellSpacing="0" role="presentation" style="padding-left:40px;padding-right:40px;padding-top:22px;padding-bottom:22px">
-//                     <tbody>
-//                       <tr>
-//                         <td>
-//                           <table align="center" width="100%" border="0" cellPadding="0" cellSpacing="0" role="presentation" style="display:inline-flex;margin-bottom:40px">
-//                             <tbody style="width:100%">
-//                               <tr style="width:100%">
-//                                 <td data-id="__react-email-column" style="width:170px">
-//                                   <p style="font-size:14px;line-height:2;margin:0;font-weight:bold">Order Number</p>
-//                                   <p style="font-size:14px;line-height:1.4;margin:12px 0 0 0;font-weight:500;color:#6F6F6F">
-//                                   ${orderDetails.orderNumber}
-//                                  </p>
-//                                 </td>
-//                                 <td data-id="__react-email-column">
-//                                   <p style="font-size:14px;line-height:2;margin:0;font-weight:bold">Order Date</p>
-//                                   <p style="font-size:14px;line-height:1.4;margin:12px 0 0 0;font-weight:500;color:#6F6F6F">${new Date().toISOString()}</p>
-//                                 </td>
-//                               </tr>
-//                             </tbody>
-//                           </table>
-//                           <table align="center" width="100%" border="0" cellPadding="0" cellSpacing="0" role="presentation">
-//                             <tbody style="width:100%">
-//                               <tr style="width:100%">
-//                                 <td align="center" data-id="__react-email-column"><a href='http://localhost:3000/track-order' style="color:#000;text-decoration:none;border:1px solid #929292;font-size:16px;padding:10px 0px;width:220px;display:block;text-align:center;font-weight:500" target="_blank">Order Status</a></td>
-//                               </tr>
-//                             </tbody>
-//                           </table>
-//                         </td>
-//                       </tr>
-//                     </tbody>
-//                   </table>
-//                   <hr style="width:100%;border:none;border-top:1px solid #eaeaea;border-color:#E5E5E5;margin:0" />
+                  <hr style="width:100%;border:none;border-top:1px solid #eaeaea;border-color:#E5E5E5;margin:0" />
+                  <table align="center" width="100%" border="0" cellPadding="0" cellSpacing="0" role="presentation" style="padding-left:40px;padding-right:40px;padding-top:22px;padding-bottom:22px">
+                    <tbody>
+                      <tr>
+                        <td>
+                          <table align="center" width="100%" border="0" cellPadding="0" cellSpacing="0" role="presentation" style="display:inline-flex;margin-bottom:40px">
+                            <tbody style="width:100%">
+                              <tr style="width:100%">
+                                <td data-id="__react-email-column" style="width:170px">
+                                  <p style="font-size:14px;line-height:2;margin:0;font-weight:bold">Order Number</p>
+                                  <p style="font-size:14px;line-height:1.4;margin:12px 0 0 0;font-weight:500;color:#6F6F6F">
+                                  ${orderDetails.orderNumber}
+                                 </p>
+                                </td>
+                                <td data-id="__react-email-column">
+                                  <p style="font-size:14px;line-height:2;margin:0;font-weight:bold">Order Date</p>
+                                  <p style="font-size:14px;line-height:1.4;margin:12px 0 0 0;font-weight:500;color:#6F6F6F">${new Date().toISOString()}</p>
+                                </td>
+                              </tr>
+                            </tbody>
+                          </table>
+                          <table align="center" width="100%" border="0" cellPadding="0" cellSpacing="0" role="presentation">
+                            <tbody style="width:100%">
+                              <tr style="width:100%">
+                                <td align="center" data-id="__react-email-column"><a href='http://localhost:3000/track-order' style="color:#000;text-decoration:none;border:1px solid #929292;font-size:16px;padding:10px 0px;width:220px;display:block;text-align:center;font-weight:500" target="_blank">Order Status</a></td>
+                              </tr>
+                            </tbody>
+                          </table>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                  <hr style="width:100%;border:none;border-top:1px solid #eaeaea;border-color:#E5E5E5;margin:0" />
 
-//                   <hr style="width:100%;border:none;border-top:1px solid #eaeaea;border-color:#E5E5E5;margin:0" />
-//                   <table align="center" width="100%" border="0" cellPadding="0" cellSpacing="0" role="presentation" style="padding-left:20px;padding-right:20px;padding-top:20px;background-color:#F7F7F7">
-//                     <tbody>
-//                       <tr>
-//                         <td>
-//                           <table align="center" width="100%" border="0" cellPadding="0" cellSpacing="0" role="presentation">
-//                             <tbody style="width:100%">
-//                               <tr style="width:100%">
-//                                 <p style="font-size:14px;line-height:24px;margin:16px 0;padding-left:20px;padding-right:20px;font-weight:bold">Get Help</p>
-//                               </tr>
-//                             </tbody>
-//                           </table>
-//                           <table align="center" width="100%" border="0" cellPadding="0" cellSpacing="0" role="presentation" style="padding-top:22px;padding-bottom:22px;padding-left:20px;padding-right:20px">
-//                             <tbody style="width:100%">
-//                               <tr style="width:100%">
-//                                 <td colSpan="1" data-id="__react-email-column" style="width:33%"><a href="/" style="color:#000;text-decoration:none;font-size:13.5px;margin-top:0;font-weight:500" target="_blank">Shipping Status</a></td>
-//                                 <td colSpan="1" data-id="__react-email-column" style="width:33%"><a href="/" style="color:#000;text-decoration:none;font-size:13.5px;margin-top:0;font-weight:500" target="_blank">Shipping &amp; Delivery</a></td>
+                  <hr style="width:100%;border:none;border-top:1px solid #eaeaea;border-color:#E5E5E5;margin:0" />
+                  <table align="center" width="100%" border="0" cellPadding="0" cellSpacing="0" role="presentation" style="padding-left:20px;padding-right:20px;padding-top:20px;background-color:#F7F7F7">
+                    <tbody>
+                      <tr>
+                        <td>
+                          <table align="center" width="100%" border="0" cellPadding="0" cellSpacing="0" role="presentation">
+                            <tbody style="width:100%">
+                              <tr style="width:100%">
+                                <p style="font-size:14px;line-height:24px;margin:16px 0;padding-left:20px;padding-right:20px;font-weight:bold">Get Help</p>
+                              </tr>
+                            </tbody>
+                          </table>
+                          <table align="center" width="100%" border="0" cellPadding="0" cellSpacing="0" role="presentation" style="padding-top:22px;padding-bottom:22px;padding-left:20px;padding-right:20px">
+                            <tbody style="width:100%">
+                              <tr style="width:100%">
+                                <td colSpan="1" data-id="__react-email-column" style="width:33%"><a href="/" style="color:#000;text-decoration:none;font-size:13.5px;margin-top:0;font-weight:500" target="_blank">Shipping Status</a></td>
+                                <td colSpan="1" data-id="__react-email-column" style="width:33%"><a href="/" style="color:#000;text-decoration:none;font-size:13.5px;margin-top:0;font-weight:500" target="_blank">Shipping &amp; Delivery</a></td>
 
-//                               </tr>
-//                             </tbody>
-//                           </table>
-//                           <table align="center" width="100%" border="0" cellPadding="0" cellSpacing="0" role="presentation" style="padding-top:0;padding-bottom:22px;padding-left:20px;padding-right:20px">
-//                             <tbody style="width:100%">
-//                               <tr style="width:100%">
+                              </tr>
+                            </tbody>
+                          </table>
+                          <table align="center" width="100%" border="0" cellPadding="0" cellSpacing="0" role="presentation" style="padding-top:0;padding-bottom:22px;padding-left:20px;padding-right:20px">
+                            <tbody style="width:100%">
+                              <tr style="width:100%">
 
-//                                 <td colSpan="2" data-id="__react-email-column" style="width:66%"><a href="/" style="color:#000;text-decoration:none;font-size:13.5px;margin-top:0;font-weight:500" target="_blank">Contact Options</a></td>
-//                               </tr>
-//                             </tbody>
-//                           </table>
-//                           <hr style="width:100%;border:none;border-top:1px solid #eaeaea;border-color:#E5E5E5;margin:0" />
-//                           <table align="center" width="100%" border="0" cellPadding="0" cellSpacing="0" role="presentation" style="padding-left:20px;padding-right:20px;padding-top:32px;padding-bottom:22px">
-//                             <tbody style="width:100%">
-//                               <tr style="width:100%">
-//                                 <td data-id="__react-email-column">
-//                                   <table align="center" width="100%" border="0" cellPadding="0" cellSpacing="0" role="presentation">
-//                                     <tbody style="width:100%">
-//                                       <tr style="width:100%">
-//                                         <td data-id="__react-email-column" style="width:16px"><img height="26px" src="https://react-email-demo-jsqyb0z9w-resend.vercel.app/static/nike-phone.png" style="display:block;outline:none;border:none;text-decoration:none;padding-right:14px" width="16px" /></td>
-//                                         <td data-id="__react-email-column">
-//                                           <p style="font-size:13.5px;line-height:24px;margin:16px 0;margin-top:0;font-weight:500;color:#000;margin-bottom:0">1-800-806-6453</p>
-//                                         </td>
-//                                       </tr>
-//                                     </tbody>
-//                                   </table>
-//                                 </td>
-//                                 <td data-id="__react-email-column">
-//                                   <p style="font-size:13.5px;line-height:24px;margin:16px 0;margin-top:0;font-weight:500;color:#000;margin-bottom:0">4 am - 11 pm GMT</p>
-//                                 </td>
-//                               </tr>
-//                             </tbody>
-//                           </table>
-//                         </td>
-//                       </tr>
-//                     </tbody>
-//                   </table>
-//                   <hr style="width:100%;border:none;border-top:1px solid #eaeaea;border-color:#E5E5E5;margin:0" />
-//                   <table align="center" width="100%" border="0" cellPadding="0" cellSpacing="0" role="presentation" style="padding-top:22px;padding-bottom:22px">
-//                     <tbody>
-//                       <tr>
-//                         <td>
-//                           <table align="center" width="100%" border="0" cellPadding="0" cellSpacing="0" role="presentation">
-//                             <tbody style="width:100%">
-//                               <tr style="width:100%">
-//                                 <p style="font-size:32px;line-height:1.3;margin:16px 0;font-weight:700;text-align:center;letter-spacing:-1px">Supplyguard.xyz</p>
-//                               </tr>
-//                             </tbody>
-//                           </table>
-//                           <table align="center" width="100%" border="0" cellPadding="0" cellSpacing="0" role="presentation" style="width:370px;margin:auto;padding-top:12px">
-//                             <tbody style="width:100%">
-//                               <tr style="width:100%">
-//                                 <td align="center" data-id="__react-email-column"><a href="/" style="color:#000;text-decoration:none;font-weight:500" target="_blank">Clothing</a></td>
-//                                 <td align="center" data-id="__react-email-column"><a href="/" style="color:#000;text-decoration:none;font-weight:500" target="_blank">Sport Equipment</a></td>
-//                                 <td align="center" data-id="__react-email-column"><a href="/" style="color:#000;text-decoration:none;font-weight:500" target="_blank">Pharmaceuticals</a></td>
+                                <td colSpan="2" data-id="__react-email-column" style="width:66%"><a href="/" style="color:#000;text-decoration:none;font-size:13.5px;margin-top:0;font-weight:500" target="_blank">Contact Options</a></td>
+                              </tr>
+                            </tbody>
+                          </table>
+                          <hr style="width:100%;border:none;border-top:1px solid #eaeaea;border-color:#E5E5E5;margin:0" />
+                          <table align="center" width="100%" border="0" cellPadding="0" cellSpacing="0" role="presentation" style="padding-left:20px;padding-right:20px;padding-top:32px;padding-bottom:22px">
+                            <tbody style="width:100%">
+                              <tr style="width:100%">
+                                <td data-id="__react-email-column">
+                                  <table align="center" width="100%" border="0" cellPadding="0" cellSpacing="0" role="presentation">
+                                    <tbody style="width:100%">
+                                      <tr style="width:100%">
+                                        <td data-id="__react-email-column" style="width:16px"><img height="26px" src="https://react-email-demo-jsqyb0z9w-resend.vercel.app/static/nike-phone.png" style="display:block;outline:none;border:none;text-decoration:none;padding-right:14px" width="16px" /></td>
+                                        <td data-id="__react-email-column">
+                                          <p style="font-size:13.5px;line-height:24px;margin:16px 0;margin-top:0;font-weight:500;color:#000;margin-bottom:0">1-800-806-6453</p>
+                                        </td>
+                                      </tr>
+                                    </tbody>
+                                  </table>
+                                </td>
+                                <td data-id="__react-email-column">
+                                  <p style="font-size:13.5px;line-height:24px;margin:16px 0;margin-top:0;font-weight:500;color:#000;margin-bottom:0">4 am - 11 pm GMT</p>
+                                </td>
+                              </tr>
+                            </tbody>
+                          </table>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                  <hr style="width:100%;border:none;border-top:1px solid #eaeaea;border-color:#E5E5E5;margin:0" />
+                  <table align="center" width="100%" border="0" cellPadding="0" cellSpacing="0" role="presentation" style="padding-top:22px;padding-bottom:22px">
+                    <tbody>
+                      <tr>
+                        <td>
+                          <table align="center" width="100%" border="0" cellPadding="0" cellSpacing="0" role="presentation">
+                            <tbody style="width:100%">
+                              <tr style="width:100%">
+                                <p style="font-size:32px;line-height:1.3;margin:16px 0;font-weight:700;text-align:center;letter-spacing:-1px">Supplyguard.xyz</p>
+                              </tr>
+                            </tbody>
+                          </table>
+                          <table align="center" width="100%" border="0" cellPadding="0" cellSpacing="0" role="presentation" style="width:370px;margin:auto;padding-top:12px">
+                            <tbody style="width:100%">
+                              <tr style="width:100%">
+                                <td align="center" data-id="__react-email-column"><a href="/" style="color:#000;text-decoration:none;font-weight:500" target="_blank">Clothing</a></td>
+                                <td align="center" data-id="__react-email-column"><a href="/" style="color:#000;text-decoration:none;font-weight:500" target="_blank">Sport Equipment</a></td>
+                                <td align="center" data-id="__react-email-column"><a href="/" style="color:#000;text-decoration:none;font-weight:500" target="_blank">Pharmaceuticals</a></td>
 
-//                               </tr>
-//                             </tbody>
-//                           </table>
-//                         </td>
-//                       </tr>
-//                     </tbody>
-//                   </table>
-//                   <hr style="width:100%;border:none;border-top:1px solid #eaeaea;border-color:#E5E5E5;margin:0;margin-top:12px" />
-//                   <table align="center" width="100%" border="0" cellPadding="0" cellSpacing="0" role="presentation" style="padding-top:22px;padding-bottom:22px">
-//                     <tbody>
-//                       <tr>
-//                         <td>
-//                           <table align="center" width="100%" border="0" cellPadding="0" cellSpacing="0" role="presentation" style="width:166px;margin:auto">
-//                             <tbody style="width:100%">
-//                               <tr style="width:100%">
-//                                 <td data-id="__react-email-column">
-//                                   <p style="font-size:13px;line-height:24px;margin:0;color:#AFAFAF;text-align:center">Web Version</p>
-//                                 </td>
-//                                 <td data-id="__react-email-column">
-//                                   <p style="font-size:13px;line-height:24px;margin:0;color:#AFAFAF;text-align:center">Privacy Policy</p>
-//                                 </td>
-//                               </tr>
-//                             </tbody>
-//                           </table>
-//                           <table align="center" width="100%" border="0" cellPadding="0" cellSpacing="0" role="presentation">
-//                             <tbody style="width:100%">
-//                               <tr style="width:100%">
-//                                 <p style="font-size:13px;line-height:24px;margin:0;color:#AFAFAF;text-align:center;padding-top:30px;padding-bottom:30px">Please contact us if you have any questions. (If you reply to this email, we won&#x27;t be able to see it.)</p>
-//                               </tr>
-//                             </tbody>
-//                           </table>
-//                           <table align="center" width="100%" border="0" cellPadding="0" cellSpacing="0" role="presentation">
-//                             <tbody style="width:100%">
-//                               <tr style="width:100%">
-//                                 <p style="font-size:13px;line-height:24px;margin:0;color:#AFAFAF;text-align:center">© 2024 Supplyguard, Inc. All Rights Reserved.</p>
-//                               </tr>
-//                             </tbody>
-//                           </table>
-//                           <table align="center" width="100%" border="0" cellPadding="0" cellSpacing="0" role="presentation">
-//                             <tbody style="width:100%">
-//                               <tr style="width:100%">
-//                                 <p style="font-size:13px;line-height:24px;margin:0;color:#AFAFAF;text-align:center">SUPPLYGUARD, INC. Worldwide</p>
-//                               </tr>
-//                             </tbody>
-//                           </table>
-//                         </td>
-//                       </tr>
-//                     </tbody>
-//                   </table>
-//                 </td>
-//               </tr>
-//             </tbody>
-//           </table>
-//         </body>
+                              </tr>
+                            </tbody>
+                          </table>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                  <hr style="width:100%;border:none;border-top:1px solid #eaeaea;border-color:#E5E5E5;margin:0;margin-top:12px" />
+                  <table align="center" width="100%" border="0" cellPadding="0" cellSpacing="0" role="presentation" style="padding-top:22px;padding-bottom:22px">
+                    <tbody>
+                      <tr>
+                        <td>
+                          <table align="center" width="100%" border="0" cellPadding="0" cellSpacing="0" role="presentation" style="width:166px;margin:auto">
+                            <tbody style="width:100%">
+                              <tr style="width:100%">
+                                <td data-id="__react-email-column">
+                                  <p style="font-size:13px;line-height:24px;margin:0;color:#AFAFAF;text-align:center">Web Version</p>
+                                </td>
+                                <td data-id="__react-email-column">
+                                  <p style="font-size:13px;line-height:24px;margin:0;color:#AFAFAF;text-align:center">Privacy Policy</p>
+                                </td>
+                              </tr>
+                            </tbody>
+                          </table>
+                          <table align="center" width="100%" border="0" cellPadding="0" cellSpacing="0" role="presentation">
+                            <tbody style="width:100%">
+                              <tr style="width:100%">
+                                <p style="font-size:13px;line-height:24px;margin:0;color:#AFAFAF;text-align:center;padding-top:30px;padding-bottom:30px">Please contact us if you have any questions. (If you reply to this email, we won&#x27;t be able to see it.)</p>
+                              </tr>
+                            </tbody>
+                          </table>
+                          <table align="center" width="100%" border="0" cellPadding="0" cellSpacing="0" role="presentation">
+                            <tbody style="width:100%">
+                              <tr style="width:100%">
+                                <p style="font-size:13px;line-height:24px;margin:0;color:#AFAFAF;text-align:center">© 2024 Supplyguard, Inc. All Rights Reserved.</p>
+                              </tr>
+                            </tbody>
+                          </table>
+                          <table align="center" width="100%" border="0" cellPadding="0" cellSpacing="0" role="presentation">
+                            <tbody style="width:100%">
+                              <tr style="width:100%">
+                                <p style="font-size:13px;line-height:24px;margin:0;color:#AFAFAF;text-align:center">SUPPLYGUARD, INC. Worldwide</p>
+                              </tr>
+                            </tbody>
+                          </table>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </body>
 
-//       </html>
-//           `,
-//     };
-//     const response = await fetch("/api/send", {
-//       method: "POST",
-//       headers: {
-//         "Content-Type": "application/json",
-//       },
-//       body: JSON.stringify(requestBody),
-//     });
-//   } catch (error) {
-//     console.error(error);
-//   }
-// };
+      </html>
+          `,
+    };
+    const response = await fetch("/api/send", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(requestBody),
+    });
+  } catch (error) {
+    console.error(error);
+  }
+};
 
 export const addOrder = async (orderDetails: any, email: any) => {
   try {
@@ -959,7 +967,7 @@ export const addOrder = async (orderDetails: any, email: any) => {
 
     console.log(flatProductsWithRoles);
 
-    // await sendUserOrderEmail(email, orderDetails);
+    await sendUserOrderEmail(email, orderDetails);
     if (
       flatProductsWithRoles.length > 0 &&
       flatProductsWithRoles[0].roles.length > 0
@@ -1118,7 +1126,7 @@ export const updateRoleApproval = async (
 
     if (order.roleApprovals[nextRoleIndex]) {
       // sendApprovalRequestEmail(order.roleApprovals);
-      sendApprovalRequestEmailToNextPerson(order.roleApprovals, order);
+      // sendApprovalRequestEmailToNextPerson(order.roleApprovals, order);
     }
 
     return await fetchOrderD(documentId);
@@ -1161,8 +1169,9 @@ export const fetchAllOrders = async () => {
         supplier->{
           supplierName
         },
-        category
-        
+        category->{
+         ...,
+        }
       }
     }
     }`;

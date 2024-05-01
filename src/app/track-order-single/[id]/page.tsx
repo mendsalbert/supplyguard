@@ -107,9 +107,7 @@ const CheckoutPage = ({ params }: { params: { id: any } }) => {
             <div className="space-y-8 z-[99999]">
               {userOrders?.map((order: any) => {
                 const filteredRoleApprovals = order.roleApprovals.filter(
-                  (approval: any) =>
-                    approval.productId === params.id &&
-                    approval.approved == false
+                  (approval: any) => approval.productId === params.id
                 );
 
                 const newOrder = {

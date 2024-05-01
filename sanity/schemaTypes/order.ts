@@ -109,13 +109,7 @@ export default defineType({
       type: "number",
       description: "The total cost of the order in ETH.",
     }),
-    // defineField({
-    //   name: "assignedTo",
-    //   title: "Assigned To",
-    //   type: "reference",
-    //   to: [{ type: "supplierRole" }],
-    //   description: "Role responsible for handling the order.",
-    // }),
+
     defineField({
       name: "roleApprovals",
       title: "Role Approvals",
@@ -143,6 +137,11 @@ export default defineType({
               type: "datetime",
               description:
                 "The date and time when the role approved the order.",
+            }),
+            defineField({
+              name: "productID",
+              title: "Product ID",
+              type: "string",
             }),
           ],
         },

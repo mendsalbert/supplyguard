@@ -4,6 +4,8 @@ import {
   fetchOrdersByUser as getAllOrdersForUserAPI,
   updateRoleApproval as updateRoleApprovalAPI,
   fetchOrder as fetchOrderAPI,
+  fetchAllOrders as fetchOrdersAPI,
+  getOrdersToBeApprovedByRole,
 } from "./orderAPI"; // Assuming these functions are defined in orderAPI
 import { RootState } from "../../app/store";
 
@@ -69,15 +71,18 @@ export const updateRoleApproval = createAsyncThunk(
     orderId,
     roleApprovalData,
     approvalStatus,
+    documentId,
   }: {
     orderId: string;
     roleApprovalData: any;
     approvalStatus: any;
+    documentId: any;
   }) => {
     return await updateRoleApprovalAPI(
       orderId,
       roleApprovalData,
-      approvalStatus
+      approvalStatus,
+      documentId
     );
   }
 );
@@ -89,6 +94,30 @@ export const fetchOrder = createAsyncThunk(
   }
 );
 
+export const fetchOrders = createAsyncThunk("orders/fetchOrders", async () => {
+  return await fetchOrdersAPI();
+});
+
+export const fetchOrdersForApproval = createAsyncThunk(
+  "orders/fetchForApproval",
+  async (
+    {
+      supplierAddress,
+      roleAddress,
+    }: { supplierAddress: any; roleAddress: any },
+    { rejectWithValue }
+  ) => {
+    try {
+      const orders = await getOrdersToBeApprovedByRole(
+        supplierAddress,
+        roleAddress
+      );
+      return orders;
+    } catch (error: any) {
+      return rejectWithValue(error.message);
+    }
+  }
+);
 const orderSlice = createSlice({
   name: "orders",
   initialState,
@@ -128,6 +157,26 @@ const orderSlice = createSlice({
       .addCase(fetchOrder.fulfilled, (state, action: PayloadAction<Order>) => {
         state.currentOrder = action.payload;
         state.status = "succeeded";
+      })
+      .addCase(fetchOrders.pending, (state) => {
+        state.status = "loading";
+      })
+      .addCase(fetchOrders.fulfilled, (state, action) => {
+        state.status = "succeeded";
+        state.orders = action.payload;
+      })
+      .addCase(fetchOrders.rejected, (state, action) => {
+        state.status = "failed";
+      })
+      .addCase(fetchOrdersForApproval.pending, (state) => {
+        state.status = "loading";
+      })
+      .addCase(fetchOrdersForApproval.fulfilled, (state, action) => {
+        state.status = "succeeded";
+        state.orders = action.payload;
+      })
+      .addCase(fetchOrdersForApproval.rejected, (state, action) => {
+        state.status = "failed";
       });
   },
 });

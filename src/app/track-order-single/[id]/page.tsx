@@ -3,7 +3,7 @@
 import Label from "@/components/Label/Label";
 import NcInputNumber from "@/components/NcInputNumber";
 import Prices from "@/components/Prices";
-import { Product, PRODUCTS } from "@/data/data";
+import { Product, PRODUCTS, RESPONSIBILITIES_ORDER } from "@/data/data";
 import React, { FC, useState, useEffect, useRef } from "react";
 import ButtonPrimary from "@/shared/Button/ButtonPrimary";
 import Input from "@/shared/Input/Input";
@@ -20,6 +20,26 @@ const CheckoutPage = ({ params }: { params: { id: any } }) => {
   const [tabActive, setTabActive] = useState<
     "ContactInfo" | "ShippingAddress" | "PaymentMethod"
   >("ShippingAddress");
+
+  const sortRolesByResponsibilities = (roles: any) => {
+    console.log(roles);
+
+    // Sorting based on the index of role's responsibility in the RESPONSIBILITIES_ORDER array
+    return roles.sort((a: any, b: any) => {
+      let roleAIndex = RESPONSIBILITIES_ORDER.indexOf(
+        a?.role?.responsibilities
+      );
+      let roleBIndex = RESPONSIBILITIES_ORDER.indexOf(
+        b?.role?.responsibilities
+      );
+
+      // Handling roles not found in the RESPONSIBILITIES_ORDER by placing them at the end
+      roleAIndex = roleAIndex === -1 ? Number.MAX_SAFE_INTEGER : roleAIndex;
+      roleBIndex = roleBIndex === -1 ? Number.MAX_SAFE_INTEGER : roleBIndex;
+
+      return roleAIndex - roleBIndex;
+    });
+  };
 
   const dispatch = useAppDispatch();
 
@@ -40,7 +60,9 @@ const CheckoutPage = ({ params }: { params: { id: any } }) => {
 
   console.log(userOrders);
 
-  const renderLeft = (roles: any) => {
+  const renderLeft = (roles: any, roleApproval: any) => {
+    console.log("rolessss", roles);
+
     return (
       <div className="space-y-8 z-[99999]">
         <div id="ContactInfo" className="scroll-mt-24">
@@ -83,16 +105,26 @@ const CheckoutPage = ({ params }: { params: { id: any } }) => {
           {/* <div className=" absolute flex-shrink-0 border-t lg:border-t-0 lg:border-l border-slate-200 dark:border-slate-700 my-10 lg:my-0  "></div> */}
           <div className="flex-1">
             <div className="space-y-8 z-[99999]">
-              {userOrders
-                ?.flatMap(
-                  (order: any) =>
-                    order.status == "pending" &&
-                    order?.roleApprovals
-                      ?.filter((item: any) => item.productId === params.id)
-                      .map((item: any) => item.roleApprovals)
-                )
-                .flat()
-                .map((role: any, index: number) => renderLeft(role))}
+              {userOrders?.map((order: any) => {
+                const filteredRoleApprovals = order.roleApprovals.filter(
+                  (approval: any) =>
+                    approval.productId === params.id &&
+                    approval.approved == false
+                );
+
+                const newOrder = {
+                  ...order,
+                  roleApprovals: filteredRoleApprovals, // Replace roleApprovals with filtered
+                };
+
+                const sortedRoles = sortRolesByResponsibilities(
+                  newOrder.roleApprovals
+                );
+
+                return sortedRoles.map((roles: any) =>
+                  renderLeft(roles, newOrder.roleApprovals)
+                );
+              })}
             </div>
           </div>
         </div>

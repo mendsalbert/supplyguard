@@ -2,36 +2,36 @@ import React, { FC } from "react";
 import ButtonPrimary from "@/shared/Button/ButtonPrimary";
 import ButtonSecondary from "@/shared/Button/ButtonSecondary";
 import NcModal from "@/shared/NcModal/NcModal";
+import { useWeb3Modal } from "@web3modal/wagmi/react";
 
 export interface ModalApproveOrderProps {
   show: boolean;
-  onCloseModalDelete: () => void;
+  onCloseModalDelete?: () => void;
 }
 
 const ModalApproveOrder: FC<ModalApproveOrderProps> = ({
   show,
   onCloseModalDelete,
 }) => {
+  const { open } = useWeb3Modal();
+
   const handleClickSubmitForm = () => {};
 
   const renderContent = () => {
     return (
-      <form action="#">
+      <>
         <h3 className="text-lg font-semibold text-neutral-900 dark:text-neutral-200">
-          Delete NFT
+          Not Connected or Mismatch Address
         </h3>
         <span className="text-sm">
-          Are you sure you want to delete this NFT? You cannot undo this action.
+          To Approve an order , You will have to be authenticated
         </span>
         <div className="mt-4 space-x-3">
-          <ButtonPrimary onClick={handleClickSubmitForm} type="submit">
-            Delete
+          <ButtonPrimary onClick={() => open()} type="submit">
+            Connect Here
           </ButtonPrimary>
-          <ButtonSecondary type="button" onClick={onCloseModalDelete}>
-            Cancel
-          </ButtonSecondary>
         </div>
-      </form>
+      </>
     );
   };
 

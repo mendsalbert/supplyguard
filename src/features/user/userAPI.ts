@@ -61,7 +61,8 @@ export const fetchUserByAddress = async (ethereumAddress: string) => {
         status,
         image,
         supplier->{
-          supplierName
+          supplierName,
+          ethereumAddress
         },
         category->{
           name,
@@ -172,7 +173,8 @@ export const addToCart = async (userId: any, productId: any) => {
           price,
           image,
           supplier->{
-            supplierName
+            supplierName,
+            ethereumAddress
           },
           category->{
             name,
@@ -256,7 +258,8 @@ export const removeFromCart = async (userId: any, productId: any) => {
           price,
           image,
           supplier->{
-            supplierName
+            supplierName,
+            ethereumAddress
           },
           category->{
             name,
@@ -305,7 +308,9 @@ export const getCart = async (userId: any) => {
         price,
         image,
         supplier->{
-          supplierName
+          supplierName,
+          ethereumAddress
+
         },
         category->{
           name,

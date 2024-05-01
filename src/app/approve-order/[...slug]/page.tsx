@@ -14,18 +14,38 @@ import Link from "next/link";
 import { ClockIcon } from "@heroicons/react/24/outline";
 import ButtonSecondary from "@/shared/Button/ButtonSecondary";
 import { useAppDispatch, useAppSelector } from "@/app/store";
-import { selectCurrentOrder, fetchOrder } from "@/features/order/orderSlice";
+import {
+  selectCurrentOrder,
+  fetchOrder,
+  selectAllOrders,
+  fetchOrdersForApproval,
+  fetchOrders,
+  updateRoleApproval,
+} from "@/features/order/orderSlice";
 import { useAccount } from "wagmi";
 import imageUrlBuilder from "@sanity/image-url";
 import Heading from "@/components/Heading/Heading";
 import ModalApproveOrder from "@/components/ModalApproveOrder";
 
-const PageLogin = () => {
+const PageLogin = ({ params }: { params: { slug: string } }) => {
+  let orderNumber = params.slug[0];
+  let supplierAddress = params.slug[1];
+  let productId = params.slug[2];
+  let roleAddress = params.slug[3];
+
   const dispatch = useAppDispatch();
 
-  const userOrders = useAppSelector(selectCurrentOrder) as any;
+  const allOrders = useAppSelector(selectAllOrders) as any;
 
   const account = useAccount();
+  const [isAuth, setIsAuth] = useState(true);
+  const [filteredOrders, setFilteredOrders] = useState([]);
+
+  useEffect(() => {
+    account.address == undefined || account.address !== roleAddress
+      ? setIsAuth(true)
+      : setIsAuth(false);
+  }, [account.address]);
 
   const handleScrollToEl = (id: string) => {
     const element = document.getElementById(id);
@@ -41,8 +61,44 @@ const PageLogin = () => {
   const builder = imageUrlBuilder(client);
 
   useEffect(() => {
-    dispatch(fetchOrder(account.address));
-  }, [dispatch]);
+    dispatch(fetchOrders());
+  }, [dispatch, account.address]);
+
+  console.log(allOrders);
+  console.log(productId);
+
+  // allOrders?.items?.roles?.map((roles: any) => {
+  //   console.log(roles);
+  //   // roles.ethaddress == account.address
+  // });
+
+  // allOrders?.items?.roles?.filter(
+  //   (roles: any) => roles.ethaddress !== account.address
+  // );
+  // .map((product: any, index: any) =>
+  //   renderProductItem(product, index)
+  // )
+  const handleApproval = async (order: any) => {
+    console.log(order);
+
+    // const id = toast.loading("Deleting...");
+    let approve = await dispatch(
+      updateRoleApproval({
+        orderId: order.orderNumber,
+        roleApprovalData: account.address,
+        approvalStatus: true,
+        documentId: order?._id,
+      })
+    ).unwrap();
+
+    console.log(approve);
+
+    // toast.update(id, {
+    //   render: "Item Removed from cart",
+    //   type: "success",
+    //   isLoading: false,
+    // });
+  };
 
   const renderProductItem = (product: any, index: number) => {
     const { image, price, name, quantity, supplier, _id } = product?.product;
@@ -106,30 +162,47 @@ const PageLogin = () => {
             </p>
           </div>
           <div className="mt-3 sm:mt-0">
-            <Link href="/track-order-single/4">
-              <ButtonSecondary
-                sizeClass="py-2.5 px-4 sm:px-6"
-                fontSize="text-sm font-medium"
-              >
-                Approve Order
-              </ButtonSecondary>
-            </Link>
+            {/* <Link href="/track-order-single/4"> */}
+            <ButtonSecondary
+              sizeClass="py-2.5 px-4 sm:px-6"
+              fontSize="text-sm font-medium"
+              onClick={() => handleApproval(order)}
+            >
+              Approve Order
+            </ButtonSecondary>
+            {/* </Link> */}
           </div>
         </div>
         <div className="border-t border-slate-200 dark:border-slate-700 p-2 sm:p-8 divide-y divide-y-slate-200 dark:divide-slate-700">
-          {order?.items?.map((product: any, index: any) =>
-            renderProductItem(product, index)
-          )}
+          {/* {allOrders
+            ?.flatMap(
+              (order: any) =>
+                order.status === "pending" &&
+                order.ethereumAddress === supplierAddress &&
+                order?.items?.filter(
+                  (item: any) => item.productId === productId
+                )
+            )
+            .flat()
+            .filter((item: any) =>
+              item.roles.some(
+                (role: any) => role.ethaddress === account.address
+              )
+            )
+            .map((item: any, index: number) => renderProductItem(item, index))} */}
+          {order?.items
+            ?.filter((items: any) => items.productId == productId)
+            ?.map((product: any, index: any) =>
+              renderProductItem(product, index)
+            )}
         </div>
       </div>
     );
   };
-  const [isAuth, setIsAuth] = useState(false);
-  const closeModalAuth = () => setIsAuth(false);
 
   return (
     <div className="nc-CheckoutPage">
-      <ModalApproveOrder show={isAuth} onCloseModalDelete={closeModalAuth} />
+      <ModalApproveOrder show={isAuth} />
       <main className="container py-16 lg:pb-28 lg:pt-20 ">
         <div className="flex flex-col lg:flex-row">
           <div className="w-full lg:w-full ">
@@ -137,7 +210,122 @@ const PageLogin = () => {
               Approve This order as Supplier Manager : Albert Mends
             </h3>
             <div className="space-y-5">
-              {userOrders?.map((order: any) => renderOrder(order))}
+              {/* {allOrders
+                .filter(
+                  (orders: any) => orders.ethereumAddress == supplierAddress
+                )
+                ?.map((order: any) => renderOrder(order))} */}
+
+              {/* {allOrders.filter(
+                (order: any) =>
+                  order.ethereumAddress === supplierAddress &&
+                  order.roleApprovals.some((nestedApproval: any) =>
+                    nestedApproval.roleApprovals.some(
+                      (approval: any) =>
+                        approval.role.ethaddress === account.address &&
+                        !approval.approved
+                    )
+                  ) &&
+                  order.items.some((item: any) => item.productId === productId)
+              )} */}
+
+              {/* {allOrders
+                .filter(
+                  (order: any) =>
+                    order.ethereumAddress === supplierAddress &&
+                    order.roleApprovals.some((nestedApproval: any) =>
+                      nestedApproval.roleApprovals.some(
+                        (approval: any) =>
+                          approval.role.ethaddress === account.address &&
+                          !approval.approved
+                      )
+                    ) &&
+                    order.items.some(
+                      (item: any) => item.productId === productId
+                    )
+                )
+                .map((order: any) => renderOrder(order))} */}
+
+              {/* {allOrders
+                .filter(
+                  (order: any) =>
+                    order.ethereumAddress == supplierAddress &&
+                    order.roleApprovals.some(
+                      (approval: any) =>
+                        approval.role.ethaddress == account.address &&
+                        !approval.approved
+                    ) &&
+                    order.roleApprovals.some(
+                      (item: any) => item.productId == productId
+                    )
+                )
+                .map((order: any) => renderOrder(order))} */}
+
+              {/* {allOrders
+                .filter(
+                  (order: any) =>
+                    order.ethereumAddress === supplierAddress &&
+                    order.roleApprovals.some(
+                      (approval: any) =>
+                        approval.role.ethaddress === account.address &&
+                        !approval.approved
+                    ) &&
+                    order.roleApprovals.some((item: any) => {
+                      const productCheck = item.productId; // Adjust based on actual structure
+                      console.log(productCheck, productId); // This will help confirm if you are accessing the right data
+                      return productCheck == productId;
+                    })
+                )
+                .map((order: any) => {
+                  console.log(order);
+
+                  return renderOrder(order);
+                })} */}
+              {/* {allOrders
+                .filter(
+                  (order: any) =>
+                    order.ethereumAddress === supplierAddress && // Ensure order is linked to the correct supplier
+                    order.roleApprovals.some(
+                      (approval: any) =>
+                        approval.role.ethaddress === account.address && // Role address matches current user's role
+                        !approval.approved && // Approval has not been given yet
+                        approval.productId === productId // Approval is specifically for the product in question
+                    )
+                )
+                .map((order: any) => {
+                  console.log("Order Details for Rendering:", order);
+                  return renderOrder(order);
+                })} */}
+              {allOrders
+                .filter(
+                  (order: any) => order.ethereumAddress == supplierAddress
+                )
+                .filter((order: any) =>
+                  order.roleApprovals.some(
+                    (approval: any) =>
+                      approval.role.ethaddress === account.address && // Role address matches
+                      approval.approved == false && // Not yet approved
+                      approval.productId === productId // Specific product
+                  )
+                )
+                .map((order: any) => {
+                  const filteredRoleApprovals = order.roleApprovals.filter(
+                    (approval: any) =>
+                      approval.productId === productId &&
+                      approval.approved == false
+                  );
+
+                  const newOrder = {
+                    ...order,
+                    roleApprovals: filteredRoleApprovals, // Replace roleApprovals with filtered
+                  };
+
+                  console.log(
+                    "Filtered Order Details for Rendering:",
+                    newOrder
+                  );
+                  return renderOrder(newOrder);
+                })}
             </div>
           </div>
         </div>

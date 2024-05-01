@@ -9,11 +9,22 @@ import { ClockIcon, ShieldCheckIcon } from "@heroicons/react/24/outline";
 import Image from "next/image";
 import { client } from "@/api/client";
 import imageUrlBuilder from "@sanity/image-url";
+import { RESPONSIBILITIES_ORDER, responsibilitiesMap } from "@/data/data";
+
+const sortRolesByResponsibility = (roles: any) => {
+  return roles.sort((a: any, b: any) => {
+    const indexA = RESPONSIBILITIES_ORDER.indexOf(a.role.responsibilities);
+    const indexB = RESPONSIBILITIES_ORDER.indexOf(b.role.responsibilities);
+    return indexA - indexB;
+  });
+};
+
 interface Props {
   isActive: boolean;
   onOpenActive: () => void;
   onCloseActive: () => void;
   data?: any;
+  sortedRoles?: any;
 }
 
 const ContactInfo: FC<Props> = ({
@@ -21,6 +32,7 @@ const ContactInfo: FC<Props> = ({
   onCloseActive,
   onOpenActive,
   data,
+  sortedRoles,
 }) => {
   const builder = imageUrlBuilder(client);
 
@@ -67,7 +79,9 @@ const ContactInfo: FC<Props> = ({
           <div className="sm:ml-8">
             <h3 className=" text-slate-700 dark:text-slate-300 flex ">
               <span className=" tracking-tight">
-                {data?.role?.responsibilities === "SupplierManager"
+                {responsibilitiesMap[data?.role?.responsibilities] ||
+                  "Unknown Role"}
+                {/* {data?.role?.responsibilities === "SupplierManager"
                   ? "Supplier Manager"
                   : data?.role?.responsibilities === "ProductOverseer"
                   ? "Production Manager"
@@ -79,7 +93,7 @@ const ContactInfo: FC<Props> = ({
                   ? "Logistics Manager"
                   : data?.role?.responsibilities === "FulfillmentOperator"
                   ? "Delivery Coordinator"
-                  : "Unknown Role"}
+                  : "Unknown Role"} */}
               </span>
               {data.approved ? (
                 <ShieldCheckIcon className="h-7 w-7 pb-1 ml-3 text-green-500" />

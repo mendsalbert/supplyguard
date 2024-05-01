@@ -190,7 +190,7 @@ const CheckoutPage = () => {
     setLoading(true);
     try {
       const id = toast.loading("Getting your order ready...");
-      const receipt = await makePayment("0.000003");
+      // const receipt = await makePayment("0.000003");
 
       const orderDetails = {
         orderNumber: `SG${reduxCart.length}${reduxCart[0]?.name
@@ -202,6 +202,7 @@ const CheckoutPage = () => {
           product: { _type: "reference", _ref: product._id },
           quantity: quantityValues[product._id] || 1,
           productId: product._id,
+          supplierAddress: product?.supplier?.ethereumAddress,
         })),
         user: {
           _type: "reference",

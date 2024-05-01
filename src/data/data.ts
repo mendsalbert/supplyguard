@@ -369,3 +369,21 @@ export const SPORT_PRODUCTS: Product[] = [
     numberOfReviews: 98,
   },
 ];
+
+export const responsibilitiesMap: any = {
+  SupplierManager: "Supplier Manager",
+  ProductOverseer: "Production Manager",
+  QualityInspector: "Quality Assurance Specialist",
+  InventoryController: "Inventory Manager",
+  LogisticsCoordinations: "Logistics Manager",
+  FulfillmentOperator: "Delivery Coordinator",
+};
+
+export const RESPONSIBILITIES_ORDER = [
+  "SupplierManager", // Maps to Supplier Manager
+  "ProductOverseer", // Maps to Production Manager
+  "QualityInspector", // Maps to Quality Assurance Specialist
+  "InventoryController", // Maps to Inventory Manager
+  "LogisticsCoordinations", // Maps to Logistics Manager
+  "FulfillmentOperator", // Maps to Delivery Coordinator
+];

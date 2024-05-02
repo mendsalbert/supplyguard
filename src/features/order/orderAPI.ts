@@ -428,13 +428,19 @@ const sendApprovalRequestEmailToNextPerson = async (
 
     const currentRoleIndex = sortedRoles.findIndex((r: any) => !r.approved);
 
+    console.log("Current Role Index", currentRoleIndex);
+    console.log("sorted Roles", sortedRoles);
+    console.log("roles for product", rolesForProduct);
+
     if (currentRoleIndex > 0) {
       const previousRole = sortedRoles[currentRoleIndex - 1];
       if (previousRole && previousRole.approved) {
         const nextRole = sortedRoles[currentRoleIndex];
+        console.log("nextRole", nextRole);
+        console.log("previousRole", previousRole);
+
         if (nextRole) {
-          // const qrCodeDataURL =
-          QRCode.toDataURL(
+          const qrCodeDataURL = QRCode.toDataURL(
             `http://localhost:3000/approve-order/${orderNumner}/${nextRole.role.supplier.supplierAddress}/${nextRole.productId}/${nextRole.role.ethaddress}/${nextRole.role.responsibilities}/${nextRole.role.fullname}`
           ).then((qrCodeDataURL: any) => {
             const requestBody = {
@@ -444,13 +450,13 @@ const sendApprovalRequestEmailToNextPerson = async (
               html: `
                 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
                 <html dir="ltr" lang="en">
-            
+
                   <head>
                     <meta content="text/html; charset=UTF-8" http-equiv="Content-Type" />
                   </head>
                   <div style="display:none;overflow:hidden;line-height:1px;opacity:0;max-height:0;max-width:0">Get your order summary, estimated delivery date and more<div> ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿</div>
                   </div>
-            
+
                   <body style="background-color:#ffffff;font-family:-apple-system,BlinkMacSystemFont,&quot;Segoe UI&quot;,Roboto,Oxygen-Sans,Ubuntu,Cantarell,&quot;Helvetica Neue&quot;,sans-serif">
                     <table align="center" width="100%" border="0" cellPadding="0" cellSpacing="0" role="presentation" style="max-width:100%;margin:10px auto;width:600px;border:1px solid #E5E5E5">
                       <tbody>
@@ -484,15 +490,13 @@ const sendApprovalRequestEmailToNextPerson = async (
                                   <img alt="Nike" height="120" width="120"  src="https://i.postimg.cc/KvCHFcgx/logo.png" style="display:block;outline:none;border:none;text-decoration:none;margin:auto" />
                                     <h1 style="font-size:32px;line-height:1.3;font-weight:700;text-align:center;letter-spacing:-1px">Open and Verify this Order.</h1>
                                     <p style="font-size:14px;line-height:2;margin:0;color:#747474;font-weight:500"> Use the link above to view its progress or simply Scan the QR code.</p>
-                                  
+
                                   </td>
                                 </tr>
                               </tbody>
                             </table>
                             <hr style="width:100%;border:none;border-top:1px solid #eaeaea;border-color:#E5E5E5;margin:0" />
-                           
-                           
-                            
+
                             <hr style="width:100%;border:none;border-top:1px solid #eaeaea;border-color:#E5E5E5;margin:0" />
                             <table align="center" width="100%" border="0" cellPadding="0" cellSpacing="0" role="presentation" style="padding-left:40px;padding-right:40px;padding-top:22px;padding-bottom:22px">
                               <tbody>
@@ -513,14 +517,14 @@ const sendApprovalRequestEmailToNextPerson = async (
                                       </tbody>
                                     </table>
                                     <table align="center" width="100%" border="0" cellPadding="0" cellSpacing="0" role="presentation">
-                                      
+
                                     </table>
                                   </td>
                                 </tr>
                               </tbody>
                             </table>
                             <hr style="width:100%;border:none;border-top:1px solid #eaeaea;border-color:#E5E5E5;margin:0" />
-                            
+
                             <hr style="width:100%;border:none;border-top:1px solid #eaeaea;border-color:#E5E5E5;margin:0" />
                             <table align="center" width="100%" border="0" cellPadding="0" cellSpacing="0" role="presentation" style="padding-left:20px;padding-right:20px;padding-top:20px;background-color:#F7F7F7">
                               <tbody>
@@ -538,14 +542,14 @@ const sendApprovalRequestEmailToNextPerson = async (
                                         <tr style="width:100%">
                                           <td colSpan="1" data-id="__react-email-column" style="width:33%"><a href="/" style="color:#000;text-decoration:none;font-size:13.5px;margin-top:0;font-weight:500" target="_blank">Shipping Status</a></td>
                                           <td colSpan="1" data-id="__react-email-column" style="width:33%"><a href="/" style="color:#000;text-decoration:none;font-size:13.5px;margin-top:0;font-weight:500" target="_blank">Shipping &amp; Delivery</a></td>
-                                          
+
                                         </tr>
                                       </tbody>
                                     </table>
                                     <table align="center" width="100%" border="0" cellPadding="0" cellSpacing="0" role="presentation" style="padding-top:0;padding-bottom:22px;padding-left:20px;padding-right:20px">
                                       <tbody style="width:100%">
                                         <tr style="width:100%">
-                                          
+
                                           <td colSpan="2" data-id="__react-email-column" style="width:66%"><a href="/" style="color:#000;text-decoration:none;font-size:13.5px;margin-top:0;font-weight:500" target="_blank">Contact Options</a></td>
                                         </tr>
                                       </tbody>
@@ -594,7 +598,7 @@ const sendApprovalRequestEmailToNextPerson = async (
                                           <td align="center" data-id="__react-email-column"><a href="/" style="color:#000;text-decoration:none;font-weight:500" target="_blank">Clothing</a></td>
                                           <td align="center" data-id="__react-email-column"><a href="/" style="color:#000;text-decoration:none;font-weight:500" target="_blank">Sport Equipment</a></td>
                                           <td align="center" data-id="__react-email-column"><a href="/" style="color:#000;text-decoration:none;font-weight:500" target="_blank">Pharmaceuticals</a></td>
-                                          
+
                                         </tr>
                                       </tbody>
                                     </table>
@@ -649,8 +653,8 @@ const sendApprovalRequestEmailToNextPerson = async (
                       </tbody>
                     </table>
                   </body>
-            
-                </html>     
+
+                </html>
           `,
             };
 
@@ -1083,8 +1087,6 @@ export const updateRoleApproval = async (
       (r: any) => r.role.ethaddress === roleAddress
     );
 
-    console.log(order);
-
     // const currentRoleIndex = order.findIndex((orderItem: any) =>
     //   orderItem.roleApprovals.some(
     //     (approval: any) => approval.role.ethaddress === roleAddress
@@ -1112,7 +1114,7 @@ export const updateRoleApproval = async (
     // }
     // console.log(document);
 
-    await client
+    let updatedRole = await client
       .patch(documentId)
       .set({
         [`roleApprovals[${currentRoleIndex}].approved`]: approvalStatus,
@@ -1121,12 +1123,55 @@ export const updateRoleApproval = async (
       })
       .commit();
 
+    const orderOfUpdatedRoles = await client
+      .fetch(
+        `*[_id == $documentId]{
+        ...,
+         user->{
+           _id,
+           name,
+           ethereumAddress
+         },
+         roleApprovals[]{
+           ...,
+           role->{
+             ...,
+             supplier->{
+              ...,
+              profilePicture
+             }
+           }
+          },
+         items[] {
+           quantity,
+           roles,
+           productId,
+           product->{
+             _id,
+             name,
+             description,
+             price,
+             image ,
+             supplier->{
+               supplierName
+             },
+             category
+             
+           }
+         }
+       }`,
+        { documentId }
+      )
+      .then((res) => res[0]);
+
     const nextRoleIndex = currentRoleIndex + 1;
-    console.log("role approvals", order);
+    console.log("role approvals", updatedRole);
 
     if (order.roleApprovals[nextRoleIndex]) {
-      // sendApprovalRequestEmail(order.roleApprovals);
-      sendApprovalRequestEmailToNextPerson(order.roleApprovals, order);
+      sendApprovalRequestEmailToNextPerson(
+        orderOfUpdatedRoles.roleApprovals,
+        order
+      );
     }
 
     return await fetchOrderD(documentId);

@@ -95,8 +95,10 @@ const PageLogin = ({ params }: { params: { slug: string } }) => {
       resolve();
     });
 
-    router.push("/");
+    // router.push("/");
   };
+
+  console.log(allOrders);
 
   const renderProductItem = (product: any, index: number) => {
     const { image, price, name, quantity, supplier, _id, category } =
@@ -206,7 +208,7 @@ const PageLogin = ({ params }: { params: { slug: string } }) => {
                   order.roleApprovals.some(
                     (approval: any) =>
                       approval.role.ethaddress === account.address && // Role address matches
-                      approval.approved == false && // Not yet approved
+                      approval.approved == true && // Not yet approved
                       approval.productId === productId // Specific product
                   )
                 )
@@ -214,7 +216,7 @@ const PageLogin = ({ params }: { params: { slug: string } }) => {
                   const filteredRoleApprovals = order.roleApprovals.filter(
                     (approval: any) =>
                       approval.productId === productId &&
-                      approval.approved === false
+                      approval.approved === true
                   );
 
                   const newOrder = {

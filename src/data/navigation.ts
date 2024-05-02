@@ -24,9 +24,9 @@ export const MEGAMENU_TEMPLATES: NavItemType[] = [
     href: "/#",
     name: "For Supliers",
     children: [
-      { id: ncNanoId(), href: "/checkout", name: "Dashboard" },
-      { id: ncNanoId(), href: "/account", name: "Accout Page" },
-      { id: ncNanoId(), href: "/subscription", name: "Subscription" },
+      { id: ncNanoId(), href: "/admin-account", name: "Dashboard" },
+      { id: ncNanoId(), href: "/admin-account", name: "Accout Page" },
+      // { id: ncNanoId(), href: "/subscription", name: "Subscription" },
     ],
   },
   {

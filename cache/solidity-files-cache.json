@@ -2,8 +2,8 @@
   "_format": "hh-sol-cache-2",
   "files": {
     "/Users/albertmends/Documents/SupplyTrack/ciseco-nextjs-ecommerce/contracts/SupplyGuard.sol": {
-      "lastModificationDate": 1714661323798,
-      "contentHash": "e02e728cdfb6216bda0c89b38e138e9d",
+      "lastModificationDate": 1714668368607,
+      "contentHash": "7346364f3d9ba84a2ec581cffd58221d",
       "sourceName": "contracts/SupplyGuard.sol",
       "solcConfig": {
         "version": "0.8.24",
@@ -31,7 +31,7 @@
       },
       "imports": [],
       "versionPragmas": [
-        "^0.8.24"
+        "^0.8.6"
       ],
       "artifacts": [
         "SupplyGuard"

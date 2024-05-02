@@ -115,27 +115,6 @@ const SidebarFilters = () => {
   };
 
   // OK
-  const renderTabsSize = () => {
-    return (
-      <div className="relative flex flex-col py-8 space-y-4">
-        <h3 className="font-semibold mb-2.5">Sizes</h3>
-        {DATA_sizes.map((item) => (
-          <div key={item.name} className="">
-            <Checkbox
-              name={item.name}
-              label={item.name}
-              defaultChecked={sizesState.includes(item.name)}
-              onChange={(checked) => handleChangeSizes(checked, item.name)}
-              sizeClassName="w-5 h-5"
-              labelClassName="text-sm font-normal"
-            />
-          </div>
-        ))}
-      </div>
-    );
-  };
-
-  // OK
   const renderTabsSortOrder = () => {
     return (
       <div className="relative flex flex-col py-8 space-y-4">
@@ -161,14 +140,14 @@ const SidebarFilters = () => {
       {renderTabsCategories()}
       {renderTabsColor()}
 
-      <div className="py-8 pr-2">
+      {/* <div className="py-8 pr-2">
         <MySwitch
           label="On sale!"
           desc="Products currently on sale"
           enabled={isOnSale}
           onChange={setIsIsOnSale}
         />
-      </div>
+      </div> */}
       {renderTabsSortOrder()}
     </div>
   );

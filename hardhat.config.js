@@ -11,7 +11,7 @@ module.exports = {
     sepolia: {
       url: "https://rpc.sepolia-api.lisk.com",
       accounts: [privateKey],
-      gasPrice: 20000000000,
+      gasPrice: 1000000000,
     },
     mumbai: {
       url: "https://rpc-mumbai.maticvigil.com",

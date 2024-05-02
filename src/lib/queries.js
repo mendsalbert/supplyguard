@@ -52,7 +52,7 @@ export async function getMintedNFTsByUser(userAddress) {
 export async function makePayment(amount) {
   try {
     let tx = { value: toWei(amount) };
-    const amountInWei = ethers.utils.parseEther(amount);
+    const amountInWei = ethers.utils.parseEther(amount.toString());
     const contractObj = await contract();
     const data = await contractObj.makePayment({
       value: amountInWei,

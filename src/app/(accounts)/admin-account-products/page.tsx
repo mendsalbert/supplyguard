@@ -10,6 +10,8 @@ import ButtonSecondary from "@/shared/Button/ButtonSecondary";
 import ButtonThird from "@/shared/Button/ButtonThird";
 import { PencilIcon, TrashIcon, XMarkIcon } from "@heroicons/react/24/outline";
 import Image from "next/image";
+import QRCode from "react-qr-code";
+
 import React, { FC, useEffect, useRef, useState } from "react";
 import { useAppDispatch, useAppSelector } from "@/app/store";
 import {
@@ -82,7 +84,15 @@ const AccountOrder = () => {
       product;
     return (
       <div key={index} className="flex py-4 sm:py-7 last:pb-0 first:pt-0">
-        <div className="relative h-28 w-28 flex-shrink-0 overflow-hidden rounded-xl bg-slate-100">
+        <div className="relative h-24 w-24 mr-4 flex-shrink-0 overflow-hidden rounded-xl bg-slate-100">
+          <QRCode
+            size={50}
+            style={{ height: "auto", width: "100%", maxWidth: "100%" }}
+            value={`http://localhost:3000/track-order-single/${_id}`}
+            viewBox={`0 0 50 50`}
+          />
+        </div>
+        <div className="relative h-24 w-24 flex-shrink-0 overflow-hidden rounded-xl bg-slate-100">
           <Image
             fill
             sizes="100px"

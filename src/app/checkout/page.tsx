@@ -55,7 +55,7 @@ const CheckoutPage = () => {
 
   const [orderTotal, setOrderTotal] = useState(1);
 
-  const [isShowModal, setIsShowModal] = useState(true);
+  const [isShowModal, setIsShowModal] = useState(false);
   const openCheckoutModal = () => setIsShowModal(false);
 
   useEffect(() => {
@@ -191,41 +191,42 @@ const CheckoutPage = () => {
   const handlePayment = async () => {
     console.log(Number(orderTotal / ethExchangeRate).toFixed(4));
 
-    // setLoading(true);
-    setIsShowModal(true);
+    setLoading(true);
+
     try {
-      // const id = toast.loading("Getting your order ready...");
-      // const receipt = await makePayment("0.000003");
-      // const orderDetails = {
-      //   orderNumber: `SG${reduxCart.length}${reduxCart[0]?.name
-      //     ?.slice(0, 2)
-      //     ?.toUpperCase()}MA24${
-      //     quantityValues[reduxCart[0]?.product?._id] || 1
-      //   }${account.address?.slice(0, 3).toUpperCase()}`,
-      //   items: reduxCart.map((product) => ({
-      //     product: { _type: "reference", _ref: product._id },
-      //     quantity: quantityValues[product._id] || 1,
-      //     productId: product._id,
-      //     supplierAddress: product?.supplier?.ethereumAddress,
-      //   })),
-      //   user: {
-      //     _type: "reference",
-      //     _ref: user_._id,
-      //   },
-      //   ethereumAddress: account.address,
-      // };
+      const id = toast.loading("Getting your order ready...");
+      const receipt = await makePayment("0.000003");
+      const orderDetails = {
+        orderNumber: `SG${reduxCart.length}${reduxCart[0]?.name
+          ?.slice(0, 2)
+          ?.toUpperCase()}MA24${
+          quantityValues[reduxCart[0]?.product?._id] || 1
+        }${account.address?.slice(0, 3).toUpperCase()}`,
+        items: reduxCart.map((product) => ({
+          product: { _type: "reference", _ref: product._id },
+          quantity: quantityValues[product._id] || 1,
+          productId: product._id,
+          supplierAddress: product?.supplier?.ethereumAddress,
+        })),
+        user: {
+          _type: "reference",
+          _ref: user_._id,
+        },
+        ethereumAddress: account.address,
+      };
       // Dispatch the addOrder async thunk
-      // const addedOrder = await dispatch(
-      //   addOrder({
-      //     orderData: orderDetails as any,
-      //     email: user_.email,
-      //   })
-      // );
-      // toast.update(id, {
-      //   render: "Order Went Through",
-      //   type: "success",
-      //   isLoading: false,
-      // });
+      const addedOrder = await dispatch(
+        addOrder({
+          orderData: orderDetails as any,
+          email: user_.email,
+        })
+      );
+      toast.update(id, {
+        render: "Order Went Through",
+        type: "success",
+        isLoading: false,
+      });
+      setIsShowModal(true);
     } catch (error) {
       console.error("Payment error:", error);
     } finally {

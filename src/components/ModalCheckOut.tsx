@@ -26,7 +26,7 @@ const ModalCheckout: FC<ModalCheckoutProps> = ({
           <QRCode
             size={50}
             style={{ height: "300", maxWidth: "100%", width: "100%" }}
-            value={"safdfasfdsfs"}
+            value={"http://localhost:3000/track-order"}
             viewBox={`0 0 50 50`}
           />
         </span>

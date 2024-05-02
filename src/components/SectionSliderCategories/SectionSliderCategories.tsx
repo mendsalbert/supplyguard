@@ -20,29 +20,29 @@ export interface CardCategoryData {
 }
 const CATS: CardCategoryData[] = [
   {
-    name: "Travel Kits",
-    desc: "20+ categories",
+    name: "Joe Mensah Farms",
+    desc: "7+ Categories",
     img: department1Png,
     color: "bg-indigo-100",
   },
   {
-    name: "Beauty Products",
-    desc: "10+ categories",
+    name: "May Afrique",
+    desc: "5+ Categories",
     img: department2Png,
     color: "bg-slate-100",
   },
-  {
-    name: "Sport Kits",
-    desc: "34+ categories",
-    img: department3Png,
-    color: "bg-sky-100",
-  },
-  {
-    name: "Pets Food",
-    desc: "12+ categories",
-    img: department4Png,
-    color: "bg-orange-100",
-  },
+  // {
+  //   name: "Sport Kits",
+  //   desc: "34+ categories",
+  //   img: department3Png,
+  //   color: "bg-sky-100",
+  // },
+  // {
+  //   name: "Pets Food",
+  //   desc: "12+ categories",
+  //   img: department4Png,
+  //   color: "bg-orange-100",
+  // },
 ];
 export interface SectionSliderCategoriesProps {
   className?: string;
@@ -120,10 +120,10 @@ const SectionSliderCategories: FC<SectionSliderCategoriesProps> = ({
             ))}
             <li className={`glide__slide ${itemClassName}`}>
               <div
-                className={`flex-1 relative w-full h-0 rounded-2xl overflow-hidden group aspect-w-1 aspect-h-1 bg-slate-100`}
+                className={`flex-1 relative w-full h-0 rounded-2xl overflow-hidden group aspect-w-1 aspect-h-1 `}
               >
-                <div>
-                  <div className="absolute inset-y-6 inset-x-10 flex flex-col sm:items-center justify-center">
+                {/* <div> */}
+                {/* <div className="absolute inset-y-6 inset-x-10 flex flex-col sm:items-center justify-center">
                     <div className="flex relative text-slate-900">
                       <span className="text-lg font-semibold ">
                         More Suppliers
@@ -155,8 +155,8 @@ const SectionSliderCategories: FC<SectionSliderCategoriesProps> = ({
                     <span className="text-sm mt-1 text-slate-800">
                       Show me more
                     </span>
-                  </div>
-                </div>
+                  </div> */}
+                {/* </div> */}
                 <Link
                   href={"/collection"}
                   className="opacity-0 group-hover:opacity-100 absolute inset-0 bg-black bg-opacity-10 transition-opacity"

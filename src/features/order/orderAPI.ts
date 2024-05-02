@@ -174,7 +174,7 @@ const sendApprovalRequestEmail = async (role: any, createdOrder: any) => {
       r.roles.map(async (rr: any) => {
         if (rr.responsibilities === "SupplierManager") {
           const qrCodeDataURL = await QRCode.toDataURL(
-            `http://localhost:3000/approve-order/${orderNumner}/${r.supplierAddress}/${r.productId}/${r.role.ethaddress}/${r.role.responsibilities}/${r.role.fullname}`
+            `http://localhost:3000/approve-order/${orderNumner}/${r.supplierAddress}/${r.productId}/${rr.ethaddress}/${rr.responsibilities}/${rr.fullname}`
           );
 
           const requestBody = {
@@ -207,7 +207,7 @@ const sendApprovalRequestEmail = async (role: any, createdOrder: any) => {
                                           <p style="font-size:14px;line-height:2;margin:0;font-weight:bold">Aprove Order </p>
                                           <p style="font-size:14px;line-height:1.4;margin:12px 0 0 0;font-weight:500;color:#6F6F6F">${orderNumner}</p>
                                         </td>
-                                        <td align="right" data-id="__react-email-column"><a style="color:#000;text-decoration:none;border:1px solid #929292;font-size:16px;padding:10px 0px;width:220px;display:block;text-align:center;font-weight:500" target="_blank" href=${`http://localhost:3000/approve-order/${orderNumner}/${r.supplierAddress}/${r.productId}/${rr.ethaddress}/${r.role.responsibilities}/${r.role.fullname}`}>View Order</a></td>
+                                        <td align="right" data-id="__react-email-column"><a style="color:#000;text-decoration:none;border:1px solid #929292;font-size:16px;padding:10px 0px;width:220px;display:block;text-align:center;font-weight:500" target="_blank" href=${`http://localhost:3000/approve-order/${orderNumner}/${r.supplierAddress}/${r.productId}/${rr.ethaddress}/${rr.responsibilities}/${rr.fullname}`}>View Order</a></td>
                                       </tr>
                                     </tbody>
                                   </table>
@@ -701,7 +701,7 @@ const sendUserOrderEmail = async (email: any, orderDetails: any) => {
     const requestBody = {
       from: "supplyguard@supplyguard.xyz",
       to: "mendsalbert@gmail.com",
-      subject: "Test Email",
+      subject: "It's On Its Way",
       html: `
 
       <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -972,10 +972,7 @@ export const addOrder = async (orderDetails: any, email: any) => {
     console.log(flatProductsWithRoles);
 
     await sendUserOrderEmail(email, orderDetails);
-    if (
-      flatProductsWithRoles.length > 0 &&
-      flatProductsWithRoles[0].roles.length > 0
-    ) {
+    if (flatProductsWithRoles.length > 0) {
       await sendApprovalRequestEmail(flatProductsWithRoles, createdOrder);
     }
 

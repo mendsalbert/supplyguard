@@ -244,12 +244,12 @@ const ProductQuickView2: FC<ProductQuickView2Props> = ({
         {/*  */}
 
         <div className="text-center">
-          <Link
+          {/* <Link
             className="text-primary-6000 hover:text-primary-500 font-medium"
             href={art ? `/art-detail/${_id}` : `/product-detail/${_id}`}
           >
             View full details
-          </Link>
+          </Link> */}
         </div>
       </div>
     );

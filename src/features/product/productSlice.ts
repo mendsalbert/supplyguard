@@ -61,7 +61,8 @@ export const fetchProducts = createAsyncThunk("products/fetchAll", async () => {
 
 export const fetchProduct = createAsyncThunk(
   "products/fetchSingle",
-  async (productId: string) => {
+  async (productId: any) => {
+    console.log("product", productId);
     return await getSingleProduct(productId);
   }
 );
@@ -129,6 +130,8 @@ const productSlice = createSlice({
       .addCase(
         fetchProduct.fulfilled,
         (state, action: PayloadAction<Product>) => {
+          console.log("product", action.payload);
+
           state.currentProduct = action.payload;
           state.status = "succeeded";
         }

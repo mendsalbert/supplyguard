@@ -1,5 +1,5 @@
 "use client";
-import React, { FC, useState } from "react";
+import React, { FC, useState, useEffect } from "react";
 import ButtonPrimary from "@/shared/Button/ButtonPrimary";
 import LikeButton from "@/components/LikeButton";
 import { StarIcon } from "@heroicons/react/24/solid";
@@ -26,22 +26,26 @@ import ModalViewAllReviews from "../ModalViewAllReviews";
 import NotifyAddTocart from "@/components/NotifyAddTocart";
 import Image from "next/image";
 import AccordionInfo from "@/components/AccordionInfo";
+import {
+  fetchProduct,
+  selectCurrentProduct,
+} from "@/features/product/productSlice";
+import { useAppDispatch, useAppSelector } from "@/app/store";
 
 const ProductDetailPage = ({ params }: { params: { id: number } }) => {
-  const {
-    sizes,
-    variants,
-    status,
-    allOfSizes,
-    image,
-    supplier,
-    name,
-    price,
-    id,
-  } = PRODUCTS[params?.id - 1];
+  const dispatch = useAppDispatch();
+  const product = useAppSelector(selectCurrentProduct);
+
+  useEffect(() => {
+    fetchProduct(params.id);
+  }, [dispatch]);
+
+  console.log("product", params.id);
+
+  console.log("product", product);
+  // const { status, image, supplier, name, price, id } = PRODUCTS[params?.id - 1];
 
   const [variantActive, setVariantActive] = useState(0);
-  const [sizeSelected, setSizeSelected] = useState(sizes ? sizes[0] : "");
   const [qualitySelected, setQualitySelected] = useState(1);
   const [isOpenModalViewAllReviews, setIsOpenModalViewAllReviews] =
     useState(false);
@@ -51,10 +55,10 @@ const ProductDetailPage = ({ params }: { params: { id: number } }) => {
     toast.custom(
       (t) => (
         <NotifyAddTocart
-          productImage={image}
+          productImage={"image"}
           qualitySelected={qualitySelected}
           show={t.visible}
-          sizeSelected={sizeSelected}
+          sizeSelected={"xl"}
           variantActive={variantActive}
         />
       ),
@@ -67,14 +71,14 @@ const ProductDetailPage = ({ params }: { params: { id: number } }) => {
       <div className="space-y-7 2xl:space-y-8">
         {/* ---------- 1 HEADING ----------  */}
         <div>
-          <h2 className="text-2xl sm:text-3xl font-semibold">{name}</h2>
+          <h2 className="text-2xl sm:text-3xl font-semibold">{"name"}</h2>
 
           <div className="flex items-center mt-5 space-x-4 sm:space-x-5">
             {/* <div className="flex text-xl font-semibold">$112.00</div> */}
             <Prices
               contentClass="py-1 px-2 md:py-1.5 md:px-3 text-lg font-semibold"
               qualitySelected={qualitySelected}
-              price={price}
+              price={4}
             />
 
             <div className="h-7 border-l border-slate-300 dark:border-slate-700"></div>
@@ -89,7 +93,7 @@ const ProductDetailPage = ({ params }: { params: { id: number } }) => {
                   <span>4.9</span>
                   <span className="block mx-2">·</span>
                   <span className="text-slate-600 dark:text-slate-400 ">
-                    {supplier}
+                    {"supplier"}
                   </span>
                 </div>
               </a>
@@ -165,7 +169,7 @@ const ProductDetailPage = ({ params }: { params: { id: number } }) => {
                 <Image
                   fill
                   sizes="(max-width: 640px) 100vw, 33vw"
-                  src={image}
+                  src={""}
                   className="w-full rounded-2xl object-cover"
                   alt="product detail 1"
                 />
@@ -190,14 +194,14 @@ const ProductDetailPage = ({ params }: { params: { id: number } }) => {
           {renderDetailSection()}
 
           {/* OTHER SECTION */}
-          <SectionSliderProductCard
+          {/* <SectionSliderProductCard
             heading={`Other Products from ${supplier}`}
             supplier={supplier}
             id={id}
             subHeading=""
             headingFontClassName="text-2xl font-semibold"
             headingClassName="mb-10 text-neutral-900 dark:text-neutral-50"
-          />
+          /> */}
 
           {/* SECTION */}
         </div>

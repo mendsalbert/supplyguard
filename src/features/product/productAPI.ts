@@ -79,6 +79,8 @@ export const getAllProducts = async () => {
 };
 
 export const getSingleProduct = async (productId: any) => {
+  console.log('product', productId);
+
   try {
     const query = `*[_type == "product" && _id == $productId][0]`;
     return await client.fetch(query, { productId });

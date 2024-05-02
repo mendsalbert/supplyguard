@@ -202,12 +202,15 @@ const CheckoutPage = () => {
           ?.toUpperCase()}MA24${
           quantityValues[reduxCart[0]?.product?._id] || 1
         }${account.address?.slice(0, 3).toUpperCase()}`,
-        items: reduxCart.map((product) => ({
-          product: { _type: "reference", _ref: product._id },
-          quantity: quantityValues[product._id] || 1,
-          productId: product._id,
-          supplierAddress: product?.supplier?.ethereumAddress,
-        })),
+        items: reduxCart.map((product) => {
+          // handleRemove(product._id);
+          return {
+            product: { _type: "reference", _ref: product._id },
+            quantity: quantityValues[product._id] || 1,
+            productId: product._id,
+            supplierAddress: product?.supplier?.ethereumAddress,
+          };
+        }),
         user: {
           _type: "reference",
           _ref: user_._id,

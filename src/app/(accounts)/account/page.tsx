@@ -96,9 +96,9 @@ const AccountPage = () => {
     setImageFile(e.target.files[0]);
   };
 
-  const handleSubmit = async () => {
+  const handleSubmit = async (e: any) => {
+    e.preventDefault();
     const id = toast.loading("Updating...");
-
     setIsLoading(true);
 
     try {
@@ -179,7 +179,10 @@ const AccountPage = () => {
               />
             </div>
           </div>
-          <div className="flex-grow mt-10 md:mt-0 md:pl-16 max-w-3xl space-y-6">
+          <form
+            onSubmit={handleSubmit}
+            className="flex-grow mt-10 md:mt-0 md:pl-16 max-w-3xl space-y-6"
+          >
             <div>
               <Label>User Name</Label>
               <Input
@@ -188,6 +191,7 @@ const AccountPage = () => {
                 name="username"
                 value={userData.username}
                 onChange={handleInputChange}
+                required
               />
             </div>
 
@@ -199,6 +203,7 @@ const AccountPage = () => {
                 name="fullname"
                 value={userData.fullname}
                 onChange={handleInputChange}
+                required
               />
             </div>
 
@@ -216,6 +221,7 @@ const AccountPage = () => {
                   placeholder={user?.email || "example@gmail.com"}
                   name="email"
                   value={userData.email}
+                  required
                   onChange={handleInputChange}
                 />
               </div>
@@ -236,6 +242,7 @@ const AccountPage = () => {
                   type="text"
                   placeholder={user?.shippingAddress?.street || "New york, USA"}
                   value={userData.shippingAddress.street}
+                  required
                   onChange={handleInputChange}
                 />
               </div>
@@ -253,6 +260,7 @@ const AccountPage = () => {
                   type="text"
                   placeholder={user?.shippingAddress?.city || "Seattle"}
                   value={userData.shippingAddress.city}
+                  required
                   onChange={handleInputChange}
                 />
               </div>
@@ -270,6 +278,7 @@ const AccountPage = () => {
                   type="text"
                   placeholder={user?.shippingAddress?.state || "Delaware"}
                   value={userData.shippingAddress.state}
+                  required
                   onChange={handleInputChange}
                 />
               </div>
@@ -287,6 +296,7 @@ const AccountPage = () => {
                   type="text"
                   placeholder={user?.shippingAddress?.postalCode || "DL,434 "}
                   value={userData.shippingAddress.postalCode}
+                  required
                   onChange={handleInputChange}
                 />
               </div>
@@ -304,6 +314,7 @@ const AccountPage = () => {
                   type="text"
                   placeholder={user?.shippingAddress?.country || "US"}
                   value={userData.shippingAddress.country}
+                  required
                   onChange={handleInputChange}
                 />
               </div>
@@ -323,6 +334,7 @@ const AccountPage = () => {
                   placeholder={user?.phone || "003 888 232"}
                   name="phone"
                   value={userData.phone}
+                  required
                   onChange={handleInputChange}
                 />
               </div>
@@ -335,15 +347,16 @@ const AccountPage = () => {
                 placeholder={user?.about || "about me"}
                 name="about"
                 value={userData.about}
+                required
                 onChange={handleInputChange}
               />
             </div>
             <div className="pt-2">
-              <ButtonPrimary loading={isLoading} onClick={handleSubmit}>
+              <ButtonPrimary loading={isLoading} type="submit">
                 Update account
               </ButtonPrimary>{" "}
             </div>
-          </div>
+          </form>
         </div>
       </div>
     </div>

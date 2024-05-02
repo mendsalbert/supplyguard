@@ -1126,7 +1126,7 @@ export const updateRoleApproval = async (
 
     if (order.roleApprovals[nextRoleIndex]) {
       // sendApprovalRequestEmail(order.roleApprovals);
-      // sendApprovalRequestEmailToNextPerson(order.roleApprovals, order);
+      sendApprovalRequestEmailToNextPerson(order.roleApprovals, order);
     }
 
     return await fetchOrderD(documentId);

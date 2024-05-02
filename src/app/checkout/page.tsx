@@ -26,6 +26,7 @@ import { makePayment } from "../../lib/queries";
 import { addOrder } from "@/features/order/orderSlice";
 const auth = typeof window !== "undefined" ? new Auth() : null;
 import { Resend } from "resend";
+import ModalCheckout from "@/components/ModalCheckOut";
 const resend = new Resend("re_N94r2yRo_Bn22YAid7sYrd7Jktent");
 
 const CheckoutPage = () => {
@@ -53,6 +54,9 @@ const CheckoutPage = () => {
   const [isLoading, setisLoading] = useState(false);
 
   const [orderTotal, setOrderTotal] = useState(1);
+
+  const [isShowModal, setIsShowModal] = useState(true);
+  const openCheckoutModal = () => setIsShowModal(false);
 
   useEffect(() => {
     const fetchEthExchangeRate = async () => {
@@ -189,41 +193,38 @@ const CheckoutPage = () => {
 
     setLoading(true);
     try {
-      const id = toast.loading("Getting your order ready...");
+      // const id = toast.loading("Getting your order ready...");
       // const receipt = await makePayment("0.000003");
-
-      const orderDetails = {
-        orderNumber: `SG${reduxCart.length}${reduxCart[0]?.name
-          ?.slice(0, 2)
-          ?.toUpperCase()}MA24${
-          quantityValues[reduxCart[0]?.product?._id] || 1
-        }${account.address?.slice(0, 3).toUpperCase()}`,
-        items: reduxCart.map((product) => ({
-          product: { _type: "reference", _ref: product._id },
-          quantity: quantityValues[product._id] || 1,
-          productId: product._id,
-          supplierAddress: product?.supplier?.ethereumAddress,
-        })),
-        user: {
-          _type: "reference",
-          _ref: user_._id,
-        },
-        ethereumAddress: account.address,
-      };
-
+      // const orderDetails = {
+      //   orderNumber: `SG${reduxCart.length}${reduxCart[0]?.name
+      //     ?.slice(0, 2)
+      //     ?.toUpperCase()}MA24${
+      //     quantityValues[reduxCart[0]?.product?._id] || 1
+      //   }${account.address?.slice(0, 3).toUpperCase()}`,
+      //   items: reduxCart.map((product) => ({
+      //     product: { _type: "reference", _ref: product._id },
+      //     quantity: quantityValues[product._id] || 1,
+      //     productId: product._id,
+      //     supplierAddress: product?.supplier?.ethereumAddress,
+      //   })),
+      //   user: {
+      //     _type: "reference",
+      //     _ref: user_._id,
+      //   },
+      //   ethereumAddress: account.address,
+      // };
       // Dispatch the addOrder async thunk
-      const addedOrder = await dispatch(
-        addOrder({
-          orderData: orderDetails as any,
-          email: user_.email,
-        })
-      );
-
-      toast.update(id, {
-        render: "Order Went Through",
-        type: "success",
-        isLoading: false,
-      });
+      // const addedOrder = await dispatch(
+      //   addOrder({
+      //     orderData: orderDetails as any,
+      //     email: user_.email,
+      //   })
+      // );
+      // toast.update(id, {
+      //   render: "Order Went Through",
+      //   type: "success",
+      //   isLoading: false,
+      // });
     } catch (error) {
       console.error("Payment error:", error);
     } finally {
@@ -356,6 +357,10 @@ const CheckoutPage = () => {
 
   return (
     <div className="nc-CheckoutPage">
+      <ModalCheckout
+        show={isShowModal}
+        onCloseModalCheckout={openCheckoutModal}
+      />
       <main className="container py-16 lg:pb-28 lg:pt-20 ">
         <div className="mb-16">
           <h2 className="block text-2xl sm:text-3xl lg:text-4xl font-semibold ">

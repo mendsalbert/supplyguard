@@ -7,6 +7,8 @@ import {
   removeProductFromWishlist,
 } from "@/features/user/userSlice";
 import { useAppDispatch, useAppSelector } from "@/app/store";
+import { useAccount } from "wagmi";
+import { useWeb3Modal } from "@web3modal/wagmi/react";
 
 export interface LikeButtonProps {
   className?: string;
@@ -22,7 +24,8 @@ const LikeButton: React.FC<LikeButtonProps> = ({
   const [isLiked, setIsLiked] = useState(liked);
   const user = useAppSelector((state) => state.users.currentUser) as any;
   const dispatch = useAppDispatch();
-
+  const { open } = useWeb3Modal();
+  const account = useAccount();
   useEffect(() => {
     const address = localStorage.getItem("address") as any;
     dispatch(fetchUserByAddress(JSON.parse(address)));
@@ -35,6 +38,10 @@ const LikeButton: React.FC<LikeButtonProps> = ({
   }, [user, id]);
 
   const handleLikeClick = async () => {
+    if (account.address == undefined) {
+      open();
+      return;
+    }
     setIsLiked(!isLiked); // Toggle the local state first
     if (!isLiked) {
       await dispatch(

@@ -9,11 +9,11 @@ import TabFilters from "@/components/TabFilters";
 import { useAppDispatch, useAppSelector } from "@/app/store";
 import imageUrlBuilder from "@sanity/image-url";
 import { client } from "@/api/client";
-
 import {
   fetchProducts,
   selectAllProducts,
 } from "@/features/product/productSlice";
+import isAuth from "../lib/auth";
 
 const PageCollection = ({}) => {
   const dispatch = useAppDispatch();

@@ -30,6 +30,8 @@ import {
   selectCurrentCart,
 } from "@/features/user/userSlice";
 import { useAppDispatch, useAppSelector } from "@/app/store";
+import { useAccount } from "wagmi";
+import { useWeb3Modal } from "@web3modal/wagmi/react";
 
 export interface ProductCardProps {
   className?: string;
@@ -43,7 +45,8 @@ const ProductCard: FC<any> = ({ className = "", data, art }) => {
   const reduxCart = useAppSelector(selectCurrentCart);
 
   const { supplierName } = supplier;
-
+  const { open } = useWeb3Modal();
+  const account = useAccount();
   const user = useAppSelector((state) => state.users.currentUser) as any;
   const dispatch = useAppDispatch();
   const [isLoading, setIsLoading] = useState(false);
@@ -174,6 +177,10 @@ const ProductCard: FC<any> = ({ className = "", data, art }) => {
             fontSize="text-xs"
             sizeClass="py-2 px-4"
             onClick={() => {
+              if (account.address == undefined) {
+                open();
+                return;
+              }
               handleAddToCart();
               notifyAddTocart({ size: "XL" });
             }}

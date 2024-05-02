@@ -48,6 +48,7 @@
     "react-email": "2.1.1",
     "react-hooks-global-state": "^2.1.0",
     "react-hot-toast": "^2.4.1",
+    "react-qr-code": "^2.0.12",
     "react-redux": "^9.1.1",
     "react-swipeable": "^7.0.1",
     "react-toastify": "^10.0.5",

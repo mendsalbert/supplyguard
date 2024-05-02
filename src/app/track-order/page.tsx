@@ -19,6 +19,7 @@ import { useAppDispatch, useAppSelector } from "@/app/store";
 import { selectCurrentOrder, fetchOrder } from "@/features/order/orderSlice";
 import { useAccount } from "wagmi";
 import imageUrlBuilder from "@sanity/image-url";
+import isAuth from "../lib/auth";
 
 const CheckoutPage = () => {
   const [tabActive, setTabActive] = useState<
@@ -217,4 +218,4 @@ const CheckoutPage = () => {
   );
 };
 
-export default CheckoutPage;
+export default isAuth(CheckoutPage);

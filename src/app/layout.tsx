@@ -11,7 +11,6 @@ import { cookieToInitialState } from "wagmi";
 import { headers } from "next/headers";
 import WagmiProviderComp from "./lib/wagmi-provider";
 import { config } from "./lib/config";
-
 const poppins = Poppins({
   subsets: ["latin"],
   display: "swap",

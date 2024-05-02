@@ -191,7 +191,8 @@ const CheckoutPage = () => {
   const handlePayment = async () => {
     console.log(Number(orderTotal / ethExchangeRate).toFixed(4));
 
-    setLoading(true);
+    // setLoading(true);
+    setIsShowModal(true);
     try {
       // const id = toast.loading("Getting your order ready...");
       // const receipt = await makePayment("0.000003");

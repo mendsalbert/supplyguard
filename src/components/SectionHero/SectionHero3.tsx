@@ -3,6 +3,8 @@ import ButtonPrimary from "@/shared/Button/ButtonPrimary";
 import backgroundLineSvg from "@/images/Moon.svg";
 import imageRightPng2 from "@/images/Untitled-2.png";
 import Image from "next/image";
+import ButtonThird from "@/shared/Button/ButtonThird";
+import Link from "next/link";
 
 export interface SectionHero3Props {
   className?: string;
@@ -24,11 +26,17 @@ const SectionHero3: FC<SectionHero3Props> = ({ className = "" }) => {
           </h2>
           <div className="sm:pt-4">
             <ButtonPrimary
+              sizeClass="px-6 py-3 mr-3 lg:px-8 lg:py-4"
+              fontSize="text-sm sm:text-base lg:text-lg font-medium"
+            >
+              <Link href={"/"}>Start Tracking Now</Link>
+            </ButtonPrimary>
+            <ButtonThird
               sizeClass="px-6 py-3 lg:px-8 lg:py-4"
               fontSize="text-sm sm:text-base lg:text-lg font-medium"
             >
-              Start Tracking Now
-            </ButtonPrimary>
+              <Link href={"/track-order"}>Verify Product</Link>
+            </ButtonThird>
           </div>
         </div>
       </div>

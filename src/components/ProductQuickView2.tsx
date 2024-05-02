@@ -43,17 +43,19 @@ const ProductQuickView2: FC<ProductQuickView2Props> = ({
     name,
     price,
     supplier,
+    source,
     category,
     description,
     variantType,
     status,
     image,
+    imageUrl,
     _id,
   } = data;
 
   const dispatch = useAppDispatch();
 
-  const { supplierName } = supplier;
+  const { supplierName } = supplier || source;
 
   const router = useRouter();
 
@@ -113,7 +115,8 @@ const ProductQuickView2: FC<ProductQuickView2Props> = ({
             height={96}
             src={
               (image?.asset && urlFor(image.asset).url()) ||
-              (image?.url && urlFor(image.url).url())
+              (image?.url && urlFor(image.url).url()) ||
+              imageUrl
             }
             alt={name}
             className="absolute object-cover object-center"
@@ -126,7 +129,7 @@ const ProductQuickView2: FC<ProductQuickView2Props> = ({
               <div>
                 <h3 className="text-base font-medium ">{name}</h3>
                 <p className="mt-1 text-sm text-slate-500 dark:text-slate-400">
-                  <span> {supplierName} </span>
+                  <span> {supplierName || source} </span>
                   <span className="mx-2 border-s border-slate-200 dark:border-slate-700 h-4"></span>
                 </p>
               </div>

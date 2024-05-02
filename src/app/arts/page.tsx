@@ -1,6 +1,9 @@
-import React, { FC } from "react";
+"use client";
+import React, { FC, useState, useEffect, useRef } from "react";
 import SectionSliderCollections from "@/components/SectionSliderLargeProduct";
 import SectionPromo1 from "@/components/SectionPromo1";
+import { ethers } from "ethers";
+import SupplyGuard from "../../lib/SupplyGuard.json";
 import ProductCard from "@/components/ProductCard";
 import { Product } from "@/data/data";
 import SidebarFilters from "@/components/SidebarFilters";
@@ -29,6 +32,10 @@ import product21 from "@/images/products/21.png";
 import product22 from "@/images/products/22.png";
 import product23 from "@/images/products/23.png";
 import product24 from "@/images/products/24.png";
+import { getAllNFTs } from "@/lib/queries";
+import Button from "@/shared/Button/Button";
+import { contract } from "@/lib";
+import ProductCardArt from "@/components/ProductCardArt";
 
 export const productImgs = [
   product1,
@@ -149,6 +156,18 @@ const PageCollection2 = ({}) => {
       isLiked: false,
     },
   ];
+
+  const [arts, setArts] = useState([]);
+
+  useEffect(() => {
+    const fetchNFTs = async () => {
+      let res = await getAllNFTs();
+      setArts(res);
+    };
+
+    fetchNFTs();
+  }, []);
+
   return (
     <div className={`nc-PageCollection2`}>
       <div className="container py-16 lg:pb-28 lg:pt-20 space-y-16 sm:space-y-20 lg:space-y-28">
@@ -157,6 +176,7 @@ const PageCollection2 = ({}) => {
           <div className="max-w-screen-sm">
             <h2 className="block text-2xl sm:text-3xl lg:text-4xl font-semibold">
               SupplyGuard AI Arts
+              {/* <Button onClick={fetchNFTs}>Get Nfts</Button> */}
             </h2>
             <span className="block mt-4 text-neutral-500 dark:text-neutral-400 text-sm sm:text-base">
               Start Your Collection with Exclusive Art Minting at Attractive
@@ -174,8 +194,8 @@ const PageCollection2 = ({}) => {
               <div className="flex-shrink-0 mb-10 lg:mb-0 lg:mx-4 border-t lg:border-t-0"></div>
               <div className="flex-1 ">
                 <div className="flex-1 grid sm:grid-cols-2 xl:grid-cols-3 gap-x-8 gap-y-10 ">
-                  {PRODUCTS.map((item, index) => (
-                    <ProductCard data={item} key={index} art={true} />
+                  {arts?.map((item, index) => (
+                    <ProductCardArt data={item} key={index} art={true} />
                   ))}
                 </div>
               </div>

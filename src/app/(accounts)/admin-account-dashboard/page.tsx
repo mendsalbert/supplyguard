@@ -17,14 +17,14 @@ const AccountSavelists = () => {
           <div className="py-8 px-4 ring-1 ring-gray-300 bg-white rounded-lg shadow-sm ">
             <div className="text-base text-gray-400 ">Net Revenue</div>
             <div className="flex items-center justify-between pt-1">
-              <div className="text-2xl font-bold text-gray-900 ">$7520.50</div>
+              <div className="text-2xl font-bold text-gray-900 ">$106.50</div>
               <CurrencyDollarIcon className="w-9 h-9 text-gray-700" />
             </div>
           </div>
           <div className="py-8 px-4 ring-1 ring-gray-300 bg-white rounded-lg shadow-sm ">
             <div className="text-base text-gray-400 ">Customers</div>
             <div className="flex items-center justify-between pt-1">
-              <div className="text-2xl font-bold text-gray-900 ">1375</div>
+              <div className="text-2xl font-bold text-gray-900 ">2</div>
               <UsersIcon className="w-9 h-9 text-gray-700" />
             </div>
           </div>
@@ -32,21 +32,21 @@ const AccountSavelists = () => {
           <div className="py-8 px-4 ring-1 ring-gray-300 bg-white rounded-lg shadow-sm ">
             <div className="text-base text-gray-400 ">Total Products</div>
             <div className="flex items-center justify-between pt-1">
-              <div className="text-2xl font-bold text-gray-900 ">14,754</div>
+              <div className="text-2xl font-bold text-gray-900 ">3</div>
               <RectangleGroupIcon className="w-9 h-9 text-gray-700" />
             </div>
           </div>
           <div className="py-8 px-4 ring-1 ring-gray-300 bg-white rounded-lg shadow-sm ">
             <div className="text-base text-gray-400 ">Successful Orders</div>
             <div className="flex items-center justify-between pt-1">
-              <div className="text-2xl font-bold text-gray-900 ">14,754</div>
+              <div className="text-2xl font-bold text-gray-900 ">2</div>
               <CheckCircleIcon className="w-9 h-9 text-gray-700" />
             </div>
           </div>
           <div className="py-8 px-4 ring-1 ring-gray-300 bg-white rounded-lg shadow-sm ">
             <div className="text-base text-gray-400 ">Unsuccessful Orders</div>
             <div className="flex items-center justify-between pt-1">
-              <div className="text-2xl font-bold text-gray-900 ">14,754</div>
+              <div className="text-2xl font-bold text-gray-900 ">0</div>
               <XCircleIcon className="w-9 h-9 text-gray-700" />
             </div>
           </div>

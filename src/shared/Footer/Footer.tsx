@@ -12,42 +12,35 @@ export interface WidgetFooterMenu {
 const widgetMenus: WidgetFooterMenu[] = [
   {
     id: "5",
-    title: "Getting started",
-    menus: [
-      { href: "/", label: "Release Notes" },
-      { href: "/", label: "Upgrade Guide" },
-      { href: "/", label: "Browser Support" },
-      { href: "/", label: "Dark Mode" },
-    ],
+    title: "Home page",
+    menus: [{ href: "/", label: "Home" }],
   },
   {
     id: "1",
-    title: "Explore",
+    title: "Shop Pages",
     menus: [
-      { href: "/", label: "Prototyping" },
-      { href: "/", label: "Design systems" },
-      { href: "/", label: "Pricing" },
-      { href: "/", label: "Security" },
+      { href: "/collection", label: "Category Page" },
+      { href: "/track-order", label: "Track my order" },
+      { href: "/cart", label: "Cart Page" },
+      { href: "/checkout", label: "Checkout Page" },
     ],
   },
   {
     id: "2",
-    title: "Resources",
+    title: "For Supliers",
     menus: [
-      { href: "/", label: "Best practices" },
-      { href: "/", label: "Support" },
-      { href: "/", label: "Developers" },
-      { href: "/", label: "Learn design" },
+      { href: "/admin-account", label: "Dashboard" },
+      { href: "/admin-account", label: "Accout Page" },
     ],
   },
   {
     id: "4",
-    title: "Community",
+    title: "Other Pages",
     menus: [
-      { href: "/", label: "Discussion Forums" },
-      { href: "/", label: "Code of Conduct" },
-      { href: "/", label: "Contributing" },
-      { href: "/", label: "API Reference" },
+      { href: "/about", label: "About Page" },
+      { href: "/blog", label: "Demo/Video" },
+      { href: "/blog-single", label: "Technology" },
+      { href: "/login", label: "How it works" },
     ],
   },
 ];

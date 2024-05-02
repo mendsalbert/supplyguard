@@ -35,11 +35,10 @@ export const MEGAMENU_TEMPLATES: NavItemType[] = [
     name: "Other Pages",
     children: [
       { id: ncNanoId(), href: "/about", name: "About Page" },
-      { id: ncNanoId(), href: "/contact", name: "Contact Page" },
       { id: ncNanoId(), href: "/blog", name: "Demo/Video" },
       { id: ncNanoId(), href: "/blog-single", name: "Technology" },
       { id: ncNanoId(), href: "/login", name: "How It Works:" },
-      { id: ncNanoId(), href: "/signup", name: "Support" },
+      // { id: ncNanoId(), href: "/signup", name: "FAQ" },
     ],
   },
 ];

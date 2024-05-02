@@ -95,7 +95,7 @@ const PageLogin = ({ params }: { params: { slug: string } }) => {
       resolve();
     });
 
-    // router.push("/");
+    router.push("/");
   };
 
   console.log(allOrders);

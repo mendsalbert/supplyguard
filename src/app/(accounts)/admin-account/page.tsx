@@ -87,9 +87,9 @@ const AccountPage = () => {
     setImageFile(e.target.files[0]);
   };
 
-  const handleSubmit = async () => {
+  const handleSubmit = async (e: any) => {
+    e.preventDefault();
     const id = toast.loading("Updating...");
-
     setIsLoading(true);
     try {
       const updatedUser = await dispatch(
@@ -99,7 +99,6 @@ const AccountPage = () => {
           imageFile,
         })
       ).unwrap();
-
       toast.update(id, {
         render: "All is good :) Account Updated!",
         type: "success",
@@ -168,7 +167,10 @@ const AccountPage = () => {
               />
             </div>
           </div>
-          <div className="flex-grow mt-10 md:mt-0 md:pl-16 max-w-3xl space-y-6">
+          <form
+            onSubmit={handleSubmit}
+            className="flex-grow mt-10 md:mt-0 md:pl-16 max-w-3xl space-y-6"
+          >
             <div>
               <Label>Company Name</Label>
               <Input
@@ -177,6 +179,7 @@ const AccountPage = () => {
                 name="supplierName"
                 value={userData.supplierName}
                 onChange={handleInputChange}
+                required
               />
             </div>
 
@@ -191,6 +194,7 @@ const AccountPage = () => {
                   placeholder={user?.email || "example@gmail.com"}
                   name="email"
                   value={userData.email}
+                  required
                   onChange={handleInputChange}
                 />
               </div>
@@ -205,6 +209,7 @@ const AccountPage = () => {
                 <Input
                   className="!rounded-l-none"
                   name="address"
+                  required
                   placeholder={user?.address || "New york, USA"}
                   value={userData.address}
                   onChange={handleInputChange}
@@ -225,6 +230,7 @@ const AccountPage = () => {
                   className="!rounded-l-none"
                   name="contactInfo.phone"
                   type="phone"
+                  required
                   placeholder={user?.contactInfo?.phone || "003 888 232"}
                   value={userData.contactInfo.phone}
                   onChange={handleInputChange}
@@ -237,17 +243,18 @@ const AccountPage = () => {
               <Textarea
                 className="mt-1.5"
                 name="description"
+                required
                 placeholder={user?.description || "about company"}
                 value={userData.description}
                 onChange={handleInputChange}
               />
             </div>
             <div className="pt-2">
-              <ButtonPrimary loading={isLoading} onClick={handleSubmit}>
+              <ButtonPrimary loading={isLoading} type="submit">
                 Update account
               </ButtonPrimary>
             </div>
-          </div>
+          </form>
         </div>
       </div>
     </div>

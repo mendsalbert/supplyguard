@@ -242,7 +242,7 @@ const ProductCard: FC<any> = ({ className = "", data, art }) => {
             <p
               className={`text-sm text-slate-500 dark:text-slate-400 mt-1 mb-2`}
             >
-              {description}
+              {description.substring(0, 80) + "..." || ""}
             </p>
           </div>
 

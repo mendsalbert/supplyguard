@@ -154,7 +154,7 @@ const MainNav2Logged: FC<MainNav2LoggedProps> = () => {
         onClick={() => open()}
         className="hover:cursor-pointer rounded-full py-2 px-7 border border-slate-300 dark:border-slate-700"
       >
-        Connect to
+        Connect
       </div>
       {/* <button onClick={() => open()}>Connect Wallet</button>; */}
     </>

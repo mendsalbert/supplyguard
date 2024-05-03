@@ -5,11 +5,17 @@ import ButtonSecondary from "@/shared/Button/ButtonSecondary";
 import Checkbox from "@/shared/Checkbox/Checkbox";
 import Input from "@/shared/Input/Input";
 import truncateEthAddress from "truncate-eth-address";
-import { ClockIcon, ShieldCheckIcon } from "@heroicons/react/24/outline";
+import {
+  ClockIcon,
+  EnvelopeIcon,
+  ShieldCheckIcon,
+  TruckIcon,
+} from "@heroicons/react/24/outline";
 import Image from "next/image";
 import { client } from "@/api/client";
 import imageUrlBuilder from "@sanity/image-url";
 import { RESPONSIBILITIES_ORDER, responsibilitiesMap } from "@/data/data";
+import Policy from "../product-detail/Policy";
 
 const sortRolesByResponsibility = (roles: any) => {
   return roles.sort((a: any, b: any) => {
@@ -25,6 +31,7 @@ interface Props {
   onCloseActive: () => void;
   data?: any;
   sortedRoles?: any;
+  newOrder?: any;
 }
 
 const ContactInfo: FC<Props> = ({
@@ -33,12 +40,15 @@ const ContactInfo: FC<Props> = ({
   onOpenActive,
   data,
   sortedRoles,
+  newOrder,
 }) => {
   const builder = imageUrlBuilder(client);
 
   function urlFor(source: any) {
     return builder.image(source);
   }
+
+  console.log(newOrder);
 
   // console.log(data?.role?.supplier?.profilePicture);
 
@@ -100,6 +110,7 @@ const ContactInfo: FC<Props> = ({
               ) : (
                 <ClockIcon className="h-7 w-7 pb-1 ml-3" />
               )}
+
               {/* <svg
                 fill="none"
                 viewBox="0 0 24 24"
@@ -134,54 +145,88 @@ const ContactInfo: FC<Props> = ({
             isActive ? "block" : "hidden"
           }`}
         >
-          <div className="flex justify-between flex-wrap items-baseline">
-            <h3 className="text-lg font-semibold">Supplier Infomation</h3>
-            <span className="block text-sm my-1 md:my-0">
-              {/* <Image
-                fill
-                src={
-                  (data?.role?.supplier?.profilePicture?.asset &&
-                    urlFor(
-                      data?.role?.supplier?.profilePicture?.asset
-                    ).url()) ||
-                  ""
-                }
-                alt={""}
-                className="h-5 w-5 object-contain object-center"
-                sizes="10px"
-              /> */}
-            </span>
-          </div>
-          <div className="max-w-lg">
-            <Label className="text-sm">Supplier Name</Label>
-            <p className="text-md">{data?.role?.supplier?.supplierName}</p>
-          </div>
-          <div className="max-w-lg">
-            <Label className="text-sm">Email address</Label>
-            <Input className="mt-1.5" type={"email"} />
-          </div>
-          <div>
-            <Checkbox
-              className="!text-sm"
-              name="uudai"
-              label="Email me news and offers"
-              defaultChecked
-            />
+          <div className="flex justify-between w-full ">
+            {/* <h3 className="text-lg font-semibold">Supplier Infomation</h3> */}
+            {/* <Policy data={data} /> */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 relative">
+              <div
+                className={`flex flex-col p-5 rounded-2xl  dark:bg-opacity-90`}
+              >
+                <TruckIcon className="w-8 h-8" />
+                <div className="mt-2.5">
+                  <p className="font-semibold text-slate-900">{"Supplier"}</p>
+                  <p className="text-slate-500 mt-0.5 text-sm">
+                    {data?.role?.supplier?.supplierName}
+                  </p>
+                </div>
+              </div>
+              <div
+                className={`flex flex-col p-5 rounded-2xl  dark:bg-opacity-90`}
+              >
+                <EnvelopeIcon className="w-7 h-7" />
+                <div className="mt-2.5">
+                  <p className="font-semibold text-slate-900">
+                    {"Supplier Email"}
+                  </p>
+                  <p className="text-slate-500 mt-0.5 text-sm">
+                    {data?.role?.supplier?.email}
+                  </p>
+                </div>
+              </div>
+
+              <div
+                className={`flex flex-col p-5 rounded-2xl  dark:bg-opacity-90`}
+              >
+                <ClockIcon className="w-7 h-7" />
+                <div className="mt-2.5">
+                  <p className="font-semibold text-slate-900">
+                    {"Date of Order"}
+                  </p>
+                  <p className="text-slate-500 mt-0.5 text-sm">
+                    {newOrder._createdAt}
+                  </p>
+                </div>
+              </div>
+
+              {data.approved ? (
+                <div
+                  className={`flex flex-col p-5 rounded-2xl  dark:bg-opacity-90`}
+                >
+                  <ShieldCheckIcon className="w-7 h-7" />
+                  <div className="mt-2.5">
+                    <p className="font-semibold text-slate-900">
+                      {"Date Approved"}
+                    </p>
+                    <p className="text-slate-500 mt-0.5 text-sm">
+                      {data.approvedAt}
+                    </p>
+                  </div>
+                </div>
+              ) : (
+                <div
+                  className={`flex flex-col p-5 rounded-2xl  dark:bg-opacity-90`}
+                >
+                  <ClockIcon className="w-7 h-7" />
+                  <div className="mt-2.5">
+                    <p className="font-semibold text-slate-900">
+                      {"Supplier Address"}
+                    </p>
+                    <p className="text-slate-500 mt-0.5 text-sm">
+                      {truncateEthAddress(data?.role?.ethaddress || "")}
+                    </p>
+                  </div>
+                </div>
+              )}
+            </div>
           </div>
 
           {/* ============ */}
           <div className="flex flex-col sm:flex-row pt-6">
-            <ButtonPrimary
-              className="sm:!px-7 shadow-none"
-              onClick={() => onCloseActive()}
-            >
-              Save and next to Shipping
-            </ButtonPrimary>
             <ButtonSecondary
               className="mt-3 sm:mt-0 sm:ml-3"
               onClick={() => onCloseActive()}
             >
-              Cancel
+              Close
             </ButtonSecondary>
           </div>
         </div>

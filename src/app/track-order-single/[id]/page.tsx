@@ -60,7 +60,7 @@ const CheckoutPage = ({ params }: { params: { id: any } }) => {
 
   console.log(userOrders);
 
-  const renderLeft = (roles: any, roleApproval: any) => {
+  const renderLeft = (roles: any, roleApproval: any, newOrder: any) => {
     console.log("rolessss", roles);
 
     return (
@@ -77,6 +77,7 @@ const CheckoutPage = ({ params }: { params: { id: any } }) => {
               handleScrollToEl("ShippingAddress");
             }}
             data={roles}
+            newOrder={newOrder}
           />
         </div>
       </div>
@@ -120,7 +121,7 @@ const CheckoutPage = ({ params }: { params: { id: any } }) => {
                 );
 
                 return sortedRoles.map((roles: any) =>
-                  renderLeft(roles, newOrder.roleApprovals)
+                  renderLeft(roles, newOrder.roleApprovals, newOrder)
                 );
               })}
             </div>

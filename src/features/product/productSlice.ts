@@ -62,7 +62,6 @@ export const fetchProducts = createAsyncThunk("products/fetchAll", async () => {
 export const fetchProduct = createAsyncThunk(
   "products/fetchSingle",
   async (productId: any) => {
-    console.log("product", productId);
     return await getSingleProduct(productId);
   }
 );
@@ -141,14 +140,6 @@ const productSlice = createSlice({
         state.productsBySupplier.push(action.payload);
 
         state.status = "succeeded";
-        // console.log(
-        //   "Product added, updated products count:",
-        //   state.products.length
-        // );
-        // console.log(
-        //   "Product added, updated products by supplier count:",
-        //   state.productsBySupplier.length
-        // );
       })
       .addCase(updateProduct.fulfilled, (state, action: PayloadAction<any>) => {
         const index = state.products.findIndex(

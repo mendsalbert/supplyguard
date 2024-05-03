@@ -31,8 +31,6 @@ const ModalAddProduct: FC<ModalEditProps> = ({ show, onCloseModalEdit }) => {
   const [isLoading, setIsLoading] = useState(false);
   const { categories, status, error } = useAppSelector(selectCategories);
 
-  // console.log(categories);
-
   useEffect(() => {
     if (show) {
       setTimeout(() => {

@@ -40,9 +40,6 @@ const ProductDetailPage = ({ params }: { params: { id: number } }) => {
     fetchProduct(params.id);
   }, [dispatch]);
 
-  console.log("product", params.id);
-
-  console.log("product", product);
   // const { status, image, supplier, name, price, id } = PRODUCTS[params?.id - 1];
 
   const [variantActive, setVariantActive] = useState(0);

@@ -76,8 +76,6 @@ export default function CartDropdown() {
     }
   }, [dispatch, fetchCart, user_?._id, isLoading, reduxCart]);
 
-  console.log("View Carts : CartDropdown.tsx", reduxCart);
-
   const renderTotal = () => {
     let priceTotal = 0;
     reduxCart

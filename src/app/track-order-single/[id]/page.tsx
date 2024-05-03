@@ -22,8 +22,6 @@ const CheckoutPage = ({ params }: { params: { id: any } }) => {
   >("ShippingAddress");
 
   const sortRolesByResponsibilities = (roles: any) => {
-    console.log(roles);
-
     // Sorting based on the index of role's responsibility in the RESPONSIBILITIES_ORDER array
     return roles.sort((a: any, b: any) => {
       let roleAIndex = RESPONSIBILITIES_ORDER.indexOf(
@@ -58,11 +56,7 @@ const CheckoutPage = ({ params }: { params: { id: any } }) => {
     }, 80);
   };
 
-  console.log(userOrders);
-
   const renderLeft = (roles: any, roleApproval: any, newOrder: any) => {
-    console.log("rolessss", roles);
-
     return (
       <div className="space-y-8 z-[99999]">
         <div id="ContactInfo" className="scroll-mt-24">

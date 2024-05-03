@@ -28,8 +28,6 @@ const fetchProductDetails = async (productId: any) => {
 
 // Helper to fetch supplier roles based on Ethereum address
 const fetchSupplierRoles = async (ethereumAddress: any) => {
-  console.log(ethereumAddress);
-
   const query = `*[_type == "supplierRole" && supplier._ref == $ethereumAddress]`;
   return await client.fetch(query, { ethereumAddress });
 };
@@ -401,7 +399,6 @@ const sendApprovalRequestEmail = async (role: any, createdOrder: any) => {
             },
             body: JSON.stringify(requestBody),
           });
-          console.log(response);
         }
       })
     );
@@ -428,16 +425,10 @@ const sendApprovalRequestEmailToNextPerson = async (
 
     const currentRoleIndex = sortedRoles.findIndex((r: any) => !r.approved);
 
-    console.log("Current Role Index", currentRoleIndex);
-    console.log("sorted Roles", sortedRoles);
-    console.log("roles for product", rolesForProduct);
-
     if (currentRoleIndex > 0) {
       const previousRole = sortedRoles[currentRoleIndex - 1];
       if (previousRole && previousRole.approved) {
         const nextRole = sortedRoles[currentRoleIndex];
-        console.log("nextRole", nextRole);
-        console.log("previousRole", previousRole);
 
         if (nextRole) {
           const qrCodeDataURL = QRCode.toDataURL(
@@ -969,8 +960,6 @@ export const addOrder = async (orderDetails: any, email: any) => {
       ...newOrder,
     });
 
-    console.log(flatProductsWithRoles);
-
     await sendUserOrderEmail(email, orderDetails);
     if (flatProductsWithRoles.length > 0) {
       await sendApprovalRequestEmail(flatProductsWithRoles, createdOrder);
@@ -1162,7 +1151,6 @@ export const updateRoleApproval = async (
       .then((res) => res[0]);
 
     const nextRoleIndex = currentRoleIndex + 1;
-    console.log("role approvals", updatedRole);
 
     if (order.roleApprovals[nextRoleIndex]) {
       sendApprovalRequestEmailToNextPerson(

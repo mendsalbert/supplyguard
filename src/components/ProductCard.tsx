@@ -73,7 +73,6 @@ const ProductCard: FC<any> = ({ className = "", data, art }) => {
     let addedProductToCart = await dispatch(
       addProductToCart({ userId: user._id, productId: _id })
     ).unwrap();
-    // console.log("Added Product To Cart : ProductCard.tsx", addedProductToCart);
     setIsLoading(false);
   };
   const lastUserIdUsedForFetchingCart = useRef();

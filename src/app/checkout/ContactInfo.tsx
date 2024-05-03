@@ -23,8 +23,6 @@ const ContactInfo: FC<Props> = ({ isActive, onCloseActive, onOpenActive }) => {
     dispatch(fetchUserByAddress(JSON.parse(address)));
   }, [dispatch]);
 
-  console.log(user);
-
   const renderAccount = () => {
     return (
       <div className="border border-slate-200 dark:border-slate-700 rounded-xl overflow-hidden z-0">

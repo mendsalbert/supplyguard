@@ -30,7 +30,6 @@ export const addUser = async (user: User) => {
       _type: "user",
       ...user,
     });
-    console.log("User created", newUser);
     return newUser;
   } catch (error) {
     console.error("Failed to add user:", error);
@@ -103,8 +102,6 @@ export const updateUserByAddress = async (
   imageFile?: File
 ) => {
   try {
-    console.log(ethereumAddress);
-
     const query = `*[_type == "user" && ethereumAddress == $ethereumAddress]`;
     const params = { ethereumAddress }; // Using an object to hold parameters
     const users = await client.fetch(query, params);
@@ -325,7 +322,6 @@ export const getCart = async (userId: any) => {
   };
   try {
     const result = await client.fetch(query, params);
-    console.log("View Products To Cart : userSlice.tsx", result);
 
     return result[0].cart;
   } catch (error) {

@@ -35,7 +35,6 @@ export default function AvatarDropdown() {
       }
     } else {
       console.log("No address found in localStorage.");
-      // Handle cases where no address is found, perhaps set default state or redirect
     }
   }, [dispatch]);
 

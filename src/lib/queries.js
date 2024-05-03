@@ -20,7 +20,6 @@ export async function addNFT(title, description, imageUrl, source, price) {
       ethers.utils.parseEther(price)
     );
     const receipt = await data.wait();
-    console.log(receipt);
     return receipt;
   } catch (e) {
     return parseErrorMsg(e);
@@ -57,7 +56,6 @@ export async function makePayment(amount) {
     const data = await contractObj.makePayment({
       value: amountInWei,
     });
-    console.log(amountInWei);
     const receipt = await data.wait();
     return receipt;
   } catch (e) {
@@ -68,7 +66,6 @@ export async function makePayment(amount) {
 
 // Function to mint an NFT
 export async function mintNFT(nftId, value) {
-  console.log(nftId, value);
   try {
     const amountInWei = ethers.utils.parseEther(value);
     const contractObj = await contract();
@@ -76,7 +73,6 @@ export async function mintNFT(nftId, value) {
       value: amountInWei,
     });
     const receipt = await transactionResponse.wait();
-    console.log("Minting transaction receipt:", receipt);
     return receipt;
   } catch (e) {
     console.log(e);

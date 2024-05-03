@@ -72,7 +72,6 @@ const PageLogin = ({ params }: { params: { slug: string } }) => {
   }, [dispatch, account.address]);
 
   const handleApproval = async (order: any) => {
-    console.log(order);
     const id = toast.loading("Approving Role...");
 
     let approve = await dispatch(
@@ -97,8 +96,6 @@ const PageLogin = ({ params }: { params: { slug: string } }) => {
 
     router.push("/");
   };
-
-  console.log(allOrders);
 
   const renderProductItem = (product: any, index: number) => {
     const { image, price, name, quantity, supplier, _id, category } =
@@ -224,10 +221,6 @@ const PageLogin = ({ params }: { params: { slug: string } }) => {
                     roleApprovals: filteredRoleApprovals, // Replace roleApprovals with filtered
                   };
 
-                  console.log(
-                    "Filtered Order Details for Rendering:",
-                    newOrder
-                  );
                   return renderOrder(newOrder);
                 })}
             </div>

@@ -63,7 +63,6 @@ const CheckoutPage = () => {
 
   const handleSubmit = async () => {
     // setIsLoading(true)
-    console.log(NFTData);
     const receipt = await addNFT(
       NFTData.title,
       NFTData.description,
@@ -71,7 +70,6 @@ const CheckoutPage = () => {
       NFTData.source,
       NFTData.price
     );
-    console.log(receipt);
   };
 
   return (

@@ -70,8 +70,6 @@ const ProductCardArt: FC<any> = ({ className = "", data, art }) => {
     // });
   };
 
-  // console.log(data);
-
   const renderGroupButtons = () => {
     return (
       <div className="absolute bottom-0 group-hover:bottom-4 inset-x-1 flex justify-center opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all">

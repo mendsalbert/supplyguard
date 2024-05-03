@@ -49,8 +49,6 @@ const CheckoutPage = () => {
     dispatch(fetchOrder(account.address));
   }, [dispatch]);
 
-  console.log(userOrders);
-
   const renderProductItem = (product: any, index: number) => {
     const { image, price, name, quantity, supplier, _id, category } =
       product?.product;

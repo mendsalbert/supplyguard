@@ -11,7 +11,7 @@ clear.mjs
 ../.env
 # testing
 /coverage
-
+secrete.txt
 # next.js
 /.next/
 /out/

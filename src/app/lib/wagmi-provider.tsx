@@ -14,10 +14,18 @@ const LiskSepolia = {
   rpcUrl: "https://rpc.sepolia-api.lisk.com",
 } as any;
 
+const BitTorrent = {
+  chainId: 1029,
+  name: "BitTorrent Chain Donau",
+  currency: "BTTC",
+  explorerUrl: "https://testscan.bt.io",
+  rpcUrl: "https://pre-rpc.bt.io/",
+} as any;
+
 createWeb3Modal({
   wagmiConfig: config,
   projectId,
-  defaultChain: LiskSepolia,
+  defaultChain: BitTorrent,
   enableAnalytics: true, // Optional
   themeMode: "light",
 });

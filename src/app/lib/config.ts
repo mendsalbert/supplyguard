@@ -37,8 +37,32 @@ const LiskSepolia = {
   },
   testnet: true,
 };
+
+const BitTorrent = {
+  id: 1029,
+  name: "BitTorrent Chain Donau",
+  network: "BitTorrent Chain Donau",
+  nativeCurrency: {
+    decimals: 18,
+    name: "BitTorrent Chain Donau",
+    symbol: "BTTC",
+  },
+  rpcUrls: {
+    default: {
+      http: ["https://pre-rpc.bt.io/"],
+    },
+  },
+  blockExplorers: {
+    default: {
+      name: "Apothem Explorer",
+      url: "https://testscan.bt.io",
+    },
+  },
+  testnet: true,
+};
+
 export const config = defaultWagmiConfig({
-  chains: [LiskSepolia],
+  chains: [BitTorrent],
   projectId,
   metadata,
   ssr: true,

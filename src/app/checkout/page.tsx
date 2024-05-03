@@ -193,7 +193,7 @@ const CheckoutPage = () => {
 
     try {
       const id = toast.loading("Getting your order ready...");
-      const receipt = await makePayment("0.0004");
+      const receipt = await makePayment(orderTotal);
       const orderDetails = {
         orderNumber: `SG${reduxCart.length}${reduxCart[0]?.name
           ?.slice(0, 2)

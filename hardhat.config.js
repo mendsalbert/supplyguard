@@ -13,6 +13,11 @@ module.exports = {
       accounts: [privateKey],
       gasPrice: 1000000000,
     },
+    BitTorrent: {
+      url: "https://pre-rpc.bt.io/",
+      accounts: [privateKey],
+      gasPrice: 1000000000,
+    },
     mumbai: {
       url: "https://rpc-mumbai.maticvigil.com",
       accounts: [privateKey],

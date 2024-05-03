@@ -20,7 +20,7 @@ const PageAbout = ({}) => {
           rightImg={logo}
           heading="👋 About Us."
           btnText=""
-          subHeading="We’re impartial and independent, and every day we create distinctive, world-class programmes and content which inform, educate and entertain millions of people in the around the world."
+          subHeading="SupplyGuard is a decentralized supply chain management tool that leverages blockchain technology to enhance transparency and efficiency in the flow of goods and information. It utilizes Ethereum smart contracts to automate transactions and secure data across the supply chain, ensuring each step is immutable and verifiable. SupplyGuard's platform integrates AI to optimize operations and offers real-time tracking of products through QR codes and blockchain verification. By eliminating the complexities and opacities of traditional supply chains, SupplyGuard aims to provide a seamless, secure, and user-friendly interface for businesses and consumers. This innovative solution significantly reduces potential fraud and errors, paving the way for a more reliable and transparent global supply chain ecosystem."
         />
       </div>
     </div>

@@ -8,12 +8,16 @@
 <p align="center">
     <a href="https://www.youtube.com/watch?v=FlKs6_5q5hk" title="">🖥️ Video</a>
     .
-    <a href="https://vidispark.vercel.app" title="">🔗 Website</a>
+    <a href="https://supplyguard.netlify.app/" title="">🔗 Website</a>
     ·
     <a href="https://github.com/mendsalbert/supplyguard" title="">📂 Repo</a>
     ·
     <a href="https://github.com/mendsalbert/supplyguard" title="🐛Report Bug/🎊Request Feature">🚀 Got Issue</a>
 </p>
+<a href="" title="Project Initiator">
+    <img src="https://i.imghippo.com/files/9hGC61714753154.png
+    " width="100%" alt="Project Initiator"/>
+</a>
 
 ### Inspiration 💡
 

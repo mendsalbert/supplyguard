@@ -78,7 +78,8 @@ const ModalAddRole: FC<ModalEditProps> = ({ show, onCloseModalEdit }) => {
     }
   };
 
-  const handleSubmit = async () => {
+  const handleSubmit = async (e: any) => {
+    e.preventDefault();
     const id = toast.loading("Updating...");
     setIsLoading(true);
 
@@ -118,7 +119,7 @@ const ModalAddRole: FC<ModalEditProps> = ({ show, onCloseModalEdit }) => {
 
   const renderContent = () => {
     return (
-      <form action="#">
+      <form onSubmit={handleSubmit}>
         <h3 className="text-lg pb-5 font-semibold text-neutral-900 dark:text-neutral-200">
           Add Role
         </h3>
@@ -130,6 +131,7 @@ const ModalAddRole: FC<ModalEditProps> = ({ show, onCloseModalEdit }) => {
                 className="mt-1.5"
                 placeholder="John Doe"
                 name="fullname"
+                required
                 value={roleData.fullname}
                 onChange={handleInputChange}
               />
@@ -140,6 +142,7 @@ const ModalAddRole: FC<ModalEditProps> = ({ show, onCloseModalEdit }) => {
                 className="mt-1.5"
                 placeholder="example@gmail.com"
                 type="email"
+                required
                 name="email"
                 value={roleData.email}
                 onChange={handleInputChange}
@@ -151,6 +154,7 @@ const ModalAddRole: FC<ModalEditProps> = ({ show, onCloseModalEdit }) => {
                 className="mt-1.5"
                 placeholder="0x4fd...34f"
                 name="ethaddress"
+                required
                 value={roleData.ethaddress}
                 onChange={handleInputChange}
               />
@@ -165,6 +169,7 @@ const ModalAddRole: FC<ModalEditProps> = ({ show, onCloseModalEdit }) => {
               <Select
                 className="mt-1.5"
                 name="responsibilities"
+                required
                 value={roleData.responsibilities}
                 onChange={handleInputChange}
               >
@@ -190,6 +195,7 @@ const ModalAddRole: FC<ModalEditProps> = ({ show, onCloseModalEdit }) => {
                 className="mt-1.5"
                 placeholder=""
                 name="noticeMessage"
+                required
                 value={roleData.noticeMessage}
                 onChange={handleInputChange}
               />
@@ -197,11 +203,7 @@ const ModalAddRole: FC<ModalEditProps> = ({ show, onCloseModalEdit }) => {
           </div>
         </div>
         <div className="mt-4 space-x-3">
-          <ButtonPrimary
-            loading={isLoading}
-            onClick={handleSubmit}
-            type="submit"
-          >
+          <ButtonPrimary loading={isLoading} type="submit">
             Submit
           </ButtonPrimary>
           <ButtonSecondary type="button" onClick={onCloseModalEdit}>

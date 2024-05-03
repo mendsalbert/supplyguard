@@ -32,9 +32,6 @@ const AccountSavelists = () => {
             <ProductCard data={item} key={index} />
           ))}
         </div>
-        {/* <div className="flex !mt-20 justify-center items-center">
-          <ButtonSecondary loading>Show me more</ButtonSecondary>
-        </div> */}
       </div>
     );
   };

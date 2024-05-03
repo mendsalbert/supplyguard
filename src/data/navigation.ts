@@ -36,8 +36,8 @@ export const MEGAMENU_TEMPLATES: NavItemType[] = [
     children: [
       { id: ncNanoId(), href: "/about", name: "About Page" },
       { id: ncNanoId(), href: "/blog", name: "Demo/Video" },
-      { id: ncNanoId(), href: "/blog-single", name: "Technology" },
-      { id: ncNanoId(), href: "/login", name: "How It Works:" },
+      { id: ncNanoId(), href: "/paper", name: "Technology" },
+      { id: ncNanoId(), href: "/paper", name: "How It Works:" },
       // { id: ncNanoId(), href: "/signup", name: "FAQ" },
     ],
   },

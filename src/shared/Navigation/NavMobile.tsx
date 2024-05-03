@@ -167,10 +167,7 @@ const NavMobile: React.FC<NavMobileProps> = ({
       <div className="py-6 px-5">
         <Logo />
         <div className="flex flex-col mt-5 text-slate-600 dark:text-slate-300 text-sm">
-          <span>
-            Discover the most outstanding articles on all topics of life. Write
-            your stories and share them
-          </span>
+          <span>Trust Your Orders with Blockchain Tracking🔥</span>
 
           <div className="flex justify-between items-center mt-4">
             <SocialsList itemClass="w-7 h-7 sm:w-8 sm:h-8 flex items-center justify-center rounded-full text-xl" />

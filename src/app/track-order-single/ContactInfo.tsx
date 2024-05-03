@@ -48,10 +48,6 @@ const ContactInfo: FC<Props> = ({
     return builder.image(source);
   }
 
-  console.log(newOrder);
-
-  // console.log(data?.role?.supplier?.profilePicture);
-
   const renderAccount = () => {
     return (
       <div className="border bg-white border-slate-200 dark:border-slate-700 rounded-xl overflow-hidden z-0">
@@ -91,39 +87,12 @@ const ContactInfo: FC<Props> = ({
               <span className=" tracking-tight">
                 {responsibilitiesMap[data?.role?.responsibilities] ||
                   "Unknown Role"}
-                {/* {data?.role?.responsibilities === "SupplierManager"
-                  ? "Supplier Manager"
-                  : data?.role?.responsibilities === "ProductOverseer"
-                  ? "Production Manager"
-                  : data?.role?.responsibilities === "QualityInspector"
-                  ? "Quality Assurance Specialist"
-                  : data?.role?.responsibilities === "InventoryController"
-                  ? "Inventory Manager"
-                  : data?.role?.responsibilities === "LogisticsCoordinations"
-                  ? "Logistics Manager"
-                  : data?.role?.responsibilities === "FulfillmentOperator"
-                  ? "Delivery Coordinator"
-                  : "Unknown Role"} */}
               </span>
               {data.approved ? (
                 <ShieldCheckIcon className="h-7 w-7 pb-1 ml-3 text-green-500" />
               ) : (
                 <ClockIcon className="h-7 w-7 pb-1 ml-3" />
               )}
-
-              {/* <svg
-                fill="none"
-                viewBox="0 0 24 24"
-                strokeWidth="2.5"
-                stroke="currentColor"
-                className="w-5 h-5 ml-3 text-green-500 ring-2 ring-offset-1 ring-green-500 ring- rounded-full dark:text-slate-100 "
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="M4.5 12.75l6 6 9-13.5"
-                />
-              </svg> */}
             </h3>
             <div className="font-semibold mt-1 text-sm">
               <span className="">{data?.role?.fullname}</span>
@@ -146,13 +115,11 @@ const ContactInfo: FC<Props> = ({
           }`}
         >
           <div className="flex justify-between w-full ">
-            {/* <h3 className="text-lg font-semibold">Supplier Infomation</h3> */}
-            {/* <Policy data={data} /> */}
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 relative">
               <div
                 className={`flex flex-col p-5 rounded-2xl  dark:bg-opacity-90`}
               >
-                <TruckIcon className="w-8 h-8" />
+                <TruckIcon className="w-7 h-7" />
                 <div className="mt-2.5">
                   <p className="font-semibold text-slate-900">{"Supplier"}</p>
                   <p className="text-slate-500 mt-0.5 text-sm">
@@ -163,7 +130,7 @@ const ContactInfo: FC<Props> = ({
               <div
                 className={`flex flex-col p-5 rounded-2xl  dark:bg-opacity-90`}
               >
-                <EnvelopeIcon className="w-7 h-7" />
+                <EnvelopeIcon className="w-6 h-6" />
                 <div className="mt-2.5">
                   <p className="font-semibold text-slate-900">
                     {"Supplier Email"}
@@ -177,7 +144,7 @@ const ContactInfo: FC<Props> = ({
               <div
                 className={`flex flex-col p-5 rounded-2xl  dark:bg-opacity-90`}
               >
-                <ClockIcon className="w-7 h-7" />
+                <ClockIcon className="w-6 h-6" />
                 <div className="mt-2.5">
                   <p className="font-semibold text-slate-900">
                     {"Date of Order"}
@@ -192,7 +159,7 @@ const ContactInfo: FC<Props> = ({
                 <div
                   className={`flex flex-col p-5 rounded-2xl  dark:bg-opacity-90`}
                 >
-                  <ShieldCheckIcon className="w-7 h-7" />
+                  <ShieldCheckIcon className="w-6 h-6" />
                   <div className="mt-2.5">
                     <p className="font-semibold text-slate-900">
                       {"Date Approved"}
@@ -206,7 +173,7 @@ const ContactInfo: FC<Props> = ({
                 <div
                   className={`flex flex-col p-5 rounded-2xl  dark:bg-opacity-90`}
                 >
-                  <ClockIcon className="w-7 h-7" />
+                  <ClockIcon className="w-6 h-6" />
                   <div className="mt-2.5">
                     <p className="font-semibold text-slate-900">
                       {"Supplier Address"}
@@ -220,7 +187,6 @@ const ContactInfo: FC<Props> = ({
             </div>
           </div>
 
-          {/* ============ */}
           <div className="flex flex-col sm:flex-row pt-6">
             <ButtonSecondary
               className="mt-3 sm:mt-0 sm:ml-3"

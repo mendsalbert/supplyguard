@@ -8,6 +8,7 @@ import truncateEthAddress from "truncate-eth-address";
 import {
   ClockIcon,
   EnvelopeIcon,
+  IdentificationIcon,
   ShieldCheckIcon,
   TruckIcon,
 } from "@heroicons/react/24/outline";
@@ -173,7 +174,7 @@ const ContactInfo: FC<Props> = ({
                 <div
                   className={`flex flex-col p-5 rounded-2xl  dark:bg-opacity-90`}
                 >
-                  <ClockIcon className="w-6 h-6" />
+                  <IdentificationIcon className="w-6 h-6" />
                   <div className="mt-2.5">
                     <p className="font-semibold text-slate-900">
                       {"Supplier Address"}

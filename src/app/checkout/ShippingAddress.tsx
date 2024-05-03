@@ -96,7 +96,8 @@ const ShippingAddress: FC<Props> = ({
             </h3>
             <div className="font-semibold mt-1 text-sm">
               <span className="">
-                {`${user?.shippingAddress?.street},${user?.shippingAddress?.city},${user?.shippingAddress?.state},${user?.shippingAddress?.postalCode},${user?.shippingAddress?.country}`}
+                {`${user?.shippingAddress?.street},${user?.shippingAddress?.city},${user?.shippingAddress?.state},${user?.shippingAddress?.postalCode},${user?.shippingAddress?.country}` ||
+                  ""}
               </span>
             </div>
           </div>
@@ -191,7 +192,11 @@ const ShippingAddress: FC<Props> = ({
       </div>
     );
   };
-  return renderShippingAddress();
+  if (user?.shippingAddress?.street == undefined) {
+    return "";
+  } else {
+    return renderShippingAddress();
+  }
 };
 
 export default ShippingAddress;

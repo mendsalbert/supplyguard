@@ -90,9 +90,9 @@ npm run start
 
 ### Configuration
 
-The chain ID should be 1029. If you have a localhost rpc set up, you may need to overwrite it.
+The chain ID should be a number eg 1029. If you have a localhost rpc set up, you may need to overwrite it.
 
-To deploy to BTTC test or main networks, update the configurations located in hardhat.config.js to use a private key and, optionally, deploy to a private RPC like Infura.
+To deploy to a test or main networks, update the configurations located in hardhat.config.js to use a private key and, optionally, deploy to a private RPC like Infura.
 
 ```Bash
 require('@nomiclabs/hardhat-waffle');
@@ -105,8 +105,8 @@ module.exports = {
     hardhat: {
       chainId: 1029,
     },
-    BitTorrent: {
-      url: 'https://pre-rpc.bt.io/',
+    "your-testnet": {
+      url: 'test-net-rpc-url',
       accounts: [privateKey],
     },
   },

@@ -15,8 +15,7 @@
     <a href="https://github.com/mendsalbert/supplyguard" title="🐛Report Bug/🎊Request Feature">🚀 Got Issue</a>
 </p>
 <a href="" title="Project Initiator">
-    <img src="https://i.imghippo.com/files/9hGC61714753154.png
-    " width="100%" alt="Project Initiator"/>
+    <img src="https://i.imghippo.com/files/9hGC61714753154.png" width="100%" alt="Project Initiator"/>
 </a>
 
 ### Inspiration 💡

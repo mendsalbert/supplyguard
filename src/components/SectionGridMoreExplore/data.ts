@@ -37,7 +37,7 @@ export const DEMO_MORE_EXPLORE_DATA_2: ExploreType[] = [
     image: explore9Png,
     svgBg: explore9Svg,
     color: "bg-orange-50",
-    count: 343,
+    count: 1,
   },
   {
     id: 5,
@@ -82,7 +82,7 @@ export const DEMO_MORE_EXPLORE_DATA_2: ExploreType[] = [
     image: explore4Png,
     svgBg: explore4Svg,
     color: "bg-slate-100/80",
-    count: 122,
+    count: 7,
   },
 ];
 export const DEMO_MORE_EXPLORE_DATA: ExploreType[] = [
@@ -93,7 +93,7 @@ export const DEMO_MORE_EXPLORE_DATA: ExploreType[] = [
     image: explore1Png,
     svgBg: explore1Svg,
     color: "bg-indigo-50",
-    count: 155,
+    count: 13,
   },
   {
     id: 2,

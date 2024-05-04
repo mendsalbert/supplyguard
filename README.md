@@ -7,8 +7,6 @@
 
 <p align="center">
     <a href="https://www.youtube.com/watch?v=FlKs6_5q5hk" title="">🖥️ Video</a>
-    .
-    <a href="https://supplyguard.netlify.app/" title="">🔗 Website</a>
     ·
     <a href="https://github.com/mendsalbert/supplyguard" title="">📂 Repo</a>
     ·

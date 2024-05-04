@@ -6,8 +6,8 @@
 <h1 align="center">SupplyGuard</h1>
 
 <p align="center">
-    <a href="https://www.youtube.com/watch?v=FlKs6_5q5hk" title="">🖥️ Video</a>
-    ·
+    <a href="https://www.youtube.com/watch?v=OpL5Q7Zc7qk" title="">🖥️ Video</a>
+    .
     <a href="https://github.com/mendsalbert/supplyguard" title="">📂 Repo</a>
     ·
     <a href="https://github.com/mendsalbert/supplyguard" title="🐛Report Bug/🎊Request Feature">🚀 Got Issue</a>

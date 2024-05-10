@@ -12,6 +12,7 @@ import { getAllNFTs } from "@/lib/queries";
 import Button from "@/shared/Button/Button";
 import { contract } from "@/lib";
 import ProductCardArt from "@/components/ProductCardArt";
+import isAuth from "../lib/auth";
 
 const PageCollection2 = ({}) => {
   const [arts, setArts] = useState([]);
@@ -64,4 +65,4 @@ const PageCollection2 = ({}) => {
   );
 };
 
-export default PageCollection2;
+export default isAuth(PageCollection2);
